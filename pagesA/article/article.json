@@ -2,6 +2,7 @@
   "navigationStyle": "custom",
   "usingComponents": {
     "custom-nav": "/components/custom-nav/custom-nav",
-    "article-card": "/components/article-card/article-card"
+    "article-card": "/components/article-card/article-card",
+    "menu-guide": "/components/menu-guide/menu-guide"
   }
 }

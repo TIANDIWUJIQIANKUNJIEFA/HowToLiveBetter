@@ -1,0 +1,96 @@
+<custom-nav title="{{mode === 'history' ? '浏览历史' : '搜索全部指南'}}" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}">
+  <view slot="right" class="mode" hover-class="row-hover" bindtap="{{mode === 'search' ? 'onHistoryMode' : 'onSearchMode'}}">
+    {{mode === 'search' ? '历史' : '搜索'}}
+  </view>
+</custom-nav>
+
+<view class="page">
+  <!-- 搜索框 -->
+  <block wx:if="{{mode === 'search'}}">
+    <view class="bar">
+      <image class="theme-icon-light bar-ico" src="/assets/icons-v2/search.png" mode="aspectFit" />
+<image class="theme-icon-dark bar-ico" src="/assets/icons-v2/dark/search.png" mode="aspectFit" />
+      <input class="bar-input" value="{{q}}" placeholder="搜索 {{totalSteps}} 条建议，如：安全带 / 拒绝 / 攒钱"
+             confirm-type="search" bindinput="onInput" bindconfirm="onConfirm" focus="{{!searched}}" />
+      <text wx:if="{{q}}" class="bar-clear" hover-class="row-hover" bindtap="onClear">✕</text>
+    </view>
+
+    <!-- 起始态：热词 + 最近浏览 -->
+    <block wx:if="{{!searched}}">
+      <view class="sec">热门搜索</view>
+      <view class="hots">
+        <text class="hot" hover-class="row-hover" wx:for="{{hot}}" wx:key="*this" data-q="{{item}}" bindtap="onHotTap">{{item}}</text>
+      </view>
+
+      <view wx:if="{{recent.length}}" class="sec sec-row">
+        <text>最近浏览</text>
+        <text class="sec-more" bindtap="onHistoryMode">全部 ›</text>
+      </view>
+      <view class="mv" wx:for="{{recent}}" wx:key="uid"
+            data-book="{{item.bookId}}" data-chapter="{{item.chapterId}}" bindtap="onChapterTap">
+        <text class="mv-t">{{item.title}}</text>
+        <text class="mv-m lb-mono">{{item.bookShort}}</text>
+      </view>
+    </block>
+
+    <!-- 结果：三段式 -->
+    <block wx:if="{{searched}}">
+      <view wx:if="{{searching}}" class="lb-empty">搜索中…</view>
+      <block wx:else>
+        <view wx:if="{{topics.length}}" class="sec">主题（{{topics.length}}）</view>
+        <view class="row lb-card" wx:for="{{topics}}" wx:key="id" data-id="{{item.id}}" bindtap="onTopicTap">
+          <view class="row-main"><view class="row-title">{{item.name}}</view>
+            <view class="row-meta lb-mono">{{item.count}} 章</view></view>
+          <image class="theme-icon-light chev" src="/assets/icons-v2/chev.png" mode="aspectFit" />
+<image class="theme-icon-dark chev" src="/assets/icons-v2/dark/chev.png" mode="aspectFit" />
+        </view>
+
+        <view wx:if="{{chapters.length}}" class="sec">章节（{{chapters.length}}）</view>
+        <view class="row lb-card" wx:for="{{chapters}}" wx:key="uid"
+              data-book="{{item.bookId}}" data-chapter="{{item.chapterId}}" bindtap="onChapterTap">
+          <view class="dot" style="background:{{item.accent}}"></view>
+          <view class="row-main">
+            <view class="row-title">{{item.title}}</view>
+            <view class="row-meta">{{item.bookTitle}}</view>
+          </view>
+          <image class="theme-icon-light chev" src="/assets/icons-v2/chev.png" mode="aspectFit" />
+<image class="theme-icon-dark chev" src="/assets/icons-v2/dark/chev.png" mode="aspectFit" />
+        </view>
+
+        <view wx:if="{{steps.length}}" class="sec">条目（{{steps.length}}）</view>
+        <view class="row lb-card" wx:for="{{steps}}" wx:key="uid"
+              data-book="{{item.bookId}}" data-chapter="{{item.chapterId}}"
+              data-index="{{item.index}}" bindtap="onStepTap">
+          <view class="dot" style="background:{{item.accent}}"></view>
+          <view class="row-main">
+            <view class="row-title">{{item.title}}</view>
+            <view class="row-meta">{{item.chapterTitle}} · {{item.bookTitle}}</view>
+          </view>
+          <image class="theme-icon-light chev" src="/assets/icons-v2/chev.png" mode="aspectFit" />
+<image class="theme-icon-dark chev" src="/assets/icons-v2/dark/chev.png" mode="aspectFit" />
+        </view>
+
+        <view wx:if="{{!topics.length && !chapters.length && !steps.length}}" class="lb-empty">
+          篇名里没有，换个说法试试
+        </view>
+      </block>
+    </block>
+  </block>
+
+  <view wx:if="{{mode === 'search' && searched && offline}}" class="row-meta">当前显示本地搜索结果，联网后可重新搜索。</view>
+
+  <!-- 浏览历史 -->
+  <block wx:if="{{mode === 'history'}}">
+    <view class="row lb-card" wx:for="{{history}}" wx:key="uid"
+          data-book="{{item.bookId}}" data-chapter="{{item.chapterId}}" bindtap="onHistoryTap">
+      <view class="dot" style="background:{{item.accent}}"></view>
+      <view class="row-main">
+        <view class="row-title">{{item.title}}</view>
+        <view class="row-meta">{{item.bookTitle}}</view>
+      </view>
+      <image class="theme-icon-light chev" src="/assets/icons-v2/chev.png" mode="aspectFit" />
+<image class="theme-icon-dark chev" src="/assets/icons-v2/dark/chev.png" mode="aspectFit" />
+    </view>
+    <view wx:if="{{!history.length}}" class="lb-empty">还没有阅读记录<view class="lb-btn" bindtap="onOpenLibrary">去书库看看 ›</view></view>
+  </block>
+</view>

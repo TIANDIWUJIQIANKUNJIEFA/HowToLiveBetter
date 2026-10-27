@@ -1,12 +1,14 @@
 <view class="article-card {{layout}}" hover-class="hover-press" bindtap="onTap">
   <image class="article-cover" src="{{article.cover}}" mode="aspectFill" lazy-load />
   <view class="article-content">
-    <text
+    <view
       wx:if="{{showCategory && !categoryBelow && article.categoryName}}"
       class="article-category"
-      style="color: {{article.categoryColor || '#4ba264'}};"
-    >{{article.categoryName}}</text>
-    <text class="article-title ellipsis">{{article.title}}</text>
+    >
+      <view class="category-dot" style="background: {{article.categoryColor || '#4ba264'}};"></view>
+      <text>{{article.categoryName}}</text>
+    </view>
+    <text class="article-title ellipsis-2">{{article.title}}</text>
     <text
       wx:if="{{showCategory && categoryBelow && article.categoryName}}"
       class="article-category-below"

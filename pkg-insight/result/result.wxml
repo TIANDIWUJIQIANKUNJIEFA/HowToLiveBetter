@@ -1,0 +1,91 @@
+<custom-nav title="为你挑选" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}"></custom-nav>
+
+<view class="page">
+  <!-- 匹配中过渡态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <view class="load-ring"></view>
+    <view class="load-text">正在为你匹配，从 {{totalSteps}} 条建议里挑出最合适的…</view>
+  </view>
+
+  <!-- 无档案空态 -->
+  <block wx:elif="{{empty}}">
+    <view class="lb-empty">
+      <view class="empty-mark">✦</view>
+      先花 20 秒选一下方向，推荐会准很多
+      <navigator url="/pkg-insight/wizard/wizard" open-type="navigate" class="lb-btn lb-btn-primary empty-btn">开始挑选</navigator>
+    </view>
+  </block>
+
+  <block wx:elif="{{noResults}}">
+    <view class="lb-empty">这个方向的建议暂时都看过了，换个方向再试试。<view class="lb-btn" bindtap="onRedo">重新挑选</view></view>
+  </block>
+  <block wx:else>
+    <view wx:if="{{offline}}" class="scope">当前使用本地推荐，联网后可重新挑选。</view>
+    <!-- 摘要条：关注 / 时间 / 障碍 -->
+    <view class="rsum lb-card">
+      <view class="rdot" style="background:var(--lb-bk1)"></view>
+      <view class="rdot" style="background:var(--lb-bk2)"></view>
+      <view class="tx">
+        <block wx:for="{{summaryRuns}}" wx:key="index">
+          <text class="{{item.b ? 'b' : ''}}">{{item.t}}</text>
+        </block>
+      </view>
+    </view>
+
+    <!-- 先试这条 -->
+    <view class="sech"><text class="t">先试这条</text></view>
+    <view wx:if="{{first}}" class="topcard lb-card">
+      <view class="why-row">
+        <text class="why" wx:for="{{first.chips}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="tt" bindtap="onOpenStep"
+            data-book="{{first.step.bookId}}" data-chapter="{{first.step.chapterId}}"
+            data-index="{{first.step.index}}">{{first.step.title}}</view>
+      <view class="tp">{{first.step.plain}}</view>
+      <view class="acts">
+        <view class="sbtn sbtn-solid" bindtap="onOpenStep"
+              data-book="{{first.step.bookId}}" data-chapter="{{first.step.chapterId}}"
+              data-index="{{first.step.index}}">查看原文 ›</view>
+        <view class="sbtn sbtn-ghost" bindtap="onFav" data-uid="{{first.step.uid}}">
+          <text class="sstar {{first.fav ? 'on' : ''}}">{{first.fav ? '★' : '☆'}}</text>{{first.fav ? '已收藏' : '收藏'}}
+        </view>
+      </view>
+      <view class="fbrow">
+        <view class="fb" hover-class="row-hover" bindtap="onFeedback" data-uid="{{first.step.uid}}" data-kind="negative">✕ 不太合适</view>
+        <view class="fb" hover-class="row-hover" bindtap="onFeedback" data-uid="{{first.step.uid}}" data-kind="doing">✓ 已经在做</view>
+        <view class="fb" hover-class="row-hover" bindtap="onFeedback" data-uid="{{first.step.uid}}" data-kind="positive">☆ 值得试试</view>
+      </view>
+    </view>
+
+    <!-- 其他适合你的 -->
+    <view wx:if="{{others.length}}" class="sech">
+      <text class="t">其他适合你的</text>
+      <text class="n lb-mono">{{others.length}} · 跨 {{bookCount}} 本书</text>
+    </view>
+    <view wx:for="{{others}}" wx:key="step.uid" class="minor lb-card"
+          bindtap="onOpenStep"
+          data-book="{{item.step.bookId}}" data-chapter="{{item.step.chapterId}}"
+          data-index="{{item.step.index}}">
+      <view class="mdot" style="background:{{item.accent}}"></view>
+      <view class="mmain">
+        <view class="mt">{{item.step.title}}</view>
+        <view class="mp">{{item.step.plain}}</view>
+        <view class="mm lb-mono">{{item.bookTitle}} · {{item.chapterTitle}} · 证据 {{item.step.grade}}</view>
+      </view>
+      <image class="theme-icon-light chev" src="/assets/icons-v2/chev.png" mode="aspectFit" />
+<image class="theme-icon-dark chev" src="/assets/icons-v2/dark/chev.png" mode="aspectFit" />
+    </view>
+
+    <!-- 来源声明 -->
+    <view wx:if="{{scope}}" class="scope lb-mono">{{scope}}</view>
+
+    <button class="gbtn" open-type="share">分享这份发现</button>
+    <view class="bottom-row">
+      <view class="gbtn" bindtap="onRedo">换个方向</view>
+      <view class="gbtn gbtn-brand" bindtap="onDeepSurvey">深度调研（6 题）</view>
+    </view>
+
+    <view class="disclaim">推荐基于你的选择与条目的成本/收益/证据强度排序，仅供参考，不构成医疗或法律建议。</view>
+  </block>
+
+</view>

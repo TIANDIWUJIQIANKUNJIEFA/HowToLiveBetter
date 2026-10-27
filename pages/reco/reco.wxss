@@ -1,0 +1,275 @@
+@import "../../styles/variables-v2.wxss";
+
+.page {
+  padding: 4rpx 36rpx 56rpx;
+  background: var(--lb-bg);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* ---------- 导航右侧圆形按钮 ---------- */
+.nbtn {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  border: 1rpx solid var(--lb-line);
+  background: var(--lb-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nbtn-hover { opacity: .7; }
+.nbtn-ico { width: 34rpx; height: 34rpx; }
+
+/* ---------- 状态行 ---------- */
+.status {
+  display: flex;
+  align-items: center;
+  margin: 4rpx 0 28rpx;
+}
+.status .s {
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+  color: var(--lb-ink);
+  background: var(--lb-brand-bg);
+  border-radius: 999rpx;
+  padding: 10rpx 18rpx;
+}
+.status .sdot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: var(--lb-brand);
+}
+.status .m {
+  margin-left: auto;
+  font-size: 22rpx;
+  letter-spacing: -0.6rpx;
+  color: var(--lb-ink2);
+}
+
+/* ---------- 画像行 ---------- */
+.pf {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  font-size: 22rpx;
+  color: var(--lb-ink2);
+  margin-bottom: 32rpx;
+}
+.pf .pfb { color: var(--lb-brand-ink); font-weight: 600; }
+
+/* ---------- 问题入口 hero ---------- */
+.qc {
+  position: relative;
+  overflow: hidden;
+  min-height: 332rpx;
+  padding: 42rpx 32rpx;
+  border-radius: var(--lb-r-card);
+  background: var(--lb-hero-bg);
+}
+.qc-hover { opacity: .92; }
+.qc .qm {
+  position: relative;
+  z-index: 2;
+  max-width: 368rpx;
+}
+.qc .qt {
+  font-size: 38rpx;
+  font-weight: 650;
+  letter-spacing: -1rpx;
+  white-space: nowrap;
+  color: var(--lb-ink);
+}
+.qc .qs {
+  font-size: 22rpx;
+  line-height: 1.8;
+  max-width: 330rpx;
+  margin-top: 16rpx;
+  color: var(--lb-ink2);
+}
+.qc .qa {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 32rpx;
+  padding: 14rpx 24rpx;
+  min-height: 64rpx;
+  font-size: 22rpx;
+  border-radius: 16rpx;
+  color: var(--lb-on-brand);
+  background: var(--lb-brand);
+  font-weight: 600;
+}
+.qc-illo {
+  position: absolute;
+  right: -10rpx;
+  bottom: 6rpx;
+  width: 308rpx;
+  height: 316rpx;
+  z-index: 1;
+}
+
+/* ---------- 分区标题 ---------- */
+.sech {
+  display: flex;
+  align-items: baseline;
+  margin: 44rpx 0 22rpx;
+}
+.sech .t { font-size: 32rpx; font-weight: 650; color: var(--lb-ink); }
+.sech .n { font-size: 22rpx; color: var(--lb-ink2); margin-left: 16rpx; }
+.sech .more { margin-left: auto; font-size: 22rpx; color: var(--lb-ink2); }
+.more-hover { opacity: .6; }
+
+/* ---------- 今日更新 ---------- */
+.upd {
+  background: var(--lb-surface);
+  border: 1rpx solid var(--lb-line);
+  border-radius: var(--lb-r-card);
+  padding: 0 24rpx;
+}
+.upd .row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+  padding: 26rpx 0;
+}
+.upd .row + .row { border-top: 1rpx solid var(--lb-line); }
+.row-hover { opacity: .75; }
+.upd .dot {
+  width: 8rpx;
+  height: 44rpx;
+  border-radius: 6rpx;
+  flex: none;
+  margin-top: 4rpx;
+}
+.upd .rc { flex: 1; min-width: 0; }
+.upd .l1 {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  font-size: 22rpx;
+  color: var(--lb-ink2);
+}
+.upd .tag {
+  font-size: 22rpx;
+  font-weight: 500;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+}
+.tag-new { background: var(--lb-brand-bg); color: var(--lb-brand-ink); }
+.tag-up { background: var(--lb-orange-bg); color: var(--lb-orange); }
+.upd .t1 {
+  font-size: 25rpx;
+  font-weight: 600;
+  letter-spacing: -0.3rpx;
+  line-height: 1.6;
+  margin-top: 12rpx;
+  color: var(--lb-ink);
+}
+.upd .m1 {
+  font-size: 22rpx;
+  color: var(--lb-ink2);
+  margin-top: 10rpx;
+}
+.upd .chev { width: 30rpx; height: 30rpx; opacity: .5; flex: none; }
+
+/* ---------- 书架（2 列书卡） ---------- */
+.shelf {
+  display: flex;
+  flex-wrap: wrap;
+  /* 两卡间距用 space-between 而不是 gap：卡宽 48.6% 留出 2.8% 余量。
+     原先 calc(50% - 9rpx) + gap 18rpx 相加正好 100%，iPhone 真机子像素
+     取整后略微超宽，第二张卡会被 flex-wrap 挤到下一行（并排变一列） */
+  justify-content: space-between;
+}
+.bk {
+  position: relative;
+  overflow: hidden;
+  width: 48.6%;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 268rpx;
+  padding: 26rpx 20rpx;
+  margin-bottom: 18rpx;
+  background: var(--lb-surface);
+  border: 1rpx solid var(--lb-line);
+  border-radius: var(--lb-r-card);
+}
+.bk-hover { opacity: .85; }
+.bk .cover {
+  position: absolute;
+  right: 16rpx;
+  top: 28rpx;
+  width: 114rpx;
+  height: 182rpx;
+  z-index: 1;
+}
+.bk .bt {
+  position: relative;
+  z-index: 2;
+  max-width: 160rpx;
+  display: flex;
+  flex-direction: column;
+}
+.bk .btl {
+  font-size: 25rpx;
+  font-weight: 600;
+  line-height: 1.55;
+  letter-spacing: -0.6rpx;
+  color: var(--lb-ink);
+}
+.bk .bm {
+  position: relative;
+  z-index: 2;
+  margin-top: 16rpx;
+  max-width: 170rpx;
+  display: flex;
+  flex-direction: column;
+}
+.bk .bml {
+  font-size: 22rpx;
+  line-height: 2;
+  letter-spacing: -0.8rpx;
+  color: var(--lb-ink2);
+}
+.bk .prog {
+  position: relative;
+  z-index: 2;
+  margin-top: 24rpx;
+  width: 148rpx;
+  height: 6rpx;
+  background: var(--lb-surface2);
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+.bk .prog-i { display: block; height: 100%; border-radius: 6rpx; }
+
+/* ---------- 每日一读 ---------- */
+.quote {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  margin-top: 30rpx;
+  padding: 18rpx 4rpx 0;
+}
+.quote-hover { opacity: .7; }
+.qmark { width: 56rpx; height: 56rpx; flex: none; }
+.qmain { flex: 1; min-width: 0; }
+.qt2 {
+  font-size: 26rpx;
+  font-weight: 500;
+  line-height: 1.8;
+  color: var(--lb-ink);
+}
+.qs2 {
+  font-size: 22rpx;
+  color: var(--lb-ink2);
+  margin-top: 8rpx;
+  text-align: right;
+}
+
+.preview-badge { color:var(--lb-orange); font-size:22rpx; margin-top:12rpx; }
+.continue-link, .update-toggle { color:var(--lb-brand); min-height:88rpx; display:flex; align-items:center; font-size:24rpx; }

@@ -1,0 +1,49 @@
+<custom-nav title="书库" align="left" big="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" shadow="{{false}}">
+  <view slot="right" class="nbtn" bindtap="onOpenSearch" hover-class="nbtn-hover" aria-label="搜索">
+    <image class="theme-icon-light nbtn-ico" src="/assets/icons-v2/search.png" mode="aspectFit" />
+<image class="theme-icon-dark nbtn-ico" src="/assets/icons-v2/dark/search.png" mode="aspectFit" />
+  </view>
+</custom-nav>
+
+<view class="lt-tabs">
+  <view class="lt {{tab === 'shelf' ? 'on' : ''}}" data-tab="shelf" bindtap="onTab">书架</view>
+  <view class="lt {{tab === 'topic' ? 'on' : ''}}" id="tab-topic" data-tab="topic" bindtap="onTab">主题</view>
+</view>
+
+<view class="page">
+  <!-- 书架 -->
+  <block wx:if="{{tab === 'shelf'}}">
+    <view class="big-bk lb-card" wx:for="{{books}}" wx:key="id"
+          data-id="{{item.id}}" bindtap="onBookTap" hover-class="bk-hover">
+      <image class="cover" src="{{item.cover}}" mode="aspectFill" />
+      <view class="bb">
+        <view class="bt">{{item.title}}</view>
+        <view class="bd">
+          <text class="bdl">{{item.descLine1}}</text>
+          <text class="bdl">{{item.descLine2}}</text>
+        </view>
+        <view wx:if="{{item.readingId}}" class="continue-reading" data-id="{{item.id}}" data-chapter="{{item.readingId}}" catchtap="onContinue">继续阅读 ›</view>
+        <view class="bm2">
+          <text class="cbadge" wx:for="{{item.badges}}" wx:for-item="b" wx:key="*this"
+                style="border-color:{{item.accent}};color:{{item.accent}};">{{b}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="dl-note">指南正文按 CC BY 4.0 署名转载 · 来源见「关于」页</view>
+  </block>
+
+  <!-- 主题宫格 -->
+  <block wx:if="{{tab === 'topic'}}">
+    <view class="dl-note head-note">按生活主题整理已上架内容，找到适合当下的做法。</view>
+    <view class="tgrid">
+      <view class="tg lb-card" wx:for="{{topics}}" wx:key="id"
+            data-id="{{item.id}}" bindtap="onTopicTap" hover-class="tg-hover">
+        <view class="tt">
+          <image class="tt-ico theme-icon-light" src="{{item.icon}}" mode="aspectFit" /><image class="tt-ico theme-icon-dark" src="{{item.darkIcon}}" mode="aspectFit" />
+          <text>{{item.short}}</text>
+        </view>
+        <view class="tn lb-mono">{{item.count}} 章</view>
+      </view>
+    </view>
+  </block>
+</view>

@@ -2,6 +2,9 @@
   "navigationStyle": "custom",
   "usingComponents": {
     "custom-nav": "/components/custom-nav/custom-nav",
-    "tip-panel": "/components/tip-panel/tip-panel"
-  }
+    "tip-panel": "/components/tip-panel/tip-panel",
+    "menu-guide": "/components/menu-guide/menu-guide"
+  },
+  "navigationBarTextStyle": "@mineNavTextStyle",
+  "backgroundColor": "@mineBgColor"
 }

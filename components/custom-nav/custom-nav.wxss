@@ -20,10 +20,17 @@
   padding: 0 16rpx;
 }
 
-.nav-left,
-.nav-right {
+.nav-left {
   width: 100rpx;
   min-width: 100rpx;
+  display: flex;
+  align-items: center;
+}
+
+/* 右槽避让胶囊（约 87px 宽 + 边距），槽内容右对齐到胶囊左侧 */
+.nav-right {
+  width: 200rpx;
+  min-width: 200rpx;
   display: flex;
   align-items: center;
 }
@@ -35,11 +42,14 @@
 
 .nav-right {
   justify-content: flex-end;
+  /* 内容右缘停在胶囊左侧（胶囊约 87px 宽 + 4px 边距） */
+  margin-right: 180rpx;
 }
 
+/* 44pt 命中区：88rpx。nav-bar 高度锁 44px，溢出部分透明可点，不影响排版 */
 .nav-btn {
-  width: 64rpx;
-  height: 64rpx;
+  width: 88rpx;
+  height: 88rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,4 +83,11 @@
   font-size: 42rpx;
   font-weight: 700;
   letter-spacing: 1rpx;
+}
+
+/* v2 首页大标题：24px / 650 / 收紧字距 */
+.nav-title.big {
+  font-size: 48rpx;
+  font-weight: 650;
+  letter-spacing: -1.2rpx;
 }

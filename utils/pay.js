@@ -39,14 +39,14 @@ function checkAvailability() {
   const { platform, version } = getSystem();
 
   if (platform === 'devtools') {
-    return { ok: false, message: '开发者工具不支持虚拟支付，请用真机预览或体验版验证' };
+    return { ok: false, platform, label: '请在手机微信中购买', message: '开发者工具不支持虚拟支付，请用真机预览或体验版验证' };
   }
   if (!wx.requestVirtualPayment) {
-    return { ok: false, message: '当前微信版本不支持虚拟支付，请升级到最新版微信' };
+    return { ok: false, platform, label: '请升级微信后购买', message: '当前微信版本不支持虚拟支付，请升级到最新版微信' };
   }
   if (platform === 'ios' && compareVersion(version, IOS_MIN_WECHAT_VERSION) < 0) {
     return {
-      ok: false,
+      ok: false, platform, label: '请升级微信后购买',
       message: `iOS 端需微信 ${IOS_MIN_WECHAT_VERSION} 及以上版本，当前为 ${version}，请升级微信后再试`
     };
   }

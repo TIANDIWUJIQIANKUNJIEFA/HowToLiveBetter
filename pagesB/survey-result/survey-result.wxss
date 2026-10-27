@@ -1,6 +1,10 @@
+@import "../../styles/variables-v2.wxss";
+
+page { background: var(--lb-bg); color: var(--lb-ink); }
+
 .result-page {
   min-height: 100vh;
-  background: var(--color-bg);
+  background: var(--lb-bg);
 }
 
 .result-content {
@@ -19,8 +23,8 @@
   width: 96rpx;
   height: 96rpx;
   border-radius: 50%;
-  border: 8rpx solid var(--color-primary-light);
-  border-top-color: var(--color-primary);
+  border: 8rpx solid var(--lb-brand-bg);
+  border-top-color: var(--lb-brand);
   animation: gen-spin 0.9s linear infinite;
   margin-bottom: 40rpx;
 }
@@ -32,13 +36,13 @@
 .gen-title {
   font-size: var(--font-size-lg, 32rpx);
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--lb-ink);
 }
 
 .gen-desc {
   margin-top: 12rpx;
   font-size: var(--font-size-base, 28rpx);
-  color: var(--color-text-secondary);
+  color: var(--lb-ink2);
 }
 
 /* 引导空态 */
@@ -47,21 +51,21 @@
   flex-direction: column;
   align-items: center;
   padding: 48rpx 32rpx 56rpx;
-  background: var(--color-surface);
-  border-radius: var(--radius-lg, 24rpx);
-  box-shadow: 0 4rpx 20rpx var(--color-shadow, rgba(31, 41, 36, 0.04));
+  background: var(--lb-surface);
+  border-radius: var(--lb-r-card);
+  border: 1rpx solid var(--lb-line);
 }
 
 .guide-title {
   font-size: var(--font-size-xl, 36rpx);
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--lb-ink);
 }
 
 .guide-desc {
   margin-top: 16rpx;
   font-size: var(--font-size-base, 28rpx);
-  color: var(--color-text-secondary);
+  color: var(--lb-ink2);
   line-height: 1.5;
   text-align: center;
 }
@@ -69,21 +73,21 @@
 .guide-sub {
   margin-top: 40rpx;
   font-size: var(--font-size-sm, 24rpx);
-  color: var(--color-text-tertiary);
+  color: var(--lb-ink2);
 }
 
 .btn-primary {
   width: 100%;
   height: 92rpx;
   margin-top: 32rpx;
-  border-radius: var(--radius-round, 999px);
-  background: var(--color-primary);
+  border-radius: var(--lb-r-btn);
+  background: var(--lb-brand);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-md, 30rpx);
   font-weight: 600;
-  color: #ffffff;
+  color: var(--lb-on-brand);
 }
 
 /* 区块 */
@@ -95,37 +99,37 @@
   display: block;
   font-size: var(--font-size-lg, 32rpx);
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--lb-ink);
   margin-bottom: 20rpx;
 }
 
 /* 匹配依据 */
 .summary-card {
   padding: 28rpx 28rpx;
-  border-radius: var(--radius-lg, 24rpx);
-  background: var(--color-primary-light);
+  border-radius: var(--lb-r-card);
+  background: var(--lb-brand-bg);
 }
 
 .summary-label {
   display: block;
   font-size: var(--font-size-xs, 22rpx);
-  color: var(--color-primary);
+  color: var(--lb-brand-ink);
   margin-bottom: 10rpx;
 }
 
 .summary-text {
   display: block;
   font-size: var(--font-size-base, 28rpx);
-  color: var(--color-text);
+  color: var(--lb-ink);
   line-height: 1.55;
 }
 
 /* 首选建议 */
 .top-card {
   padding: 32rpx 32rpx 28rpx;
-  border-radius: var(--radius-lg, 24rpx);
-  background: var(--color-surface);
-  box-shadow: 0 8rpx 24rpx var(--color-shadow, rgba(31, 41, 36, 0.06));
+  border-radius: var(--lb-r-card);
+  background: var(--lb-surface);
+  border: 1rpx solid var(--lb-line);
 }
 
 .top-head {
@@ -137,15 +141,15 @@
 .top-percent {
   font-size: var(--font-size-sm, 24rpx);
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--lb-brand-ink);
 }
 
 .grade-badge {
   margin-left: 16rpx;
   padding: 4rpx 14rpx;
   border-radius: var(--radius-sm, 8rpx);
-  background: var(--badge-green-bg);
-  color: var(--badge-green-text);
+  background: var(--lb-brand-bg);
+  color: var(--lb-brand-ink);
   font-size: var(--font-size-xs, 22rpx);
 }
 
@@ -153,7 +157,7 @@
   display: block;
   font-size: var(--font-size-xl, 36rpx);
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--lb-ink);
   line-height: 1.45;
 }
 
@@ -161,7 +165,7 @@
   display: block;
   margin-top: 16rpx;
   font-size: var(--font-size-base, 28rpx);
-  color: var(--color-text-secondary);
+  color: var(--lb-ink2);
   line-height: 1.65;
 }
 
@@ -175,10 +179,10 @@
   padding: 6rpx 18rpx;
   margin-right: 12rpx;
   margin-bottom: 12rpx;
-  border-radius: var(--radius-round, 999px);
-  background: var(--color-surface-2);
+  border-radius: var(--lb-r-btn);
+  background: var(--lb-surface2);
   font-size: var(--font-size-xs, 22rpx);
-  color: var(--color-text-secondary);
+  color: var(--lb-ink);
 }
 
 .top-foot {
@@ -187,25 +191,25 @@
   justify-content: space-between;
   margin-top: 20rpx;
   padding-top: 20rpx;
-  border-top: 1rpx solid var(--color-border);
+  border-top: 1rpx solid var(--lb-line);
 }
 
 .top-from {
   font-size: var(--font-size-sm, 24rpx);
-  color: var(--color-text-tertiary);
+  color: var(--lb-ink2);
 }
 
 .top-link {
   font-size: var(--font-size-sm, 24rpx);
-  color: var(--color-primary);
+  color: var(--lb-brand-ink);
 }
 
 /* 其他建议 */
 .minor-card {
   padding: 26rpx 28rpx;
-  border-radius: var(--radius-lg, 24rpx);
-  background: var(--color-surface);
-  box-shadow: 0 4rpx 16rpx var(--color-shadow, rgba(31, 41, 36, 0.04));
+  border-radius: var(--lb-r-card);
+  background: var(--lb-surface);
+  border: 1rpx solid var(--lb-line);
   margin-bottom: 20rpx;
 }
 
@@ -219,21 +223,21 @@
   flex: 1;
   font-size: var(--font-size-md, 30rpx);
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--lb-ink);
   line-height: 1.45;
 }
 
 .minor-percent {
   margin-left: 16rpx;
   font-size: var(--font-size-sm, 24rpx);
-  color: var(--color-primary);
+  color: var(--lb-brand-ink);
 }
 
 .minor-plain {
   display: block;
   margin-top: 12rpx;
   font-size: var(--font-size-base, 28rpx);
-  color: var(--color-text-secondary);
+  color: var(--lb-ink2);
   line-height: 1.6;
 }
 
@@ -246,12 +250,12 @@
 
 .minor-from {
   font-size: var(--font-size-xs, 22rpx);
-  color: var(--color-text-tertiary);
+  color: var(--lb-ink2);
 }
 
 .minor-grade {
   font-size: var(--font-size-xs, 22rpx);
-  color: var(--color-text-tertiary);
+  color: var(--lb-ink2);
 }
 
 /* 底部 */
@@ -264,13 +268,13 @@
   flex: 1;
   height: 84rpx;
   margin-right: 20rpx;
-  border-radius: var(--radius-round, 999px);
-  background: var(--color-surface);
+  border-radius: var(--lb-r-btn);
+  background: var(--lb-surface);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-base, 28rpx);
-  color: var(--color-text);
+  color: var(--lb-ink);
 }
 
 .btn-ghost:last-child {
@@ -281,7 +285,7 @@
   display: block;
   margin-top: 32rpx;
   font-size: var(--font-size-xs, 22rpx);
-  color: var(--color-text-tertiary);
+  color: var(--lb-ink2);
   line-height: 1.6;
 }
 
@@ -302,7 +306,7 @@
   align-items: center;
   justify-content: center;
   padding: 48rpx;
-  background: rgba(246, 247, 246, 0.72);
+  background: var(--lb-bg);
 }
 
 .lock-card {
@@ -313,15 +317,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--color-surface, #ffffff);
+  background: var(--lb-surface);
   border-radius: 32rpx;
-  box-shadow: 0 20rpx 60rpx rgba(31, 41, 36, 0.16);
+  border: 1rpx solid var(--lb-line);
 }
 
 .lock-title {
   font-size: var(--font-size-lg, 34rpx);
   font-weight: 700;
-  color: var(--color-text, #22262b);
+  color: var(--lb-ink);
   text-align: center;
   line-height: 1.4;
 }
@@ -329,7 +333,7 @@
 .lock-desc {
   margin-top: 20rpx;
   font-size: var(--font-size-base, 28rpx);
-  color: var(--color-text-secondary);
+  color: var(--lb-ink2);
   text-align: center;
   line-height: 1.65;
 }
@@ -342,9 +346,9 @@
   align-items: center;
   justify-content: center;
   border: none;
-  border-radius: var(--radius-round, 999px);
-  background: var(--color-primary, #3d8b40);
-  color: #ffffff;
+  border-radius: var(--lb-r-btn);
+  background: var(--lb-brand);
+  color: var(--lb-on-brand);
   font-size: var(--font-size-md, 30rpx);
   font-weight: 600;
 }
@@ -356,5 +360,5 @@
 .lock-cancel {
   margin-top: 28rpx;
   font-size: var(--font-size-base, 28rpx);
-  color: var(--color-text-secondary);
+  color: var(--lb-ink2);
 }

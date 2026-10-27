@@ -1,5 +1,5 @@
 <view class="page survey-page">
-  <custom-nav title="适合我的建议" back="{{true}}" bg-color="var(--color-bg, #f6f7f6)" text-color="var(--color-text, #22262b)" shadow="{{false}}" />
+  <custom-nav title="适合我的建议" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}" />
 
   <view class="survey-content">
     <!-- 进度 -->

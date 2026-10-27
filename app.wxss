@@ -97,3 +97,10 @@ button::after {
   height: 0 !important;
   color: transparent;
 }
+
+/* Dark icon variants share the same visual geometry. */
+.theme-icon-dark { display:none; }
+@media (prefers-color-scheme: dark) {
+  .theme-icon-light { display:none; }
+  .theme-icon-dark { display:block; }
+}

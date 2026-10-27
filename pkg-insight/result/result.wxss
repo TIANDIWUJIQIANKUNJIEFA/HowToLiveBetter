@@ -1,0 +1,123 @@
+@import "../../styles/variables-v2.wxss";
+
+.page { padding: 8rpx 36rpx 60rpx; background: var(--lb-bg); min-height: 100vh; box-sizing: border-box; }
+
+/* 过渡态 */
+.loading { padding: 200rpx 0; text-align: center; }
+.load-ring {
+  width: 72rpx; height: 72rpx; margin: 0 auto;
+  border: 6rpx solid var(--lb-brand-bg); border-top-color: var(--lb-brand);
+  border-radius: 50%; animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.load-text { margin-top: 28rpx; font-size: 26rpx; color: var(--lb-ink3); }
+
+.empty-mark { font-size: 56rpx; color: var(--lb-brand); margin-bottom: 20rpx; }
+.empty-btn { display: block; margin: 36rpx auto 0; width: 320rpx; }
+
+/* ---------- 摘要条 rsum ---------- */
+.rsum {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  padding: 28rpx 32rpx;
+}
+.rdot { width: 16rpx; height: 16rpx; border-radius: 4rpx; flex: none; }
+.rsum .tx { flex: 1; font-size: 25rpx; color: var(--lb-ink2); line-height: 1.7; }
+.rsum .tx .b { color: var(--lb-ink); font-weight: 650; }
+
+/* ---------- 分区标题 ---------- */
+.sech { display: flex; align-items: baseline; margin: 44rpx 0 22rpx; }
+.sech .t { font-size: 32rpx; font-weight: 650; color: var(--lb-ink); }
+.sech .n { font-size: 22rpx; color: var(--lb-ink2); margin-left: 16rpx; }
+
+/* ---------- 首选大卡 ---------- */
+.topcard { padding: 36rpx 32rpx; }
+.why-row { display: flex; align-items: center; gap: 16rpx; flex-wrap: wrap; }
+.why {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: var(--lb-brand-ink);
+  background: var(--lb-brand-bg);
+  border-radius: var(--lb-r-chip);
+  padding: 8rpx 16rpx;
+}
+.tt {
+  font-size: 34rpx;
+  font-weight: 650;
+  letter-spacing: -0.6rpx;
+  color: var(--lb-ink);
+  margin-top: 24rpx;
+  line-height: 1.5;
+}
+.tp {
+  font-size: 26rpx;
+  line-height: 1.8;
+  color: var(--lb-ink2);
+  margin-top: 12rpx;
+}
+.acts { display: flex; gap: 20rpx; margin-top: 28rpx; }
+.sbtn {
+  padding: 18rpx 28rpx;
+  border-radius: var(--lb-r-btn);
+  font-size: 25rpx;
+  font-weight: 600;
+}
+.sbtn-solid { background: var(--lb-brand); color: var(--lb-on-brand); }
+.sbtn-ghost { background: var(--lb-surface); color: var(--lb-ink); border: 1rpx solid var(--lb-line); }
+.sstar { margin-right: 8rpx; color: var(--lb-ink3); }
+.sstar.on { color: var(--lb-orange); }
+
+.fbrow { display: flex; gap: 16rpx; margin-top: 28rpx; align-items: center; }
+.fb {
+  font-size: 22rpx; color: var(--lb-ink3);
+  border: 1rpx solid var(--lb-line); border-radius: 30rpx;
+  padding: 10rpx 24rpx; background: transparent;
+}
+
+/* ---------- 其他适合你的 ---------- */
+.minor {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+  padding: 28rpx 28rpx;
+  margin-bottom: 18rpx;
+}
+.mdot { width: 8rpx; height: 44rpx; border-radius: 6rpx; flex: none; margin-top: 10rpx; }
+.mmain { flex: 1; min-width: 0; }
+.mt { font-size: 28rpx; font-weight: 650; color: var(--lb-ink); line-height: 1.55; }
+.mp {
+  font-size: 24rpx; color: var(--lb-ink2); line-height: 1.75; margin-top: 8rpx;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
+.mm { font-size: 22rpx; color: var(--lb-ink3); margin-top: 12rpx; }
+.chev { width: 30rpx; height: 30rpx; opacity: .5; flex: none; align-self: center; }
+
+/* 来源声明 */
+.scope { text-align: center; font-size: 22rpx; color: var(--lb-ink3); margin-top: 34rpx; }
+
+/* ---------- 底部操作 ---------- */
+.bottom-row { display: flex; gap: 20rpx; margin-top: 40rpx; }
+.gbtn {
+  flex: 1;
+  text-align: center;
+  padding: 26rpx;
+  border-radius: var(--lb-r-btn);
+  background: var(--lb-surface);
+  border: 1rpx solid var(--lb-line);
+  color: var(--lb-ink);
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.gbtn-brand {
+  background: var(--lb-brand-bg);
+  border-color: var(--lb-brand);
+  color: var(--lb-brand-ink);
+}
+
+.disclaim { text-align: center; font-size: 22rpx; color: var(--lb-ink3); margin-top: 34rpx; line-height: 1.8; }
+
+
+.fb { min-height:88rpx; display:flex; align-items:center; justify-content:center; }
+.fb:active,.gbtn:active { opacity:.65; }

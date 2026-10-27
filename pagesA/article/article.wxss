@@ -117,7 +117,7 @@
   margin: 0 2rpx;
   border-radius: 999rpx;
   background: var(--color-primary-light);
-  color: var(--color-primary);
+  color: var(--color-primary-ink);
   font-size: 18rpx;
   font-weight: 600;
   text-align: center;
@@ -381,13 +381,13 @@
 
 /* 文献里的链接：品牌色提示可点，点击复制链接 */
 .src-url {
-  color: var(--color-primary);
+  color: var(--color-primary-ink);
   word-break: break-all;
 }
 
 /* 术语表关键词：品牌色 + 虚线下划线，点一下弹解释（对齐上游检索页的 abbr.term） */
 .term {
-  color: var(--color-primary);
+  color: var(--color-primary-ink);
   border-bottom: 2rpx dotted var(--color-primary);
   padding-bottom: 1rpx;
 }
@@ -623,7 +623,7 @@
 
 .footer-btn-outline {
   background: var(--color-surface);
-  color: var(--color-primary);
+  color: var(--color-primary-ink);
   border: 2rpx solid var(--color-primary);
 }
 

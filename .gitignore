@@ -13,6 +13,7 @@ project.private.config.json
 
 # 本地自动化临时脚本
 .autotmp/
+.tmp_shots/
 
 # 未使用的引导图（代码无引用，占主包体积）
 vibe_images/

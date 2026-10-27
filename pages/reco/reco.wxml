@@ -1,0 +1,90 @@
+<custom-nav title="人生指南库" align="left" big="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" shadow="{{false}}">
+  <view slot="right" class="nbtn" hover-class="nbtn-hover" bindtap="onOpenSearch" aria-label="搜索">
+    <image class="theme-icon-light nbtn-ico" src="/assets/icons-v2/search.png" mode="aspectFit" />
+<image class="theme-icon-dark nbtn-ico" src="/assets/icons-v2/dark/search.png" mode="aspectFit" />
+  </view>
+</custom-nav>
+
+<view class="page">
+  <!-- 状态行：今日更新 + 累计（mono） -->
+  <view class="status">
+    <view class="s"><view class="sdot"></view><text>{{dailyTitle}} {{dailyCount}} 章</text></view>
+    <text class="m lb-mono">累计 {{totalSteps}} 条 · {{bookCount}} 本书</text>
+  </view>
+
+  <!-- 画像行：做过向导后出现 -->
+  <view wx:if="{{hasProfile}}" class="pf">
+    <text>已按你的关注点 </text><text class="pfb">「{{profileTopics}}」</text><text> 推荐</text>
+  </view>
+
+  <!-- 问题入口 hero：浅瓷绿底 + 右下插画 -->
+  <view class="qc" bindtap="onStartWizard" hover-class="qc-hover">
+    <view class="qm">
+      <view class="qt">今天想改善什么？</view>
+      <view class="qs">从 {{matchableCount}} 本书里，找到适合当下的行动</view>
+      <view class="qa">开始挑选 →</view>
+    </view>
+    <image class="qc-illo" src="/assets/porcelain/home-hero.png" mode="aspectFit" />
+  </view>
+
+  <!-- 今日更新（git 真实流水） -->
+  <view class="sech">
+    <text class="t">{{dailyTitle}}</text>
+    <text class="n lb-mono" wx:if="{{dailyCount}}">{{dailyCount}}</text>
+    <view class="more" bindtap="onOpenLibrary" hover-class="more-hover">书库 ›</view>
+  </view>
+  <view wx:if="{{dailyUpdates.length}}" class="upd">
+    <view class="row" wx:for="{{shownUpdates}}" wx:key="uid"
+          data-book="{{item.bookId}}" data-chapter="{{item.chapterId}}" bindtap="onUpdateTap" hover-class="row-hover">
+      <view class="dot" style="background:{{item.accent}}"></view>
+      <view class="rc">
+        <view class="l1">
+          <text class="l1t">{{item.bookTitle}}</text>
+          <text class="tag {{item.action === 'new' ? 'tag-new' : 'tag-up'}}">{{item.actionLabel}}</text>
+        </view>
+        <view class="t1">{{item.title}}</view>
+        <view class="m1 lb-mono">{{item.dateLabel}} · 内容{{item.actionLabel}}</view>
+      </view>
+      <image class="theme-icon-light chev" src="/assets/icons-v2/chev.png" mode="aspectFit" />
+<image class="theme-icon-dark chev" src="/assets/icons-v2/dark/chev.png" mode="aspectFit" />
+    </view>
+  </view>
+  <view wx:else class="lb-empty">内容同步中，稍后再来看看</view>
+
+  <view wx:if="{{dailyUpdates.length > 2}}" class="more update-toggle" bindtap="onToggleUpdates">{{updatesExpanded ? '收起更新' : '展开全部更新'}} ›</view>
+
+  <!-- 书架：2 列书卡 -->
+  <view class="sech">
+    <text class="t">书架</text>
+    <text class="n lb-mono">{{bookCount}} 本可读<text wx:if="{{previewCount}}"> · {{previewCount}} 本预告</text></text>
+    <view class="more" bindtap="onOpenLibrary" hover-class="more-hover">›</view>
+  </view>
+  <view class="shelf">
+    <view class="bk" wx:for="{{books}}" wx:key="id" data-id="{{item.id}}" bindtap="onBookTap" hover-class="bk-hover">
+      <image class="cover" src="{{item.cover}}" mode="aspectFill" />
+      <view wx:if="{{item.placeholder}}" class="preview-badge">即将上架</view>
+      <view class="bt">
+        <text class="btl">{{item.titleLine1}}</text>
+        <text class="btl">{{item.titleLine2}}</text>
+      </view>
+      <view class="bm">
+        <text class="bml">{{item.meta1}}</text>
+        <text class="bml">{{item.meta2}}</text>
+      </view>
+      <view wx:if="{{item.reading}}" class="continue-link" data-id="{{item.id}}" catchtap="onContinue">继续阅读 ›</view>
+      <view class="prog" wx:if="{{item.progressPct !== null}}">
+        <view class="prog-i" style="width:{{item.progressPct}}%;background:{{item.accent}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 每日一读：引号 + 语录 -->
+  <view class="quote" bindtap="onQuoteTap" hover-class="quote-hover">
+    <image class="theme-icon-light qmark" src="/assets/icons-v2/quote.png" mode="aspectFit" />
+<image class="theme-icon-dark qmark" src="/assets/icons-v2/dark/quote.png" mode="aspectFit" />
+    <view class="qmain">
+      <view class="qt2">「{{quote.text}}」</view>
+      <view class="qs2">—— {{quote.author}}</view>
+    </view>
+  </view>
+</view>

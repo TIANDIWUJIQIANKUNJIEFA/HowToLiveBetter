@@ -1,108 +1,51 @@
-.favorite-page {
-  min-height: 100vh;
-  background: var(--color-bg);
-}
+@import "../../styles/variables-v2.wxss";
 
-.favorite-tabs {
+/* ---------- 顶部三 tab（设计稿 15：建议 N / 章节 N / 主题 N） ---------- */
+.lt-tabs {
   display: flex;
-  gap: 48rpx;
-  padding: 0 32rpx;
-  background: var(--color-surface);
-  border-bottom: 1rpx solid var(--color-border);
+  gap: 44rpx;
+  padding: 4rpx 32rpx 0;
+  background: var(--lb-bg);
 }
-
-.tab-item {
+.lt {
+  font-size: 29rpx;
+  font-weight: 600;
+  color: var(--lb-ink3);
+  padding: 20rpx 4rpx;
   position: relative;
-  padding: 20rpx 0 16rpx;
-  font-size: 28rpx;
-  color: var(--color-text-secondary);
-  transition: color 0.2s ease;
 }
-
-.tab-item.active {
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-.tab-underline {
+.lt.on { color: var(--lb-ink); }
+.lt.on::after {
+  content: "";
   position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 48rpx;
+  left: 0;
+  right: 0;
+  bottom: 8rpx;
   height: 6rpx;
-  border-radius: 3rpx;
-  background: transparent;
+  border-radius: 4rpx;
+  background: var(--lb-brand);
 }
 
-.tab-item.active .tab-underline {
-  background: var(--color-primary);
-}
+.page { padding: 16rpx 36rpx 56rpx; background: var(--lb-bg); min-height: 100vh; box-sizing: border-box; }
 
-.tab-content {
-  padding: 24rpx 32rpx 48rpx;
-}
-
-.article-row {
-  margin-bottom: 24rpx;
-}
-
-.article-row:last-child {
-  margin-bottom: 0;
-}
-
-.category-list {
+/* ---------- 收藏卡 ---------- */
+.minor {
   display: flex;
-  flex-direction: column;
-  gap: 24rpx;
+  align-items: flex-start;
+  gap: 20rpx;
+  padding: 28rpx;
+  margin-bottom: 18rpx;
 }
+.row-hover { opacity: .8; }
+.mdot { width: 8rpx; height: 44rpx; border-radius: 6rpx; flex: none; margin-top: 10rpx; }
+.mmain { flex: 1; min-width: 0; }
+.mt { font-size: 28rpx; font-weight: 650; color: var(--lb-ink); line-height: 1.55; }
+.mp {
+  font-size: 24rpx; color: var(--lb-ink2); line-height: 1.75; margin-top: 8rpx;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
+.mm { font-size: 20rpx; color: var(--lb-ink3); margin-top: 10rpx; }
+.star { color: var(--lb-brand); font-size: 34rpx; flex: none; padding: 0 4rpx; }
+.chev { width: 30rpx; height: 30rpx; opacity: .5; flex: none; align-self: center; }
 
-.category-row {
-  display: flex;
-  align-items: center;
-  padding: 28rpx 24rpx;
-  background: var(--color-surface);
-  border-radius: 24rpx;
-  box-shadow: 0 4rpx 20rpx var(--color-shadow, rgba(31, 41, 36, 0.04));
-}
-
-.category-icon {
-  width: 88rpx;
-  height: 88rpx;
-  border-radius: 24rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.category-glyph {
-  width: 48rpx;
-  height: 48rpx;
-}
-
-.row-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  margin-left: 24rpx;
-}
-
-.row-name {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: var(--color-text);
-}
-
-.row-count {
-  font-size: 24rpx;
-  color: var(--color-text-secondary);
-  margin-top: 6rpx;
-}
-
-.row-arrow {
-  width: 28rpx;
-  height: 28rpx;
-  opacity: 0.4;
-  flex-shrink: 0;
-}
+.go { color: var(--lb-brand-ink); margin-top: 16rpx; }

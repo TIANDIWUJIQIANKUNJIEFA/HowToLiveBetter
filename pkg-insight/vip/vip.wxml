@@ -1,0 +1,30 @@
+<custom-nav title="永久会员" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}" />
+<view class="page vip-page">
+  <view class="vip-hero">
+    <view class="hero-top"><view class="hero-brand"><image class="crown" src="/assets/porcelain/mine/vip-active.png" mode="aspectFit" />人生指南库 VIP</view><text class="hero-tag">{{cloud.vip ? '永久会员 · 已开通' : '一次开通 · 永久有效'}}</text></view>
+    <view class="hero-copy"><view class="hero-title"><view>{{cloud.vip ? '你的每一份积累，' : '换一台手机，'}}</view><view>{{cloud.vip ? '都值得好好留住。' : '也能接着读。'}}</view></view><text class="hero-desc">让收藏与阅读，始终与你同步。</text></view>
+    <view class="hero-art" aria-hidden="true"><view class="art-orbit"></view><view class="art-sheet sheet-back"></view><view class="art-sheet sheet-front"><view class="art-bookmark"></view><view class="art-line"></view><view class="art-line short"></view><view class="art-line"></view></view><view class="art-cloud"><view class="cloud-body"></view><view class="cloud-stem"></view><view class="cloud-arrow"></view></view></view>
+    <view class="hero-bottom"><view wx:if="{{!cloud.vip}}" class="price"><text class="currency">¥</text><text class="amount">9.9</text><text class="period">/ 永久</text></view><view wx:else class="member-state"><view class="member-dot"></view>永久 VIP 已激活</view><text class="price-note">{{cloud.vip ? '感谢你，让阅读多一份陪伴' : '一次购买，不自动续费'}}</text></view>
+  </view>
+
+  <view class="benefits">
+    <view class="section-heading"><text class="section-title">一份会员，五项权益</text><text class="section-caption">永久会员专享</text></view>
+    <view class="benefit"><view class="benefit-icon"><image class="icon-light" src="/assets/porcelain/mine/bmk.png" /><image class="icon-dark" src="/assets/porcelain/mine/bmk-dark.png" /></view><view class="benefit-copy"><text class="benefit-title">喜欢的内容，不再丢失</text><text class="detail">收藏建议、章节与主题，换设备也能找回。</text></view><text class="benefit-index">01</text></view>
+    <view class="benefit"><view class="benefit-icon"><image class="icon-light" src="/assets/porcelain/mine/clockW.png" /><image class="icon-dark" src="/assets/porcelain/mine/clockW-dark.png" /></view><view class="benefit-copy"><text class="benefit-title">看过的内容，随时回顾</text><text class="detail">浏览记录云端留存，想看时不必重新寻找。</text></view><text class="benefit-index">02</text></view>
+    <view class="benefit"><view class="benefit-icon"><image class="icon-light" src="/assets/porcelain/mine/bookI.png" /><image class="icon-dark" src="/assets/porcelain/mine/bookI-dark.png" /></view><view class="benefit-copy"><text class="benefit-title">上次读到哪，接着往下读</text><text class="detail">同步阅读进度，从熟悉的位置继续。</text></view><text class="benefit-index">03</text></view>
+    <view class="benefit"><view class="benefit-icon"><image class="icon-light" src="/assets/porcelain/mine/download.png" /><image class="icon-dark" src="/assets/porcelain/mine/download-dark.png" /></view><view class="benefit-copy"><text class="benefit-title">离线 PDF，免广告直接下载</text><text class="detail">无需观看激励视频，随时保存离线阅读。</text></view><text class="benefit-index">04</text></view>
+    <view class="benefit"><view class="benefit-icon"><image class="icon-light" src="/assets/porcelain/mine/bookI.png" /><image class="icon-dark" src="/assets/porcelain/mine/bookI-dark.png" /></view><view class="benefit-copy"><text class="benefit-title">深度分析，直接查看结果</text><text class="detail">完成调研即可查看，无需分享解锁。</text></view><text class="benefit-index">05</text></view>
+  </view>
+
+  <view wx:if="{{!cloud.vip}}" class="purchase">
+    <checkbox-group bindchange="onAgree"><label class="agreement"><checkbox class="agree-checkbox" value="agree" checked="{{agreed}}" color="{{controlColor}}" /><view class="agreement-copy"><text>我已阅读并同意</text><text class="link" catchtap="onTerms">《会员与同步说明》</text></view></label></checkbox-group>
+    <button class="primary" loading="{{busy}}" disabled="{{busy || !purchaseAvailable}}" bindtap="onBuy" hover-class="button-pressed">{{purchaseAvailable ? '¥9.9 开通永久会员' : purchaseLabel}}</button>
+    <view wx:if="{{loadError}}" class="notice purchase-notice">{{loadError}}</view>
+  </view>
+
+  <view class="purchase-notes">
+    <text wx:if="{{!cloud.vip}}" class="free-note">本地收藏与阅读，一直免费。</text>
+    <text class="footer-note">权益绑定微信账户，云同步由你主动开启。</text>
+    <view class="terms-link" bindtap="onTerms">查看会员与同步说明<text class="terms-arrow">›</text></view>
+  </view>
+</view>

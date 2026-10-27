@@ -1,0 +1,67 @@
+@import "../../styles/variables-v2.wxss";
+
+.page {
+  min-height: 100vh; box-sizing: border-box;
+  background: var(--lb-hero-bg);
+  padding: 140rpx 60rpx 60rpx;
+  display: flex; flex-direction: column; align-items: center;
+}
+.date {
+  text-align: center;
+  font-size: 34rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+  color: var(--lb-ink);
+}
+
+.quote {
+  margin-top: 100rpx;
+  background: var(--lb-surface);
+  border: 1rpx solid var(--lb-line);
+  border-radius: var(--lb-r-card);
+  padding: 56rpx 44rpx 40rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+/* 插画（设计稿 16：语录卡顶部插画区，浅绿底与 hero 同色） */
+.qillo {
+  display: block;
+  width: 100%;
+  height: 380rpx;
+  border-radius: 18rpx;
+  background: var(--lb-hero-bg);
+}
+.qtext { font-size: 34rpx; line-height: 2; color: var(--lb-ink); font-family: serif; margin-top: 36rpx; }
+.qauthor { text-align: right; font-size: 24rpx; color: var(--lb-ink3); margin-top: 30rpx; }
+
+/* 双按钮：换一句（描边）+ 分享这段话（实心，open-type=share） */
+.acts { display: flex; gap: 24rpx; margin-top: 70rpx; width: 100%; }
+.btn {
+  flex: 1;
+  text-align: center;
+  border-radius: var(--lb-r-btn);
+  font-size: 28rpx;
+  font-weight: 600;
+  padding: 22rpx 0;
+  margin: 0;
+  line-height: 1.4;
+}
+.btn::after { border: none; }
+.btn.ghost {
+  color: var(--lb-brand-ink);
+  border: 2rpx solid var(--lb-brand);
+  background: transparent;
+}
+.btn.solid {
+  background: var(--lb-brand);
+  color: var(--lb-on-brand);
+}
+.btn-hover { opacity: .85; }
+
+.note {
+  margin-top: 32rpx;
+  font-size: 22rpx;
+  color: var(--lb-ink3);
+  text-align: center;
+  line-height: 1.8;
+}

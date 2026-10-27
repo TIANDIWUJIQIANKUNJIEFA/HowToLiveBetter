@@ -103,7 +103,11 @@
   "compileType": "miniprogram",
   "appid": "wx7fe49fd1287ff886",
   "projectname": "life-guide-miniprogram",
-  "condition": {},
+  "condition": {
+    "miniprogram": {
+      "list": []
+    }
+  },
   "simulatorPluginLibVersion": {},
   "editorSetting": {}
 }

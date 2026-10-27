@@ -25,7 +25,8 @@
 .horizontal .article-content {
   flex: 1;
   margin-left: 24rpx;
-  margin-right: 56rpx;
+  /* 让出星标 88rpx 命中区（右缘 4 + 宽 88），避免透明区域压住可点文字 */
+  margin-right: 92rpx;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,15 +47,27 @@
   padding: 24rpx;
 }
 
+/* 分类名：文字用中性色保证可读，颜色识别交给左侧色点（8 个分类色中 6 个做文字不达标） */
 .article-category {
+  display: flex;
+  align-items: center;
   font-size: 22rpx;
   font-weight: 600;
+  color: var(--color-text-secondary, #5b616a);
   margin-bottom: 8rpx;
+}
+
+.category-dot {
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  margin-right: 8rpx;
+  flex-shrink: 0;
 }
 
 .article-category-below {
   font-size: 24rpx;
-  color: var(--color-text-secondary, #8a8f98);
+  color: var(--color-text-secondary, #5b616a);
   margin-bottom: 12rpx;
 }
 
@@ -68,7 +81,7 @@
 
 .article-summary {
   font-size: 24rpx;
-  color: var(--color-text-secondary, #8a8f98);
+  color: var(--color-text-secondary, #5b616a);
   line-height: 1.5;
   max-height: 72rpx;
   overflow: hidden;
@@ -76,11 +89,12 @@
 
 .star-btn {
   position: absolute;
-  right: 28rpx;
-  top: calc(50% - 20rpx);
-  width: 40rpx;
-  height: 40rpx;
-  padding: 6rpx;
+  /* 视觉 40rpx 不变，盒子 88rpx 撑足 44pt 命中区 */
+  right: 4rpx;
+  top: calc(50% - 44rpx);
+  width: 88rpx;
+  height: 88rpx;
+  padding: 24rpx;
 }
 
 .star-btn.pop {
@@ -96,5 +110,12 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+/* 分类色点在深色卡上亮度不足，补一圈极淡描边保证可见 */
+@media (prefers-color-scheme: dark) {
+  .category-dot {
+    box-shadow: 0 0 0 1rpx rgba(255, 255, 255, 0.18);
   }
 }

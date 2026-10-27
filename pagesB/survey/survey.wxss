@@ -1,6 +1,10 @@
+@import "../../styles/variables-v2.wxss";
+
+page { background: var(--lb-bg); color: var(--lb-ink); }
+
 .survey-page {
   min-height: 100vh;
-  background: var(--color-bg);
+  background: var(--lb-bg);
 }
 
 .survey-content {
@@ -18,21 +22,21 @@
   flex: 1;
   height: 8rpx;
   border-radius: 999rpx;
-  background: var(--color-placeholder);
+  background: var(--lb-surface2);
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
   border-radius: 999rpx;
-  background: var(--color-primary);
+  background: var(--lb-brand);
   transition: width 0.25s ease;
 }
 
 .progress-text {
   margin-left: 20rpx;
   font-size: var(--font-size-sm, 24rpx);
-  color: var(--color-text-secondary);
+  color: var(--lb-ink2);
 }
 
 /* 题干 */
@@ -40,7 +44,7 @@
   display: block;
   font-size: var(--font-size-xl, 36rpx);
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--lb-ink);
   line-height: 1.45;
 }
 
@@ -48,7 +52,7 @@
   display: block;
   margin-top: 12rpx;
   font-size: var(--font-size-base, 28rpx);
-  color: var(--color-text-secondary);
+  color: var(--lb-ink2);
 }
 
 /* 选项 */
@@ -60,17 +64,18 @@
   display: flex;
   align-items: center;
   padding: 28rpx 28rpx;
-  border-radius: var(--radius-lg, 24rpx);
-  background: var(--color-surface);
-  box-shadow: 0 4rpx 16rpx var(--color-shadow, rgba(31, 41, 36, 0.04));
+  border-radius: var(--lb-r-card);
+  background: var(--lb-surface);
   margin-bottom: 20rpx;
-  border: 2rpx solid transparent;
+  border: 2rpx solid var(--lb-line);
 }
 
 .option-item.on {
-  border-color: var(--color-primary);
-  background: var(--color-primary-light);
+  border-color: var(--lb-brand);
+  background: var(--lb-brand-bg);
 }
+
+.option-item.on .option-desc { color: var(--lb-brand-ink); }
 
 .option-main {
   flex: 1;
@@ -81,7 +86,7 @@
   display: block;
   font-size: var(--font-size-md, 30rpx);
   font-weight: 500;
-  color: var(--color-text);
+  color: var(--lb-ink);
   line-height: 1.4;
 }
 
@@ -89,7 +94,7 @@
   display: block;
   margin-top: 8rpx;
   font-size: var(--font-size-sm, 24rpx);
-  color: var(--color-text-secondary);
+  color: var(--lb-ink2);
 }
 
 .option-check {
@@ -97,7 +102,7 @@
   height: 40rpx;
   margin-left: 20rpx;
   border-radius: 50%;
-  border: 2rpx solid var(--color-border);
+  border: 2rpx solid var(--lb-line);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,13 +110,13 @@
 }
 
 .option-check.on {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
+  background: var(--lb-brand);
+  border-color: var(--lb-brand);
 }
 
 .option-check-mark {
   font-size: 24rpx;
-  color: #ffffff;
+  color: var(--lb-on-brand);
 }
 
 /* 底部操作 */
@@ -126,20 +131,20 @@
 .footer-tip {
   margin-bottom: 24rpx;
   font-size: var(--font-size-sm, 24rpx);
-  color: var(--color-text-tertiary, #9aa19c);
+  color: var(--lb-ink2);
 }
 
 .btn-primary {
   width: 100%;
   height: 92rpx;
-  border-radius: var(--radius-round, 999px);
-  background: var(--color-primary);
+  border-radius: var(--lb-r-btn);
+  background: var(--lb-brand);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-md, 30rpx);
   font-weight: 600;
-  color: #ffffff;
+  color: var(--lb-on-brand);
 }
 
 /* 底部浏览导航：上一步 / 下一步，空格占位让两个按钮贴两边 */
@@ -154,5 +159,5 @@
 
 .nav-btn {
   font-size: var(--font-size-base, 28rpx);
-  color: var(--color-text-secondary);
+  color: var(--lb-ink2);
 }

@@ -1,0 +1,99 @@
+@import "../../styles/variables-v2.wxss";
+
+.page {
+  min-height: 100vh;
+  background: var(--lb-bg);
+  padding: 8rpx 36rpx 72rpx;
+  box-sizing: border-box;
+}
+
+/* ---------- 书卡（设计稿 18：dl-book） ---------- */
+.dl-book { padding: 28rpx; margin-bottom: 24rpx; }
+
+.hd {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+}
+.dot { width: 8rpx; height: 40rpx; border-radius: 6rpx; flex: none; }
+.bk { font-size: 28rpx; font-weight: 700; color: var(--lb-ink); flex: 1; min-width: 0; }
+.upd { font-size: 22rpx; color: var(--lb-ink3); flex: none; }
+.st-pending { color: var(--lb-warn); font-weight: 600; }
+
+/* ---------- 文件行（设计稿 18：dl-file） ---------- */
+.dl-file {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 24rpx;
+  border: 1rpx solid var(--lb-line);
+  border-radius: 20rpx;
+  margin-bottom: 16rpx;
+  background: var(--lb-surface);
+}
+.dl-locked { opacity: 0.6; }
+.row-hover { opacity: 0.75; }
+
+.fmt {
+  flex: none;
+  font-size: 22rpx;
+  font-weight: 650;
+  color: var(--lb-brand-ink);
+  background: var(--lb-brand-bg);
+  border-radius: 12rpx;
+  padding: 8rpx 16rpx;
+}
+.fm2 { flex: 1; min-width: 0; }
+.sz { display: block; font-size: 24rpx; color: var(--lb-ink); margin-bottom: 4rpx; }
+.dsc { display: block; font-size: 22rpx; color: var(--lb-ink2); line-height: 1.6; }
+.go { flex: none; font-size: 24rpx; font-weight: 700; color: var(--lb-brand-ink); }
+
+/* ---------- 解锁按钮与说明 ---------- */
+.dl-unlock { margin-top: 28rpx; }
+.dl-note {
+  font-size: 22rpx;
+  color: var(--lb-ink3);
+  line-height: 1.8;
+  margin-top: 20rpx;
+}
+.dl-locking { text-align: center; margin: 24rpx 0 0; }
+
+/* ---------- 未上架书卡（设计稿 18：opacity .55 + 准备中） ---------- */
+.dl-book-pending { opacity: 0.55; }
+.pd-note { margin-top: 0; }
+
+/* ---------- 复制链接兜底卡 ---------- */
+.dl-book-alt { padding: 24rpx; }
+.alt-note { margin: 0; text-align: center; }
+.alt-go { color: var(--lb-brand-ink); font-weight: 700; }
+
+/* ---------- 下载失败兜底块 ---------- */
+.dl-fallback {
+  margin: -8rpx 0 16rpx;
+  padding: 20rpx 24rpx;
+  border: 1rpx dashed var(--lb-line);
+  border-radius: 20rpx;
+}
+.dl-fallback-hint { display: block; font-size: 22rpx; color: var(--lb-ink3); line-height: 1.6; }
+.dl-fallback-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  margin-top: 12rpx;
+}
+.dl-fallback-url {
+  flex: 1;
+  min-width: 0;
+  font-size: 22rpx;
+  color: var(--lb-ink2);
+  word-break: break-all;
+  font-family: var(--lb-fm);
+}
+.dl-fallback-copy { flex: none; font-size: 22rpx; font-weight: 600; color: var(--lb-brand-ink); padding: 8rpx 12rpx; }
+.dl-fallback-row-sub { opacity: 0.75; }
+.dl-fallback-err { display: block; margin-top: 10rpx; font-size: 22rpx; color: var(--lb-red); }
+
+/* button 重置（lb-btn 基础上清掉微信默认边框） */
+.dl-unlock { border: 0; }
+.dl-unlock::after { border: none; }

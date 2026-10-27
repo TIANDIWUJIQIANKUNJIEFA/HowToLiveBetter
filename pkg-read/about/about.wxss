@@ -1,0 +1,71 @@
+@import "../../styles/variables-v2.wxss";
+
+.page {
+  min-height: 100vh;
+  background: var(--lb-bg);
+  padding: 8rpx 36rpx 72rpx;
+  box-sizing: border-box;
+}
+
+/* ---------- 品牌区（设计稿 21） ---------- */
+.hero {
+  text-align: center;
+  padding: 16rpx 0 8rpx;
+}
+.illo {
+  width: 560rpx;
+  height: 284rpx;
+}
+.name {
+  display: block;
+  font-size: 34rpx;
+  font-weight: 650;
+  color: var(--lb-ink);
+  margin-top: 28rpx;
+}
+.ver {
+  display: block;
+  font-size: 20rpx;
+  color: var(--lb-ink3);
+  margin-top: 8rpx;
+}
+
+/* ---------- 来源卡（设计稿 21：dot + 书名/授权 + 复制链接） ---------- */
+.src {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 28rpx;
+  margin-top: 24rpx;
+}
+.src:first-of-type { margin-top: 32rpx; }
+.row-hover { opacity: 0.75; }
+.dot { width: 8rpx; height: 40rpx; border-radius: 6rpx; flex: none; }
+.src-main { flex: 1; min-width: 0; }
+.st {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--lb-ink);
+}
+.ss {
+  display: block;
+  font-size: 20rpx;
+  color: var(--lb-ink3);
+  margin-top: 4rpx;
+  line-height: 1.6;
+}
+.act {
+  flex: none;
+  font-size: 22rpx;
+  font-weight: 700;
+  color: var(--lb-brand-ink);
+}
+
+/* ---------- 免责声明 ---------- */
+.note {
+  margin-top: 28rpx;
+  font-size: 21rpx;
+  color: var(--lb-ink3);
+  line-height: 2;
+}

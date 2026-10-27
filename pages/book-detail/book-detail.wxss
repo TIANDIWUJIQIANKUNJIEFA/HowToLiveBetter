@@ -1,0 +1,94 @@
+@import "../../styles/variables-v2.wxss";
+
+.page { padding: 8rpx 36rpx 56rpx; background: var(--lb-bg); min-height: 100vh; box-sizing: border-box; }
+
+/* ---------- 书封大卡 ---------- */
+.big-bk {
+  display: flex;
+  gap: 28rpx;
+  padding: 34rpx 28rpx;
+}
+.big-bk .cover {
+  width: 184rpx;
+  height: 252rpx;
+  border-radius: 4rpx 8rpx 8rpx 4rpx;
+  flex: none;
+  border: 1rpx solid var(--lb-line);
+  box-shadow: 4rpx 8rpx 16rpx rgba(37, 59, 47, .09);
+}
+.big-bk .bb { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.big-bk .bt { font-size: 31rpx; font-weight: 650; color: var(--lb-ink); }
+.big-bk .bd { margin-top: 10rpx; display: flex; flex-direction: column; }
+.big-bk .bdl { font-size: 23rpx; color: var(--lb-ink2); line-height: 1.85; }
+.big-bk .bm2 { display: flex; gap: 12rpx; flex-wrap: wrap; margin-top: 20rpx; }
+.cbadge {
+  font-size: 22rpx;
+  font-weight: 700;
+  padding: 6rpx 16rpx;
+  border-radius: 12rpx;
+  border: 1rpx solid currentColor;
+}
+
+/* ---------- 统计三卡 ---------- */
+.bmeta {
+  display: flex;
+  gap: 20rpx;
+  margin: 20rpx 0 8rpx;
+}
+.bmeta .m { flex: 1; padding: 24rpx; text-align: center; }
+.bmeta .v { font-size: 34rpx; font-weight: 600; color: var(--lb-brand-ink); }
+.bmeta .v.o { color: var(--lb-orange); }
+.bmeta .k { font-size: 22rpx; color: var(--lb-ink3); margin-top: 6rpx; }
+
+/* ---------- topic 筛选 ---------- */
+.chips { margin-top: 24rpx; white-space: nowrap; }
+.chip {
+  display: inline-flex; align-items: center;
+  padding: 12rpx 24rpx; margin-right: 14rpx;
+  border-radius: var(--lb-r-chip);
+  background: var(--lb-surface); border: 1rpx solid var(--lb-line);
+  font-size: 24rpx; color: var(--lb-ink2);
+}
+.chip.on { background: var(--lb-brand-bg); color: var(--lb-brand-ink); border-color: var(--lb-brand); }
+.cnt { margin-left: 8rpx; font-size: 22rpx; }
+
+/* ---------- 章节列表 ---------- */
+.chapters { margin-top: 24rpx; padding: 12rpx 28rpx; }
+.chrow {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 26rpx 8rpx;
+  border-bottom: 1rpx solid var(--lb-line);
+}
+.chrow:last-child { border-bottom: 0; }
+.chrow-hover { opacity: .75; }
+.chrow .no { font-size: 22rpx; color: var(--lb-ink3); width: 48rpx; flex: none; }
+.chrow .ct { font-size: 27rpx; font-weight: 600; flex: 1; min-width: 0; color: var(--lb-ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chrow .up {
+  font-size: 22rpx; font-weight: 700; color: var(--lb-brand-ink);
+  background: var(--lb-brand-bg); border-radius: 10rpx; padding: 4rpx 12rpx; flex: none;
+}
+.chrow .cn { font-size: 22rpx; color: var(--lb-ink3); flex: none; }
+.chrow.all { justify-content: center; }
+.all-t { font-size: 26rpx; color: var(--lb-brand-ink); font-weight: 700; }
+
+/* ---------- 下载入口 ---------- */
+.dl {
+  margin-top: 40rpx;
+  text-align: center;
+  padding: 26rpx;
+  border-radius: var(--lb-r-btn);
+  background: var(--lb-surface);
+  border: 1rpx solid var(--lb-line);
+  color: var(--lb-ink);
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.gbtn-hover { opacity: .8; }
+
+.continue-reading { margin:24rpx 0; padding:28rpx; color:var(--lb-brand); font-size:26rpx; }
+
+.book-source { padding:28rpx; margin-top:28rpx; font-size:24rpx; color:var(--lb-ink2); line-height:1.8; }
+.source-link { min-height:44px; display:flex; align-items:center; color:var(--lb-brand); }

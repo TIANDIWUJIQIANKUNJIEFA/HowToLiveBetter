@@ -1,0 +1,67 @@
+[
+  {
+    "name": "reco",
+    "path": "pages/reco/reco",
+    "status": "verified"
+  },
+  {
+    "name": "library",
+    "status": "failed",
+    "reason": "route mismatch pages/reco/reco"
+  },
+  {
+    "name": "favorite",
+    "path": "pages/favorite/favorite",
+    "status": "verified"
+  },
+  {
+    "name": "mine",
+    "status": "failed",
+    "reason": "route mismatch pages/reco/reco"
+  },
+  {
+    "name": "book",
+    "path": "pages/book-detail/book-detail",
+    "status": "verified"
+  },
+  {
+    "name": "topic",
+    "path": "pages/topic-aggregate/topic-aggregate",
+    "status": "verified"
+  },
+  {
+    "name": "search",
+    "path": "pkg-read/search/search",
+    "status": "verified"
+  },
+  {
+    "name": "daily",
+    "path": "pkg-read/daily/daily",
+    "status": "verified"
+  },
+  {
+    "name": "download",
+    "path": "pkg-read/download/download",
+    "status": "verified"
+  },
+  {
+    "name": "help",
+    "path": "pkg-read/help/help",
+    "status": "verified"
+  },
+  {
+    "name": "about",
+    "path": "pkg-read/about/about",
+    "status": "verified"
+  },
+  {
+    "name": "wizard",
+    "path": "pkg-insight/wizard/wizard",
+    "status": "verified"
+  },
+  {
+    "name": "reader",
+    "path": "pkg-read/chapter-read/chapter-read",
+    "status": "verified"
+  }
+]

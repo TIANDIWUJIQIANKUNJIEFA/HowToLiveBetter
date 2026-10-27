@@ -10,7 +10,7 @@ Page({
     this.setData({ topPadding: getStatusBarHeight() + 128 });
     if (wx.getStorageSync('splashSeen')) {
       this.redirecting = true;
-      wx.switchTab({ url: '/pages/home/home' });
+      wx.switchTab({ url: '/pages/reco/reco' });
       return;
     }
     wx.setStorageSync('splashSeen', 1);
@@ -25,7 +25,7 @@ Page({
 
   onExplore() {
     wx.switchTab({
-      url: '/pages/home/home',
+      url: '/pages/reco/reco',
       fail: (err) => {
         console.error('switchTab 失败', err);
         wx.showToast({ title: '页面跳转失败，请重新编译', icon: 'none' });

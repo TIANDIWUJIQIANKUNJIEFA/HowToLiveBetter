@@ -1,0 +1,20 @@
+<custom-nav title="账户与同步" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}" />
+<view class="page account-page">
+  <view class="intro"><text class="intro-title">让记录，安心留存</text><text class="intro-desc">连接微信账户，管理你的云端记录与会员权益。</text></view>
+  <view class="settings-card">
+    <view class="account-heading"><view class="account-icon"><image class="icon-light" src="/assets/porcelain/mine/desktop.png" /><image class="icon-dark" src="/assets/porcelain/mine/desktop-dark.png" /></view><view class="account-copy"><text class="card-title">微信云账户</text><text class="detail">{{cloud.accountChanged ? '账户已变化，请重新连接' : (cloud.phase === 'loginRequired' ? '登录已过期，请重新连接' : (cloud.loggedIn ? '已连接 · 权益跟随当前微信账户' : '尚未连接微信账户'))}}</text></view></view>
+    <button wx:if="{{!cloud.loggedIn || cloud.phase === 'loginRequired' || cloud.accountChanged}}" class="primary" loading="{{busy}}" disabled="{{busy}}" bindtap="onLogin">{{cloud.phase === 'loginRequired' || cloud.accountChanged ? '重新连接微信账户' : '连接微信账户'}}</button>
+    <view class="setting-row membership-row" bindtap="onVip" hover-class="row-hover"><text class="row-label">会员状态</text><view class="row-value"><text class="{{cloud.vip ? 'member-active' : ''}}">{{cloud.vip ? '永久 VIP · 已开通' : '普通用户'}}</text><text class="chevron">›</text></view></view>
+    <button class="text-button restore-button" loading="{{busy}}" disabled="{{busy || cloud.phase === 'syncing'}}" bindtap="onRestore">恢复已购权益</button>
+    <text class="card-hint">换设备后，请连接购买时的微信账户恢复权益。</text>
+  </view>
+  <view class="settings-card">
+    <view class="card-heading"><text class="card-title">云端同步</text><text class="status-label">{{cloud.vip ? (cloud.enabled ? '已开启' : '未开启') : 'VIP 权益'}}</text></view>
+    <view class="setting-row sync-row"><view class="row-copy"><text class="row-label">自动同步记录</text><text class="detail">收藏、浏览记录与阅读进度</text></view><switch checked="{{cloud.enabled}}" disabled="{{busy || !cloud.vip || cloud.phase === 'syncing'}}" color="{{controlColor}}" bindchange="onToggleSync" /></view>
+    <block wx:if="{{cloud.vip}}"><view class="sync-status"><text>{{cloud.phase === 'syncing' ? '正在同步…' : '上次同步：' + lastSyncText}}</text><text wx:if="{{cloud.pending}}">{{cloud.pending}} 项等待同步</text></view><button class="secondary" disabled="{{busy || !cloud.enabled || cloud.phase === 'syncing'}}" bindtap="onSync">立即同步</button></block>
+    <view wx:else class="locked-note"><text>开通永久会员后，可主动开启云同步。</text><button class="inline-button" bindtap="onVip">查看会员权益 <text>›</text></button></view>
+    <view wx:if="{{cloud.error}}" class="notice">{{cloud.error}}</view>
+  </view>
+  <view wx:if="{{cloud.loggedIn}}" class="settings-card management-card"><text class="card-title">账户管理</text><button class="management-button" disabled="{{busy || cloud.phase === 'syncing'}}" bindtap="onClearCloud"><text>清空云端记录</text><text class="chevron">›</text></button><button class="management-button" disabled="{{busy || cloud.phase === 'syncing'}}" bindtap="onLogout"><text>退出云账户</text><text class="chevron">›</text></button><text class="card-hint">清空云端或退出账户，都不会删除本机记录。</text></view>
+  <text class="footer-note">同步由你主动开启，昵称、头像与问卷不会上传。</text>
+</view>

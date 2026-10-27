@@ -1,0 +1,35 @@
+const fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const root='/Users/zhengyihui/代码/个人项目/HowToLiveBetter/miniprogram';
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const out=[];
+const page=(file,deps,extras={})=>{let spec;vm.runInNewContext(read(file),{require:k=>deps[k],Page:p=>spec=p,getApp:()=>({globalData:{readHistory:[]}}),...extras},{filename:file});const obj={...spec,data:JSON.parse(JSON.stringify(spec.data))};obj.setData=d=>Object.assign(obj.data,d);return obj;};
+const flush=()=>new Promise(r=>setImmediate(r));
+(async()=>{
+ let component,route;
+ vm.runInNewContext(read('components/custom-nav/custom-nav.js'),{require:()=>({}),Component:c=>component=c,getCurrentPages:()=>[{}],wx:{switchTab:o=>route=o.url}});
+ component.methods.onBack.call({data:{customBack:false}});
+ const tabs=JSON.parse(read('app.json')).tabBar.list.map(x=>'/'+x.pagePath);
+ out.push({id:'F01',case:'root-page back fallback',route,isTab:tabs.includes(route)});
+ const library={getBook:()=>({title:'book'}),getChapter:()=>({}),getTotalStepCount:()=>1};
+ const pending={};const api={search:q=>q?new Promise(resolve=>pending[q]=resolve):Promise.resolve({hot:[]})};
+ const search=page('pkg-read/search/search.js',{'../../utils/library.js':library,'../../utils/api-v2.js':api,'../utils/content.js':{}});
+ search.data.q='old'; search.doSearch('old');search.data.q='new';search.doSearch('new');pending.new({chapters:[{title:'NEW'}]});await flush();pending.old({chapters:[{title:'OLD'}]});await flush();
+ out.push({id:'F02a',case:'out-of-order search responses',query:search.data.q,result:search.data.chapters[0].title});
+ search.data.q='clear-test';search.doSearch('clear-test');search.onClear();pending['clear-test']({chapters:[{title:'CLEARED_QUERY'}]});await flush();
+ out.push({id:'F02b',case:'clear while search pending',query:search.data.q,searched:search.data.searched,result:search.data.chapters[0].title});
+ const cache={books:[{id:'hltb',rev:'old',capabilities:{}}],'chapters:hltb':[{chapterId:'old-chapter'}]};let indexCalls=0;
+ const api2={isEnabled:()=>true,getBooks:()=>Promise.resolve({books:[{id:'hltb',rev:'new',capabilities:{}}]}),getIndex:()=>{indexCalls++;return indexCalls===1?Promise.reject(new Error('temporary')):Promise.resolve({chapters:[{chapterId:'new-chapter'}]});},getTopics:()=>Promise.resolve({}),getQuotes:()=>Promise.resolve({})};
+ const mod={exports:{}};vm.runInNewContext(read('utils/library.js'),{module:mod,exports:mod.exports,require:k=>k==='./api-v2.js'?api2:k==='./store.js'?{v2:{get:k=>cache[k],set:(k,v)=>cache[k]=v}}:k.includes('chapters')?{}:[]});
+ await mod.exports.refresh();await mod.exports.refresh();out.push({id:'F03',case:'index fails then next refresh',indexCalls,storedBookRev:cache.books[0].rev,chapter:cache['chapters:hltb'][0].chapterId});
+ let n=0;const mq=Object.create(Math);mq.random=()=>n++===0?0:.99;
+ const daily=page('pkg-read/daily/daily.js',{'../../utils/library.js':{getQuotes:()=>[{text:'quote A'},{text:'quote B'}]}},{Math:mq});daily.onLoad();daily.onNext();const share=daily.onShareAppMessage();
+ const dailyReceiver=page('pkg-read/daily/daily.js',{'../../utils/library.js':{getQuotes:()=>[{text:'quote A'},{text:'quote B'}]}},{Math:{...Math,random:()=>0,floor:Math.floor}});dailyReceiver.onLoad();
+ out.push({id:'F04',case:'share chosen daily quote',sharedTitle:share.title,sharedPath:share.path,receiverQuote:dailyReceiver.data.quote.text});
+ const storage={};global.wx={getStorageSync:k=>storage[k]||'',setStorageSync:(k,v)=>storage[k]=v,removeStorageSync:k=>delete storage[k],request:o=>o.fail({errMsg:'offline mock'})};
+ const match=require(path.join(root,'utils/match.js'));const profile={topicIds:['sleep'],budget:'t15',obstacles:['time'],goals:[]};
+ const before=await match.recommendV2(profile,8);const uid=before.items[0]?.step.uid;if(uid){await match.sendFeedback(uid,'doing');const after=await match.recommendV2(profile,8);out.push({id:'F05',case:'offline doing feedback exclusion',excludedUid:uid,reappears:after.items.some(i=>i.step.uid===uid),storedExcluded:match.getDoingList().includes(uid)});}
+ const index=require(path.join(root,'data/match-index.js'));const steps=require(path.join(root,'pkg-read/data/steps-hltb.js'));const total=Object.values(steps).reduce((n,x)=>n+x.length,0);const missing=Object.entries(steps).flatMap(([ch,list])=>list.map((s,i)=>({ch,index:i+1,title:s.title}))).filter(s=>!index.some(r=>r[0]===s.ch&&r[1]===s.index));
+ const norm=x=>String(x||'').replace(/[\s*`]/g,'');const changedTitles=index.filter(r=>steps[r[0]]?.[r[1]-1]&&norm(steps[r[0]][r[1]-1].title)!==norm(r[2])).length;
+ out.push({id:'F06',case:'baseline and recommendation index coverage',baseline:total,index:index.length,unindexedPositions:missing.length,changedTitles,examples:missing.slice(0,3)});
+ fs.writeFileSync(path.join(root,'docs/audit-2026-10-25/reproductions.json'),JSON.stringify(out,null,2));console.log(JSON.stringify(out,null,2));
+})();

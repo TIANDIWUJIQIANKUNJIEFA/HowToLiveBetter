@@ -1,15 +1,42 @@
 {
   "pages": [
+    "pages/reco/reco",
+    "pages/library/library",
+    "pages/favorite/favorite",
+    "pages/mine/mine",
+    "pages/book-detail/book-detail",
+    "pages/topic-aggregate/topic-aggregate",
     "pages/index/index",
     "pages/home/home",
-    "pages/classify/classify",
-    "pages/favorite/favorite",
-    "pages/mine/mine"
+    "pages/classify/classify"
   ],
   "subpackages": [
     {
+      "root": "pkg-read",
+      "name": "read",
+      "pages": [
+        "chapter-read/chapter-read",
+        "search/search",
+        "daily/daily",
+        "download/download",
+        "help/help",
+        "about/about",
+        "webview/webview"
+      ]
+    },
+    {
+      "root": "pkg-insight",
+      "name": "insight",
+      "pages": [
+        "wizard/wizard",
+        "result/result",
+        "vip/vip",
+        "account/account"
+      ]
+    },
+    {
       "root": "pagesA",
-      "name": "content",
+      "name": "content-legacy",
       "pages": [
         "category-detail/category-detail",
         "article/article",
@@ -23,7 +50,7 @@
     },
     {
       "root": "pagesB",
-      "name": "insight",
+      "name": "insight-legacy",
       "pages": [
         "survey/survey",
         "survey-result/survey-result"
@@ -31,16 +58,20 @@
     }
   ],
   "preloadRule": {
-    "pages/home/home": {
+    "pages/reco/reco": {
       "network": "all",
-      "packages": ["content", "insight"]
+      "packages": [
+        "read",
+        "insight"
+      ]
     }
   },
   "window": {
     "navigationStyle": "custom",
     "backgroundColor": "@bgColor",
     "backgroundTextStyle": "@bgTxtStyle",
-    "enablePullDownRefresh": false
+    "enablePullDownRefresh": false,
+    "navigationBarTextStyle": "@navTextStyle"
   },
   "tabBar": {
     "custom": false,
@@ -50,28 +81,28 @@
     "borderStyle": "@tabBorderStyle",
     "list": [
       {
-        "pagePath": "pages/home/home",
-        "text": "首页",
-        "iconPath": "assets/icons/home.png",
-        "selectedIconPath": "assets/icons/home-active.png"
+        "pagePath": "pages/reco/reco",
+        "text": "为我推荐",
+        "iconPath": "@sparkIcon",
+        "selectedIconPath": "@sparkSelectedIcon"
       },
       {
-        "pagePath": "pages/classify/classify",
-        "text": "分类",
-        "iconPath": "assets/icons/category.png",
-        "selectedIconPath": "assets/icons/category-active.png"
+        "pagePath": "pages/library/library",
+        "text": "书库",
+        "iconPath": "@booksIcon",
+        "selectedIconPath": "@booksSelectedIcon"
       },
       {
         "pagePath": "pages/favorite/favorite",
         "text": "收藏",
-        "iconPath": "assets/icons/favorite.png",
-        "selectedIconPath": "assets/icons/favorite-active.png"
+        "iconPath": "@bmkIcon",
+        "selectedIconPath": "@bmkSelectedIcon"
       },
       {
         "pagePath": "pages/mine/mine",
         "text": "我的",
-        "iconPath": "assets/icons/mine.png",
-        "selectedIconPath": "assets/icons/mine-active.png"
+        "iconPath": "@userIcon",
+        "selectedIconPath": "@userSelectedIcon"
       }
     ]
   },

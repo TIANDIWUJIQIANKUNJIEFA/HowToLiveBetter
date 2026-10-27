@@ -1,0 +1,21 @@
+@import "../../styles/variables-v2.wxss";
+page { background: var(--lb-bg); color: var(--lb-ink); }
+.account-page { padding: 20rpx 32rpx calc(48rpx + env(safe-area-inset-bottom)); }
+.intro { padding: 8rpx 0 28rpx; }.intro-title { display: block; font-size: 38rpx; line-height: 1.5; font-weight: 650; }.intro-desc { display: block; margin-top: 10rpx; font-size: 24rpx; line-height: 1.8; color: var(--lb-ink2); }
+.settings-card { padding: 28rpx; border-radius: 28rpx; border: 1rpx solid var(--lb-line); background: var(--lb-surface); margin-bottom: 24rpx; }
+.account-heading,.card-heading,.setting-row { display: flex; align-items: center; justify-content: space-between; gap: 20rpx; }.account-heading { justify-content: flex-start; }.account-copy,.row-copy { flex: 1; min-width: 0; }
+.account-icon { width: 80rpx; height: 80rpx; background: var(--lb-brand-bg); border-radius: 24rpx; display: flex; align-items: center; justify-content: center; flex: none; }.account-icon image { width: 42rpx; height: 42rpx; }.icon-dark { display: none; }
+.card-title { font-size: 29rpx; line-height: 1.6; font-weight: 600; }.detail { display: block; color: var(--lb-ink2); font-size: 23rpx; line-height: 1.7; margin-top: 5rpx; }.row-label { font-size: 27rpx; line-height: 1.6; }
+.membership-row { margin-top: 22rpx; border-top: 1rpx solid var(--lb-line); min-height: 100rpx; }.row-value { display: flex; align-items: center; gap: 18rpx; font-size: 24rpx; color: var(--lb-ink2); }.member-active { color: var(--lb-brand-ink); font-weight: 500; }.chevron { font-size: 35rpx; color: var(--lb-ink2); line-height: 1; }.row-hover { opacity: .75; }
+button::after { border: none; }
+.account-page .primary,.account-page .secondary { width: 100%; margin: 22rpx 0 0; box-sizing: border-box; min-height: 88rpx; height: auto; padding: 20rpx; display: flex; align-items: center; justify-content: center; border-radius: 22rpx; background: var(--lb-brand); color: var(--lb-on-brand); font-size: 27rpx; font-weight: 600; line-height: 1.5; }
+.account-page .secondary { background: var(--lb-brand-bg); color: var(--lb-brand-ink); }.account-page .primary[disabled],.account-page .secondary[disabled] { background: var(--lb-surface2); color: var(--lb-ink2); }
+.account-page .text-button { width: 100%; margin: 0; min-height: 88rpx; padding: 16rpx; display: flex; align-items: center; justify-content: center; font-size: 24rpx; line-height: 1.6; background: var(--lb-brand-bg); color: var(--lb-brand-ink); border-radius: 18rpx; }.account-page .text-button[disabled] { color: var(--lb-ink2); background: var(--lb-surface2); }
+.card-hint { display: block; font-size: 22rpx; line-height: 1.8; color: var(--lb-ink2); margin-top: 16rpx; }.status-label { font-size: 22rpx; color: var(--lb-brand-ink); }.sync-row { margin-top: 22rpx; }switch { flex: none; transform: scale(.9); transform-origin: right center; }
+.sync-status { margin-top: 20rpx; display: flex; flex-direction: column; font-size: 22rpx; line-height: 1.8; color: var(--lb-ink2); }
+.locked-note { padding-top: 18rpx; margin-top: 22rpx; border-top: 1rpx solid var(--lb-line); font-size: 23rpx; line-height: 1.7; color: var(--lb-ink2); }
+.account-page .inline-button { width: 100%; margin: 0; padding: 12rpx 0 0; min-height: 88rpx; text-align: left; display: flex; align-items: center; justify-content: space-between; background: transparent; color: var(--lb-brand-ink); font-size: 24rpx; line-height: 1.6; }
+.account-page .management-button { width: 100%; margin: 0; padding: 24rpx 0; min-height: 96rpx; display: flex; align-items: center; justify-content: space-between; background: transparent; color: var(--lb-ink); font-size: 26rpx; line-height: 1.6; border-radius: 0; border-bottom: 1rpx solid var(--lb-line); }.account-page .management-button[disabled] { color: var(--lb-ink2); }.management-card .card-title { display: block; margin-bottom: 8rpx; }
+.notice { margin-top: 18rpx; color: var(--lb-brand-ink); font-size: 23rpx; line-height: 1.8; }.footer-note { display: block; padding: 4rpx 12rpx; text-align: center; font-size: 22rpx; color: var(--lb-ink2); line-height: 1.8; }
+button:active:not([disabled]) { opacity: .8; }
+@media (prefers-color-scheme: dark) { .icon-light { display: none; }.icon-dark { display: block; } }

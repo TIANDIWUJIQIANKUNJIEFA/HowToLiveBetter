@@ -1,0 +1,56 @@
+{
+  "rows": [
+    {
+      "name": "home",
+      "path": "pages/reco/reco",
+      "books": [
+        {
+          "id": "hltb",
+          "titleLine1": "高性价比"
+        },
+        {
+          "id": "social",
+          "titleLine1": "人情世故"
+        }
+      ]
+    },
+    {
+      "name": "library",
+      "path": "pages/library/library",
+      "books": [
+        {
+          "id": "hltb",
+          "title": "高性价比人生指南",
+          "titleLine1": "高性价比"
+        },
+        {
+          "id": "social",
+          "title": "人情世故指南",
+          "titleLine1": "人情世故"
+        }
+      ]
+    },
+    {
+      "name": "book",
+      "path": "pages/book-detail/book-detail",
+      "chapters": 8,
+      "readerBook": "social"
+    },
+    {
+      "name": "reader",
+      "path": "pkg-read/chapter-read/chapter-read",
+      "stepCount": 5,
+      "hasOriginal": true,
+      "readerBook": "social",
+      "firstSectionCount": 8
+    },
+    {
+      "name": "search",
+      "path": "pkg-read/search/search",
+      "chapters": 4,
+      "stepCount": 23,
+      "hasOriginal": true
+    }
+  ],
+  "errors": []
+}

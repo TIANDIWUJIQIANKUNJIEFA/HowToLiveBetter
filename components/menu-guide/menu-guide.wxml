@@ -1,0 +1,35 @@
+<view wx:if="{{visible}}" class="menu-guide {{tone === 'night' ? 'force-night' : tone === 'sepia' ? 'force-light' : ''}}">
+  <view class="scrim" catchtap="onClose" catchtouchmove="onNoop"></view>
+  <view class="menu-ring" style="top:{{ringTop}}px;left:{{ringLeft}}px;width:{{ringSize}}px;height:{{ringSize}}px;"></view>
+  <view class="menu-cue" style="top:{{cueTop}}px;right:{{cueRight}}px;">
+    <image class="cue-arrow" src="/assets/icons-v2/menu-guide-arrow.png" mode="aspectFit" aria-hidden="true" />
+    <text>从这里打开菜单</text>
+  </view>
+  <scroll-view scroll-y class="panel-scroll" style="top:{{cardTop}}px;max-height:{{cardHeight}}px;height:{{cardHeight}}px;" enhanced show-scrollbar="{{false}}">
+    <view class="guide-card" role="dialog" aria-modal="true" aria-label="{{content.title}}操作指引">
+      <view class="eyebrow"><view class="eyebrow-dot"></view>操作指引</view>
+      <view class="heading">
+        <view class="heading-icon">
+          <image class="icon icon-light" src="/assets/icons-v2/{{content.icon}}.png" mode="aspectFit" />
+          <image class="icon icon-dark" src="/assets/icons-v2/dark/{{content.icon}}.png" mode="aspectFit" />
+        </view>
+        <text class="title">{{content.title}}</text>
+      </view>
+      <view class="subtitle">{{content.subtitle}}</view>
+      <view class="steps">
+        <view class="step">
+          <text class="step-number">01</text>
+          <view class="step-main"><text class="step-caption">打开菜单</text><text class="step-title">点击右上角「···」</text></view>
+          <view class="menu-preview"><view></view><view></view><view></view></view>
+        </view>
+        <view class="step-divider"></view>
+        <view class="step">
+          <text class="step-number">02</text>
+          <view class="step-main"><text class="step-caption">找到对应选项</text><text class="step-title">选择「{{content.action}}」</text></view>
+        </view>
+      </view>
+      <button class="confirm" style="width:100%;" hover-class="confirm-pressed" bindtap="onClose">我知道了</button>
+      <text class="footnote">按以上两步，在微信菜单中完成操作</text>
+    </view>
+  </scroll-view>
+</view>

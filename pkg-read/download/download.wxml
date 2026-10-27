@@ -1,0 +1,65 @@
+<custom-nav title="离线下载" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}" />
+
+<view class="page download-page">
+  <!-- 书 1：高性价比人生指南（设计稿 18：dl-book） -->
+  <view class="dl-book lb-card">
+    <view class="hd">
+      <view class="dot" style="background: var(--lb-bk1);"></view>
+      <text class="bk">高性价比人生指南</text>
+      <text wx:if="{{updatedShort}}" class="upd lb-mono">更新 {{updatedShort}}</text>
+    </view>
+
+    <view wx:for="{{files}}" wx:key="key">
+      <view class="dl-file {{unlocked ? '' : 'dl-locked'}}" hover-class="row-hover"
+            data-index="{{index}}" bindtap="onFileAction">
+        <text class="fmt lb-mono">{{item.label}}</text>
+        <view class="fm2">
+          <text class="sz lb-mono">{{item.size}}</text>
+          <text class="dsc">{{item.desc}}</text>
+        </view>
+        <text wx:if="{{downloadingKey === item.key}}" class="go lb-mono">{{progress}}%</text>
+        <text wx:else class="go">下载</text>
+      </view>
+
+      <!-- 加速源和直链都失败时，才把 GitHub 地址露出来 -->
+      <view wx:if="{{failedKey === item.key}}" class="dl-fallback">
+        <text class="dl-fallback-hint">小程序内暂时无法打开，可复制链接到浏览器下载：</text>
+        <view class="dl-fallback-row">
+          <text class="dl-fallback-url" user-select="{{true}}">{{item.copyUrl}}</text>
+          <text class="dl-fallback-copy" data-index="{{index}}" catchtap="onCopyFallback">复制</text>
+        </view>
+        <view wx:if="{{item.mirrorUrl}}" class="dl-fallback-row dl-fallback-row-sub">
+          <text class="dl-fallback-url" user-select="{{true}}">{{item.url}}</text>
+          <text class="dl-fallback-copy" data-index="{{index}}" catchtap="onCopyBackup">复制</text>
+        </view>
+
+      </view>
+    </view>
+
+    <view wx:if="{{vip}}" class="dl-note">永久 VIP 专享 · 免广告直接下载</view>
+    <!-- 未解锁：引导用户自己点按钮看视频（不自动播放） -->
+    <block wx:if="{{!unlocked}}">
+      <view wx:if="{{loading}}" class="dl-note dl-locking">正在准备激励视频…</view>
+      <button class="lb-btn lb-btn-primary dl-unlock" disabled="{{loading || checkingMembership}}" bindtap="onWatchAd">
+        {{checkingMembership ? '正在确认会员…' : (loading ? '视频加载中…' : '看一段视频，解锁下载')}}
+      </button>
+      <view class="dl-note">完整看完视频解锁，本次启动内有效<text wx:if="{{adFailed}}"> · 广告不可用时已自动放行</text></view>
+    </block>
+    <view wx:else class="dl-note">PDF 下载后直接打开；EPUB、HTML 转发给文件传输助手保存。下载或打开失败时，可手动复制备用链接。</view>
+  </view>
+
+  <!-- 人情世故指南不提供独立电子书下载 -->
+  <view class="dl-book lb-card">
+    <view class="hd">
+      <view class="dot" style="background: var(--lb-bk2);"></view>
+      <text class="bk">人情世故指南</text>
+      <text class="upd">CC BY 4.0</text>
+    </view>
+    <view class="dl-note pd-note">全文已在书库开放阅读，暂不提供独立电子书下载。</view>
+  </view>
+
+  <!-- 兜底：复制三格式链接 -->
+  <view class="dl-book dl-book-alt lb-card" hover-class="row-hover" bindtap="onCopyLink">
+    <view class="dl-note alt-note">都不方便？<text class="alt-go">复制三格式链接</text> 到浏览器打开</view>
+  </view>
+</view>

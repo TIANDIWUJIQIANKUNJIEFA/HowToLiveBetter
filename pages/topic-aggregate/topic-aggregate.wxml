@@ -1,0 +1,36 @@
+<custom-nav title="主题 · {{topic.short}}" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}"></custom-nav>
+
+<view class="page">
+  <!-- 主题头卡 -->
+  <view class="topic-h lb-card">
+    <view class="ti"><image class="ti-img" src="{{topic.icon}}" mode="aspectFit" /></view>
+    <view class="tw">
+      <view class="tt">{{topic.short}}</view>
+      <view class="tn lb-mono">{{bookCount}} 本书 · {{totalSteps}} 条建议 · {{chapters.length}} 章</view>
+    </view>
+    <view class="tfav {{topicFav ? 'on' : ''}}" bindtap="onFavTopic" hover-class="tfav-hover">
+      <text>{{topicFav ? '★' : '☆'}}</text>
+    </view>
+  </view>
+
+  <!-- 按书筛选 -->
+  <scroll-view scroll-x class="filters" enhanced show-scrollbar="{{false}}">
+    <view class="chip {{filter === item.id ? 'on' : ''}}" wx:for="{{bookChips}}" wx:key="id"
+          data-id="{{item.id}}" bindtap="onFilter">{{item.label}} {{item.count}}</view>
+  </scroll-view>
+
+  <!-- 章节列表 -->
+  <view class="minor lb-card" wx:for="{{shown}}" wx:key="uid"
+        data-book="{{item.bookId}}" data-chapter="{{item.chapterId}}" bindtap="onChapterTap" hover-class="row-hover">
+    <view class="mdot" style="background:{{item.accent}}"></view>
+    <view class="mmain">
+      <view class="mt">{{item.title}}</view>
+      <view class="mm lb-mono">{{item.bookTitle}} · {{item.stepCount}} 条 · 更新 {{item.updatedLabel}}</view>
+    </view>
+    <image class="theme-icon-light chev" src="/assets/icons-v2/chev.png" mode="aspectFit" />
+<image class="theme-icon-dark chev" src="/assets/icons-v2/dark/chev.png" mode="aspectFit" />
+  </view>
+
+  <view wx:if="{{!chapters.length}}" class="lb-empty">这个方向还没有收录章节，去书库看看别的</view>
+  <view wx:elif="{{shown.length < chapters.length}}" class="disclaim" bindtap="loadMore" hover-class="disclaim-hover">已显示 {{shown.length}} / {{chapters.length}} 章 · 点击加载更多</view>
+</view>

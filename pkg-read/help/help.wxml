@@ -1,0 +1,8 @@
+<custom-nav title="使用说明" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}" />
+
+<view class="page help-page">
+  <view wx:for="{{sections}}" wx:key="title" class="help-sec">
+    <view class="ht">{{item.title}}</view>
+    <view wx:for="{{item.lines}}" wx:for-item="line" wx:key="*this" class="hp">{{line}}</view>
+  </view>
+</view>

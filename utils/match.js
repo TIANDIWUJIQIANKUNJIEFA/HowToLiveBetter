@@ -1,7 +1,7 @@
 /**
  * 个性化匹配引擎（主包）
  *
- * 全部计算在端上完成，不发任何请求、不上传答案。
+ * v1 在端上计算；v2 优先请求在线推荐（匿名标识与问卷选择），失败时本地兜底。
  *
  * ── 边界 ──────────────────────────────────────────────
  * 引擎在主包，条目正文在分包 pagesA（只能分包引主包，反过来不行），
@@ -19,6 +19,9 @@
 const INDEX = require('../data/match-index.js');
 const data = require('./data.js');
 const store = require('./store.js');
+const storeV2 = store.v2;
+const apiV2 = require('./api-v2.js');
+const migrate = require('./migrate.js');
 
 const PROFILE_KEY = 'surveyProfile';
 
@@ -222,7 +225,7 @@ const recommend = (profile, limit = 8) => {
   let candidates = budget.allow
     ? pool.filter(it => budget.allow.indexOf(it.time) > -1)
     : pool.slice();
-  if (candidates.length < limit) candidates = pool.slice();
+
 
   const ranked = candidates
     .map(it => ({ ...it, score: scoreOf(it) }))
@@ -266,6 +269,7 @@ const recommend = (profile, limit = 8) => {
       ratio: it.ratio,
       time: it.time,
       money: it.money,
+      will: it.will,
       articleTitle: article.title || '',
       categoryName: (data.getCategoryById(article.categoryId) || {}).name || '',
       percent
@@ -305,6 +309,7 @@ const getDailyRecommend = (limit = 4) => {
       ratio: it.ratio,
       time: it.time,
       money: it.money,
+      will: it.will,
       articleTitle: article.title || '',
       categoryName: (data.getCategoryById(article.categoryId) || {}).name || '',
       percent: 0
@@ -331,6 +336,116 @@ const summarize = (profile) => {
   return `${head}，每天约 ${bTxt}。下面几条横跨生活的多个方面，按性价比和证据强度排过。`;
 };
 
+/* ============================================================
+ * v2 推荐：服务端引擎（语义相似度 + 理由 chips + 负反馈），本地规则兜底
+ *
+ * 服务端：POST /api/v2/recommend（见 backend/app/engine.py）——相似度主导、
+ * 每书≤2 每章≤1、理由 chips；匹配百分比已取消（设计稿 4.3.E）。
+ * 本地兜底：v1 规则引擎（本文件上半部分）套 v2 出参形状，离线/接口不可用时用。
+ * ============================================================ */
+
+/** v2 主题 id → v1 关注点 id（本地兜底时把向导答案映射回规则引擎） */
+const TOPIC_CONCERN_MAP = {
+  sleep: 'c-sleep', mind: 'c-emotion', focus: 'c-career', learn: 'c-learn',
+  work: 'c-career', relation: 'c-love', money: 'c-save', housing: 'c-asset',
+  law: 'c-law', info: 'c-account', safety: 'c-safety', health: 'c-chronic',
+  doctor: 'c-doctor', body: 'c-diet', love: 'c-love', family: 'c-parenting',
+  pregnancy: 'c-parenting', elder: 'c-elder', end: 'c-final',
+  startup: 'c-startup', welfare: 'c-elder', habit: 'c-career'
+};
+
+const DOING_KEY = 'doingSteps';     // storeV2 里「已经在做/不适合」的 uid 列表
+
+const getDoingList = () => storeV2.get(DOING_KEY) || [];
+
+/** 负反馈：服务端记录（跨设备语义维度）+ 本地记录（离线剔除） */
+const sendFeedback = (stepUid, kind) => {
+  const list = getDoingList().filter(u => u !== stepUid);
+  if (kind === 'doing' || kind === 'negative') list.unshift(stepUid);
+  storeV2.set(DOING_KEY, list.slice(0, 200));
+  return apiV2.sendFeedback({ clientUuid: migrate.getClientUuid(), stepUid, kind })
+    .catch(() => ({ ok: false, offline: true }));
+};
+
+/** v2 画像存取（surveyProfile 增量字段，v1 六题档案保留兼容） */
+const PROFILE_V2_KEY = 'surveyProfileV2';
+const getProfileV2 = () => storeV2.get(PROFILE_V2_KEY) || null;
+const saveProfileV2 = (p) => storeV2.set(PROFILE_V2_KEY, p);
+
+/** 把 v2 出参规整成页面可直接绑定的形状（服务端与本地兜底共用） */
+const normalizeItem = (it) => ({
+  step: it.step,
+  chapterTitle: it.chapterTitle || '',
+  bookTitle: it.bookTitle || '',
+  reasons: it.reasons || [],
+  score: typeof it.score === 'number' ? it.score : 0
+});
+
+/** 本地规则引擎兜底：v2 画像 → v1 profile → v1 recommend → v2 形状 */
+const recommendLocal = (profile, limit) => {
+  const concerns = (profile.topicIds || [])
+    .map(tid => TOPIC_CONCERN_MAP[tid])
+    .filter(Boolean);
+  const v1Profile = {
+    concerns,
+    budget: profile.budget || 'tfree',
+    goals: profile.goals || []
+  };
+  const excluded = new Set(getDoingList());
+  const items = recommend(v1Profile, totalCount()).filter(it => !excluded.has(`hltb:${it.aid}:${it.index}`)).slice(0, limit);
+  return items.map(it => normalizeItem({
+    step: {
+      uid: `hltb:${it.aid}:${it.index}`,
+      bookId: 'hltb',
+      chapterId: it.aid,
+      index: it.index,
+      title: it.title,
+      plain: it.plain,
+      cost: { money: it.money, time: it.time, will: it.will },
+      ratio: it.ratio,
+      grade: it.grade
+    },
+    chapterTitle: it.articleTitle || '',
+    bookTitle: '高性价比人生指南',
+    reasons: [it.ratio === '极高' ? '性价比极高' : (it.ratio ? '性价比高' : ''),
+      it.grade === 'A' ? '证据A级' : '', it.money === '0' ? '不花钱' : ''].filter(Boolean),
+    score: 0
+  }));
+};
+
+/**
+ * v2 推荐（异步）：
+ * @param {object} profile { topicIds[], budget, obstacles[], goals[] }
+ * @param {number} limit
+ * @returns {Promise<{items:[], source:'server'|'local', scope:string, summary:string}>}
+ *          永远 resolve；服务端失败静默切本地。
+ */
+const recommendV2 = (profile, limit = 8) => {
+  const doing = getDoingList();
+  return apiV2.recommend({
+    clientUuid: migrate.getClientUuid(),
+    profile,
+    exclude: doing,
+    limit
+  }).then((res) => {
+    const items = ((res && res.items) || []).filter(it => it.step && !getDoingList().includes(it.step.uid));
+    if (!items.length) throw new Error('empty');
+    const seen = new Set(items.map(it => it.step.uid));
+    const combined = items.concat(recommendLocal(profile, limit).filter(it => !seen.has(it.step.uid)));
+    return {
+      items: combined.slice(0, limit).map(normalizeItem),
+      source: 'server',
+      scope: res.scope || '',
+      summary: res.profileSummary || ''
+    };
+  }).catch(() => ({
+    items: recommendLocal(profile, limit),
+    source: 'local',
+    scope: 'hltb',
+    summary: ''
+  }));
+};
+
 module.exports = {
   QUESTIONS, AGE_BANDS, GENDERS, ROLES, CONCERNS, TIME_BUDGET, GOALS,
   hasProfile,
@@ -338,5 +453,7 @@ module.exports = {
   getDailyRecommend,
   totalCount,
   summarize,
-  getProfile, saveProfile, clearProfile
+  getProfile, saveProfile, clearProfile,
+  /* v2：服务端推荐 + 本地兜底（推荐主页 / 向导 / 结果页用） */
+  TOPIC_CONCERN_MAP, recommendV2, sendFeedback, getDoingList, saveProfileV2, getProfileV2
 };

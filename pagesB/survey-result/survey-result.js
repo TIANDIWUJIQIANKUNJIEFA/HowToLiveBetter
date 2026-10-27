@@ -1,3 +1,4 @@
+const cloud = require('../../utils/cloud-sync.js');
 const match = require('../../utils/match.js');
 const store = require('../../utils/store.js');
 
@@ -8,6 +9,7 @@ const SHARE_UNLOCK_KEY = 'surveyShareUnlock';
 Page({
   data: {
     generating: true,
+    checkingVip: false,
     noProfile: false,
     locked: false,        // 已匹配但未解锁：结果打码，浮分享解锁层
     totalSteps: 0,        // 建议库总条数，动态取，不写死
@@ -49,6 +51,8 @@ Page({
       others: list.slice(1)
     });
 
+    this.refreshVipAccess();
+
     /* 刚答完给一段「正在匹配」的过渡，直接甩结果会显得很突兀 */
     const delay = options && options.fresh === '1' ? 1200 : 300;
     setTimeout(() => {
@@ -62,7 +66,20 @@ Page({
     this._awaitingShare = true;
   },
 
+  async refreshVipAccess() {
+    if (!this.data.profile || this._checkingVip) return;
+    this._checkingVip = true; this.setData({ checkingVip: true });
+    try {
+      const vip = await cloud.checkVip();
+      const p = this.data.profile;
+      const shared = !!(p && p.ts && store.get(SHARE_UNLOCK_KEY) === p.ts);
+      this.setData({ locked: !vip && !shared });
+    } catch (e) {
+      wx.showToast({ title: e.message || '会员状态暂无法确认，请重试', icon: 'none' });
+    } finally { this._checkingVip = false; this.setData({ checkingVip: false }); }
+  },
   onShow() {
+    this.refreshVipAccess();
     if (!this._awaitingShare) return;
     this._awaitingShare = false;
     if (!this.data.locked) return;
@@ -85,7 +102,7 @@ Page({
   },
 
   onBackHome() {
-    wx.switchTab({ url: '/pages/home/home' });
+    wx.navigateTo({ url: '/pages/home/home', fail: () => {} });
   },
 
   /* 浮层里的「暂不分享」：退出结果页 */
@@ -94,7 +111,7 @@ Page({
     if (pages.length > 1) {
       wx.navigateBack();
     } else {
-      wx.switchTab({ url: '/pages/home/home' });
+      wx.navigateTo({ url: '/pages/home/home', fail: () => {} });
     }
   },
 

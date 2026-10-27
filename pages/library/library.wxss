@@ -1,0 +1,107 @@
+@import "../../styles/variables-v2.wxss";
+
+/* ---------- 顶部双 tab（书架/主题） ---------- */
+.lt-tabs {
+  display: flex;
+  gap: 44rpx;
+  padding: 4rpx 32rpx 0;
+  background: var(--lb-bg);
+}
+.lt {
+  font-size: 29rpx;
+  font-weight: 600;
+  color: var(--lb-ink3);
+  padding: 20rpx 4rpx;
+  position: relative;
+}
+.lt.on { color: var(--lb-ink); }
+.lt.on::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8rpx;
+  height: 6rpx;
+  border-radius: 4rpx;
+  background: var(--lb-brand);
+}
+
+/* ---------- 导航右侧搜索按钮 ---------- */
+.nbtn {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  border: 1rpx solid var(--lb-line);
+  background: var(--lb-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nbtn-hover { opacity: .7; }
+.nbtn-ico { width: 34rpx; height: 34rpx; }
+
+.page { padding: 16rpx 36rpx 56rpx; background: var(--lb-bg); min-height: 100vh; box-sizing: border-box; }
+
+/* ---------- 书籍大卡 ---------- */
+.big-bk {
+  display: flex;
+  gap: 28rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+.bk-hover { opacity: .85; }
+.big-bk .cover {
+  width: 164rpx;
+  height: 226rpx;
+  border-radius: 4rpx 8rpx 8rpx 4rpx;
+  flex: none;
+  border: 1rpx solid var(--lb-line);
+  box-shadow: 4rpx 8rpx 16rpx rgba(37, 59, 47, .09);
+}
+.big-bk .bb { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.big-bk .bt { font-size: 31rpx; font-weight: 650; color: var(--lb-ink); }
+.big-bk .bd { margin-top: 10rpx; display: flex; flex-direction: column; }
+.big-bk .bdl { font-size: 23rpx; color: var(--lb-ink2); line-height: 1.85; }
+.big-bk .bm2 { display: flex; gap: 12rpx; flex-wrap: wrap; margin-top: 20rpx; }
+.cbadge {
+  font-size: 22rpx;
+  font-weight: 700;
+  padding: 6rpx 16rpx;
+  border-radius: 12rpx;
+  border: 1rpx solid currentColor;
+}
+
+/* 授权说明 */
+.dl-note {
+  font-size: 22rpx;
+  color: var(--lb-ink3);
+  line-height: 1.8;
+  margin-top: 20rpx;
+  text-align: center;
+}
+.head-note { text-align: left; margin: 8rpx 0 24rpx; }
+
+/* ---------- 主题宫格 ---------- */
+.tgrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+.tg {
+  width: calc((100% - 20rpx) / 2);
+  box-sizing: border-box;
+  padding: 28rpx;
+}
+.tg-hover { opacity: .85; }
+.tg .tt {
+  display: flex;
+  align-items: center;
+  gap: 14rpx;
+  font-size: 27rpx;
+  font-weight: 700;
+  color: var(--lb-ink);
+}
+.tt-ico { width: 30rpx; height: 30rpx; }
+.tg .tn { font-size: 22rpx; color: var(--lb-ink3); margin-top: 8rpx; }
+
+.continue-reading { color:var(--lb-brand); font-size:24rpx; min-height:88rpx; display:flex; align-items:center; }

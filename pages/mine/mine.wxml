@@ -1,92 +1,116 @@
+<custom-nav title="我的" align="left" big="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" shadow="{{false}}" />
+
 <view class="page mine-page">
-  <custom-nav title="我的" align="left" bg-color="var(--color-bg, #f6f7f6)" text-color="var(--color-text, #22262b)" shadow="{{false}}" />
-
-  <view class="mine-content">
-    <!-- 用户信息 -->
-    <view class="user-card">
-      <image class="user-avatar" src="{{userInfo.avatar}}" mode="aspectFill" />
-      <view class="user-info">
-        <text class="user-name">{{userInfo.nickname}}</text>
-        <text class="user-bio">{{userInfo.bio}}</text>
-      </view>
-      <image class="user-edit" src="/assets/icons/pencil.png" mode="aspectFit" bindtap="onEditProfile" />
+  <!-- 确认稿：3D 默认头像、浅鼠尾草资料卡；自定义头像优先 -->
+  <view class="ucard lb-card">
+    <view class="uav-wrap">
+      <image class="uav" src="{{userInfo.avatar || '/assets/porcelain/mine/avatar.png'}}" mode="aspectFill" aria-label="用户头像" />
+      <button class="vip-avatar-button" hover-class="row-hover" bindtap="onVip"
+        aria-label="{{cloud.vip ? '永久 VIP 已激活，查看会员权益' : '普通用户，查看 VIP 权益'}}">
+        <view class="vip-badge {{cloud.vip ? 'is-active' : ''}}">
+          <image class="vip-crown icon-light" src="/assets/porcelain/mine/vip-{{cloud.vip ? 'active' : 'inactive'}}.png" mode="aspectFit" aria-hidden="true" />
+          <image class="vip-crown icon-dark" src="/assets/porcelain/mine/vip-{{cloud.vip ? 'active' : 'inactive'}}-dark.png" mode="aspectFit" aria-hidden="true" />
+          <text>VIP</text>
+        </view>
+      </button>
     </view>
-
-    <!-- 菜单 -->
-    <view class="menu-list">
-      <block wx:for="{{menuList}}" wx:key="id">
-        <view
-          wx:if="{{item.id === 'feedback'}}"
-          class="menu-item menu-item-last menu-item-contact"
-          hover-class="hover-press"
-        >
-          <image class="menu-icon" src="/assets/icons/menu-{{item.icon}}.png" mode="aspectFit" />
-          <view class="menu-text">
-            <text class="menu-label">{{item.label}}</text>
-          </view>
-          <image class="menu-arrow" src="/assets/icons/chevron.png" mode="aspectFit" />
-          <button class="contact-cover" open-type="contact"></button>
-        </view>
-        <view
-          wx:else
-          class="menu-item"
-          hover-class="hover-press"
-          bindtap="onMenuTap"
-          data-item="{{item}}"
-        >
-          <image class="menu-icon" src="/assets/icons/menu-{{item.icon}}.png" mode="aspectFit" />
-          <view class="menu-text">
-            <text class="menu-label">{{item.label}}</text>
-            <text wx:if="{{item.desc}}" class="menu-desc">{{item.desc}}</text>
-            <text wx:if="{{item.id === 'download' && dataUpdated}}" class="menu-desc menu-data-updated">{{dataUpdated}}</text>
-          </view>
-          <image class="menu-arrow" src="/assets/icons/chevron.png" mode="aspectFit" />
-        </view>
-      </block>
+    <view class="uinfo">
+      <text class="un">{{userInfo.nickname}}</text>
+      <text class="ub">{{userInfo.bio}}</text>
     </view>
-
-    <!-- 关注作者公众号：官方组件仅扫码/最近使用等场景展示，其余场景显示下方兜底卡片 -->
-    <view class="follow-section">
-      <official-account bind:load="onOaLoad" bind:error="onOaError"></official-account>
-      <view wx:if="{{!oaReady}}" class="follow-card" hover-class="hover-press" bindtap="onFollowAuthor">
-        <image class="follow-icon" src="/assets/icons/menu-account.png" mode="aspectFit" />
-        <view class="follow-info">
-          <text class="follow-title">关注作者公众号</text>
-          <text wx:if="{{canJump}}" class="follow-desc">打开公众号主页，点关注即可</text>
-          <text wx:else class="follow-desc">复制「{{accountName}}」，在微信搜索关注</text>
-        </view>
-        <view class="follow-btn">去关注</view>
+    <view class="uedit" hover-class="hover-press" bindtap="onEditProfile" aria-label="编辑昵称">
+      <view class="uedit-surface">
+        <image class="uedit-ico icon-light" src="/assets/porcelain/mine/pencil.png" mode="aspectFit" aria-hidden="true" />
+        <image class="uedit-ico icon-dark" src="/assets/porcelain/mine/pencil-dark.png" mode="aspectFit" aria-hidden="true" />
       </view>
     </view>
   </view>
 
-  <!-- 添加到桌面引导蒙层（与朋友圈引导同款） -->
-  <view wx:if="{{showGuide}}" class="guide-mask" catchtap="onCloseGuide"></view>
-  <view wx:if="{{showGuide}}" class="guide-layer" catchtap="onCloseGuide">
-    <view class="guide-ring" style="top:{{ringTop}}px; left:{{ringLeft}}px; width:{{ringSize}}px; height:{{ringSize}}px;"></view>
-    <image
-      class="guide-arrow"
-      src="/assets/icons/arrow-curve-white.png"
-      mode="aspectFit"
-      style="top:{{arrowTop}}px; right:{{arrowRight}}px;"
-    />
-    <view class="guide-steps">
-      <view class="guide-step">
-        <view class="guide-num">1</view>
-        <text class="guide-step-text">点击右上角「···」</text>
-      </view>
-      <view class="guide-step">
-        <view class="guide-num">2</view>
-        <text class="guide-step-text">{{guideStep2}}</text>
-      </view>
+  <!-- 数据行（设计稿 19：ustats，收藏 / 浏览历史 / 在读） -->
+  <view class="ustats">
+    <view class="s lb-card" hover-class="hover-press" bindtap="onStatTap" data-target="favorite">
+      <view class="v lb-num">{{favoriteCount}}</view>
+      <view class="k">收藏</view>
     </view>
-    <view class="guide-tile">
-      <image class="guide-tile-icon" src="/assets/icons/menu-desktop.png" mode="aspectFit" />
-      <text class="guide-tile-text">{{guideTileText}}</text>
+    <view class="s lb-card" hover-class="hover-press" bindtap="onStatTap" data-target="history">
+      <view class="v lb-num">{{historyCount}}</view>
+      <view class="k">浏览历史</view>
     </view>
-    <text class="guide-tagline">{{guideTagline}}</text>
-    <view class="guide-know">我知道了</view>
+    <view class="s lb-card" hover-class="hover-press" bindtap="onStatTap" data-target="library">
+      <view class="v lb-num">{{readingCount}}</view>
+      <view class="k">在读</view>
+    </view>
   </view>
 
-  <tip-panel show="{{tipVisible}}" bind:close="onTipClose" />
+  <!-- 菜单：统一线性图标、细分隔线与说明层级 -->
+  <view class="menu lb-card">
+    <block wx:for="{{menuList}}" wx:key="id">
+      <view
+        wx:if="{{item.id === 'feedback'}}"
+        class="row row-contact"
+        hover-class="row-hover"
+      >
+        <view class="mi">
+          <image class="mi-ico icon-light" src="/assets/porcelain/mine/{{item.icon}}.png" mode="aspectFit" aria-hidden="true" />
+          <image class="mi-ico icon-dark" src="/assets/porcelain/mine/{{item.icon}}-dark.png" mode="aspectFit" aria-hidden="true" />
+        </view>
+        <view class="mm2">
+          <text class="ml">{{item.label}}</text>
+          <text wx:if="{{item.desc}}" class="md">{{item.desc}}</text>
+        </view>
+        <view class="ar" aria-hidden="true">
+          <image class="ar-ico icon-light" src="/assets/porcelain/mine/chev.png" mode="aspectFit" />
+          <image class="ar-ico icon-dark" src="/assets/porcelain/mine/chev-dark.png" mode="aspectFit" />
+        </view>
+        <button class="contact-cover" open-type="contact" aria-label="反馈建议，联系客服"></button>
+      </view>
+      <view
+        wx:else
+        class="row"
+        hover-class="row-hover"
+        bindtap="onMenuTap"
+        data-item="{{item}}"
+      >
+        <view class="mi">
+          <image class="mi-ico icon-light" src="/assets/porcelain/mine/{{item.icon}}.png" mode="aspectFit" aria-hidden="true" />
+          <image class="mi-ico icon-dark" src="/assets/porcelain/mine/{{item.icon}}-dark.png" mode="aspectFit" aria-hidden="true" />
+        </view>
+        <view class="mm2">
+          <text class="ml">{{item.label}}</text>
+          <block wx:if="{{item.id === 'download'}}">
+            <text class="md">{{cloud.vip ? 'VIP 免广告 · PDF / EPUB / HTML' : '看视频解锁 PDF / EPUB / HTML'}}</text>
+            <text wx:if="{{dataUpdated}}" class="md md-updated">{{dataUpdated}}</text>
+          </block>
+          <text wx:elif="{{item.id === 'cloud'}}" class="md">{{cloud.loggedIn ? (cloud.vip ? (cloud.enabled ? '永久 VIP · 云同步已开启' : '永久 VIP · 云同步未开启') : '管理微信账户与已购权益') : '连接微信账户，管理云端记录'}}</text>
+          <text wx:elif="{{item.desc}}" class="md">{{item.desc}}</text>
+        </view>
+        <view class="ar" aria-hidden="true">
+          <image class="ar-ico icon-light" src="/assets/porcelain/mine/chev.png" mode="aspectFit" />
+          <image class="ar-ico icon-dark" src="/assets/porcelain/mine/chev-dark.png" mode="aspectFit" />
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 关注作者公众号：官方组件仅扫码/最近使用等场景展示，其余场景显示下方兜底卡片 -->
+  <view class="follow-section">
+    <official-account bind:load="onOaLoad" bind:error="onOaError"></official-account>
+    <view wx:if="{{!oaReady}}" class="follow-card lb-card" hover-class="row-hover" bindtap="onFollowAuthor">
+      <view class="mi mi-brand">
+        <image class="mi-ico icon-light" src="/assets/porcelain/mine/info.png" mode="aspectFit" aria-hidden="true" />
+        <image class="mi-ico icon-dark" src="/assets/porcelain/mine/info-dark.png" mode="aspectFit" aria-hidden="true" />
+      </view>
+      <view class="mm2">
+        <text class="ml">关注作者公众号</text>
+        <text wx:if="{{canJump}}" class="md">HuiTurn · 打开公众号主页点关注</text>
+        <text wx:else class="md">复制「{{accountName}}」，在微信搜索关注</text>
+      </view>
+      <text class="go">去关注</text>
+    </view>
+  </view>
 </view>
+
+<!-- 添加到桌面引导蒙层（与朋友圈引导同款） -->
+<menu-guide id="menuGuide" visible="{{showGuide}}" kind="desktop" bind:close="onCloseGuide" />
+
+<tip-panel show="{{tipVisible}}" bind:close="onTipClose" />

@@ -1,11 +1,18 @@
 const app = getApp();
+const cloud = require('../../utils/cloud-sync.js');
 const { DOWNLOAD_FILES } = require('../../utils/download-config.js');
 const { playAd, preloadAd } = require('../../utils/rewarded-ad.js');
+const { getDataStatus } = require('../../utils/data.js');
+const { absolute } = require('../../utils/time.js');
 
 Page({
   data: {
     files: DOWNLOAD_FILES,
     unlocked: false,
+    vip: false,
+    checkingMembership: false,
+    // 卡头「更新 MM-DD」：数据状态里取上游内容最后变更时刻
+    updatedShort: '',
     // 广告拉取中，用于页面上的等待态文案
     loading: false,
     // 广告没播成而放行的，页面上给一句说明
@@ -15,11 +22,15 @@ Page({
     progress: 0,
     // 两个源都下载失败的文件，露出 GitHub 地址让用户复制
     failedKey: '',
-    // 失败时微信返回的原始错误，显示出来方便定位（如 url not in domain list）
+    // 原始错误只用于诊断，不在用户界面展示
     lastErrMsg: ''
   },
 
   onLoad() {
+    const st = getDataStatus();
+    const short = st && st.updatedAt ? absolute(st.updatedAt, false) : '';
+    this.setData({ updatedShort: short ? short.split(' ')[0] : '' });
+
     // 已从「我的」页看完视频进来（或本次启动已解锁），直接展示链接
     if (app.globalData.downloadUnlocked) {
       this.setData({ unlocked: true, adFailed: !!app.globalData.downloadAdFailed });
@@ -32,7 +43,22 @@ Page({
      *    正常路径的广告在「我的」页点菜单时就播完了；下面那个按钮是给
      *    扫码 / 分享直接落到本页的兜底路径。
      */
-    preloadAd();
+    if (!cloud.status().vip) preloadAd();
+  },
+
+  onShow() { this.refreshAccess(); },
+  async refreshAccess() {
+    if (!cloud.status().loggedIn) {
+      this.setData({ vip: false, unlocked: !!app.globalData.downloadUnlocked }); return;
+    }
+    this.setData({ checkingMembership: true });
+    try {
+      const vip = await cloud.checkVip();
+      this.setData({ vip, unlocked: vip || !!app.globalData.downloadUnlocked });
+    } catch (e) {
+      this.setData({ vip: false, unlocked: !!app.globalData.downloadUnlocked });
+      wx.showToast({ title: e.message || '会员状态暂无法确认，请重试', icon: 'none' });
+    } finally { this.setData({ checkingMembership: false }); }
   },
 
   unlock() {
@@ -47,19 +73,28 @@ Page({
     app.globalData.downloadAdFailed = true;
     this.setData({ unlocked: true, loading: false, adFailed: true });
     wx.showToast({
-      title: code ? `广告不可用(${code})，已直接解锁` : '广告未就绪，已直接解锁',
+      title: '视频暂不可用，已直接解锁',
       icon: 'none'
     });
   },
 
   /* 兜底路径：扫码/分享直接进到本页时，用户点按钮才播（不能自动播） */
-  onWatchAd() {
+  async onWatchAd() {
+    if (this.data.loading || this.data.unlocked || this.data.checkingMembership) return;
+    this.setData({ loading: true });
+    if (cloud.status().loggedIn) {
+      try {
+        const vip = await cloud.checkVip();
+        if (vip) { this.setData({ vip: true, unlocked: true, loading: false }); return; }
+      } catch (e) {
+        this.setData({ loading: false }); wx.showToast({ title: e.message || '会员状态暂无法确认，请重试', icon: 'none' }); return;
+      }
+    }
     wx.showLoading({ title: '正在准备视频…', mask: true });
 
     playAd({
       onStart: () => {
         wx.hideLoading();
-        this.setData({ loading: false });
       },
 
       onClose: (ended) => {
@@ -88,10 +123,23 @@ Page({
    *   - PDF → 直接打开预览
    *   - EPUB / HTML → 小程序打不开，转发给文件传输助手让用户存到本地
    */
-  onFileAction(e) {
+  async onFileAction(e) {
     const index = Number(e.currentTarget.dataset.index);
     const file = this.data.files[index];
     if (!file || this.data.downloadingKey) return;
+
+    if (cloud.status().loggedIn || this.data.vip) {
+      try {
+        const vip = await cloud.checkVip();
+        this.setData({ vip, unlocked: vip || !!app.globalData.downloadUnlocked });
+      } catch (err) { wx.showToast({ title: err.message || '会员状态暂无法确认，请重试', icon: 'none' }); return; }
+    }
+
+    /* 未解锁：文件行置灰仅展示信息，点击引导到底部解锁按钮 */
+    if (!this.data.unlocked) {
+      wx.showToast({ title: '先看一段视频解锁下载', icon: 'none' });
+      return;
+    }
 
     this.startDownload(file);
   },
@@ -143,11 +191,7 @@ Page({
     }
   },
 
-  /*
-   * 所有源都拿不到文件。真机上九成是 downloadFile 合法域名没配 dl.aipalnet.cn
-   * （微信报错形如 "downloadFile:fail url not in domain list"）。
-   * 这种情况再点多少次都不会成功，所以直接把链接复制到剪贴板，别让用户白等。
-   */
+  /* 下载源均失败时提供手动复制入口。 */
   onAllSourcesFailed(file) {
     this.setData({
       downloadingKey: '',
@@ -155,12 +199,7 @@ Page({
       failedKey: file.key,
       lastErrMsg: this.lastErr || ''
     });
-    this.copy(file.copyUrl || file.url, file.label);
-    wx.showToast({
-      title: this.isDomainErr() ? '未配置下载域名，链接已复制' : '下载失败，链接已复制',
-      icon: 'none',
-      duration: 3000
-    });
+    wx.showToast({ title: '下载暂未成功，可复制链接到浏览器打开', icon: 'none', duration: 3000 });
   },
 
   // 微信域名白名单报错形如 "downloadFile:fail url not in domain list"
@@ -186,7 +225,8 @@ Page({
     /* EPUB / HTML：转发给文件传输助手，用户存下来就能导入阅读器 */
     if (!wx.shareFileMessage) {
       // 低版本基础库没有这个 API，退回复制链接
-      this.copy(file.copyUrl || file.url, file.label);
+      this.setData({ failedKey: file.key });
+      wx.showToast({ title: '当前环境无法发送文件，可复制链接', icon: 'none' });
       return;
     }
 
@@ -203,8 +243,8 @@ Page({
         /* 开发者工具不支持 shareFileMessage（真机正常），不能当失败处理，
            否则会出现"明明 200 了还提示下载失败"的误报 */
         if (isDevtools || msg.includes('not support') || msg.includes('not yet')) {
-          this.copy(file.copyUrl || file.url, file.label);
-          wx.showToast({ title: '请用真机体验下载，链接已复制备用', icon: 'none' });
+          this.setData({ failedKey: file.key });
+          wx.showToast({ title: '当前环境无法发送文件，可复制链接', icon: 'none' });
           return;
         }
 
@@ -217,7 +257,8 @@ Page({
   copy(url, label) {
     wx.setClipboardData({
       data: url,
-      success: () => wx.showToast({ title: `${label} 链接已复制`, icon: 'none' })
+      success: () => wx.showToast({ title: `${label} 链接已复制`, icon: 'none' }),
+      fail: () => wx.showToast({ title: '复制未成功，请重试', icon: 'none' })
     });
   },
 

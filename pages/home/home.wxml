@@ -19,6 +19,7 @@
           class="search-input"
           type="text"
           placeholder="搜索你关心的人生问题…"
+          placeholder-class="search-placeholder"
           value="{{searchKeyword}}"
           bindinput="onSearchInput"
           bindconfirm="onSearchConfirm"

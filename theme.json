@@ -1,18 +1,40 @@
 {
   "light": {
-    "bgColor": "#f6f7f6",
+    "bgColor": "#F6F5F0",
     "bgTxtStyle": "dark",
-    "tabFontColor": "#8f9498",
-    "tabSelectedColor": "#4ba264",
-    "tabBgColor": "#ffffff",
-    "tabBorderStyle": "white"
+    "tabFontColor": "#727B75",
+    "tabSelectedColor": "#226B60",
+    "tabBgColor": "#FFFDF9",
+    "tabBorderStyle": "white",
+    "mineNavTextStyle": "black",
+    "mineBgColor": "#F6F5F0",
+    "navTextStyle": "black",
+    "sparkIcon": "assets/icons-v2/spark-off.png",
+    "sparkSelectedIcon": "assets/icons-v2/spark.png",
+    "booksIcon": "assets/icons-v2/books-off.png",
+    "booksSelectedIcon": "assets/icons-v2/books.png",
+    "bmkIcon": "assets/icons-v2/bmk-off.png",
+    "bmkSelectedIcon": "assets/icons-v2/bmk.png",
+    "userIcon": "assets/icons-v2/user-off.png",
+    "userSelectedIcon": "assets/icons-v2/user.png"
   },
   "dark": {
-    "bgColor": "#15171a",
+    "bgColor": "#17201C",
     "bgTxtStyle": "light",
-    "tabFontColor": "#9aa1a9",
-    "tabSelectedColor": "#5cb476",
-    "tabBgColor": "#1c2025",
-    "tabBorderStyle": "black"
+    "tabFontColor": "#A2B2A5",
+    "tabSelectedColor": "#8BC7B3",
+    "tabBgColor": "#202B25",
+    "tabBorderStyle": "black",
+    "mineNavTextStyle": "white",
+    "mineBgColor": "#17201C",
+    "navTextStyle": "white",
+    "sparkIcon": "assets/icons-v2/dark/spark-off.png",
+    "sparkSelectedIcon": "assets/icons-v2/dark/spark.png",
+    "booksIcon": "assets/icons-v2/dark/books-off.png",
+    "booksSelectedIcon": "assets/icons-v2/dark/books.png",
+    "bmkIcon": "assets/icons-v2/dark/bmk-off.png",
+    "bmkSelectedIcon": "assets/icons-v2/dark/bmk.png",
+    "userIcon": "assets/icons-v2/dark/user-off.png",
+    "userSelectedIcon": "assets/icons-v2/dark/user.png"
   }
 }

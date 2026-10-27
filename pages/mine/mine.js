@@ -1,27 +1,27 @@
 const app = getApp();
+const cloud = require('../../utils/cloud-sync.js');
 const { playAd } = require('../../utils/rewarded-ad.js');
 const { getDataStatus, refreshArticles } = require('../../utils/data.js');
-const { statusLabel } = require('../../utils/time.js');
+const { absolute } = require('../../utils/time.js');
 
 /*
- * 「离线下载」行右侧的更新时间：三态文案，见 utils/time.js
- *   api / cache →「更新于 2026-10-06 10:59」（接口时间或缓存里记的时间）
+ * 「离线下载」行内说明的更新时间：三态文案，见 utils/time.js
+ *   api / cache →「更新于 10-23 22:41」（接口时间或缓存里记的时间）
  *   local       →「离线数据 · 封存于 …」（接口与缓存都没有，用的是随包基线）
  * 本地基线的时间取自全篇 updatedAt 的最大值（同步脚本写入的上游最后提交时间）。
+ * 与设计稿 19 一致用短格式（MM-DD HH:mm），不带年份。
  */
-const dataUpdatedLabel = () => statusLabel(getDataStatus());
+const dataUpdatedLabel = () => {
+  const st = getDataStatus();
+  if (!st || !st.updatedAt) return '';
+  const short = absolute(st.updatedAt, false);
+  return (st.source === 'local' ? '离线数据 · 封存于 ' : '更新于 ') + short;
+};
 
 const DEFAULT_USER = {
   nickname: '人生探索者',
-  avatar: '/assets/images/avatar.jpg',
+  avatar: '',
   bio: '更好的生活，从现在开始'
-};
-
-// 右上角「···」菜单里的入口名称，各平台统一为「添加到桌面」
-const DESKTOP_GUIDE = {
-  step2: '选择「添加到桌面」',
-  tileText: '添加到桌面',
-  tagline: '之后从手机桌面一键打开，随时查阅'
 };
 
 // 作者公众号名称（复制搜索用）
@@ -36,16 +36,17 @@ Page({
   data: {
     userInfo: { ...DEFAULT_USER },
     menuList: [
-      { id: 'favorites', icon: 'star', label: '我的收藏' },
-      { id: 'history', icon: 'clock', label: '浏览历史' },
+      { id: 'cloud', icon: 'desktop', label: '账户与同步' },
+      { id: 'download', icon: 'download', label: '离线下载' },
       { id: 'desktop', icon: 'desktop', label: '添加到桌面' },
       // { id: 'sponsor', icon: 'heart', label: '赞助小程序' }, // 暂时隐藏赞助入口（tip-panel / pay 逻辑保留，取消本行注释即可恢复）
-      { id: 'download', icon: 'download', label: '离线下载', desc: '观看激励视频，下载 PDF、EPUB、HTML 版本' },
-      { id: 'about', icon: 'book', label: '关于我们' },
-      { id: 'feedback', icon: 'chat', label: '反馈建议' }
+      { id: 'about', icon: 'bookI', label: '关于我们' },
+      { id: 'feedback', icon: 'chat', label: '反馈建议', desc: '有建议，随时告诉我们' }
     ],
+    cloud: {},
     favoriteCount: 0,
     historyCount: 0,
+    readingCount: 0,
     // 赞助弹窗显隐
     tipVisible: false,
     // 公众号关注：官方组件加载成功后隐藏兜底卡片
@@ -55,24 +56,18 @@ Page({
     oaReady: false,
     // 添加到桌面引导蒙层
     showGuide: false,
-    guideStep2: '',
-    guideTileText: '',
-    guideTagline: '',
-    ringTop: 0,
-    ringLeft: 0,
-    ringSize: 0,
-    arrowTop: 0,
-    arrowRight: 0,
     // 「离线下载」行第三行展示的数据更新时间（三态文案，精确到时分）
     dataUpdated: dataUpdatedLabel()
   },
 
   onLoad() {
+    this._cloudUnsubscribe = cloud.onChange(() => { this.setData({ cloud: cloud.status() }); this.loadData(); });
     this.setData({ userInfo: { ...DEFAULT_USER, ...(app.globalData.userInfo || {}) } });
     this.loadData();
   },
 
   onShow() {
+    this.setData({ cloud: cloud.status() });
     this.loadData();
     /* 启动时的刷新可能还没回来，回到本页时再取一次状态并顺带补一次刷新 */
     this.setData({ dataUpdated: dataUpdatedLabel() });
@@ -81,13 +76,35 @@ Page({
     });
   },
 
+  onUnload() { if (this._cloudUnsubscribe) this._cloudUnsubscribe(); },
+  onVip() { wx.navigateTo({ url: '/pkg-insight/vip/vip' }); },
+
   loadData() {
     const favorites = app.globalData.favorites || [];
     const history = app.globalData.readHistory || [];
+    /* 在读 = 有阅读进度的书数（与书架「在读」同口径，见 pages/library） */
+    let readingCount = 0;
+    try {
+      readingCount = Object.keys(wx.getStorageSync('htlb:v2:progress') || {}).length;
+    } catch (e) { /* ignore */ }
     this.setData({
-      favoriteCount: favorites.length,
-      historyCount: history.length
+      favoriteCount: favorites.length + (wx.getStorageSync('htlb:v2:favTopics') || []).length,
+      historyCount: history.length,
+      readingCount,
+      avatarLetter: (this.data.userInfo.nickname || '人').slice(0, 1)
     });
+  },
+
+  /* 统计行入口：收藏 / 浏览历史 / 在读（书库） */
+  onStatTap(e) {
+    const target = e.currentTarget.dataset.target;
+    if (target === 'favorite') {
+      wx.switchTab({ url: '/pages/favorite/favorite' });
+    } else if (target === 'history') {
+      wx.navigateTo({ url: '/pkg-read/search/search?type=history' });
+    } else if (target === 'library') {
+      wx.switchTab({ url: '/pages/library/library' });
+    }
   },
 
   onEditProfile() {
@@ -106,7 +123,7 @@ Page({
         }
         const next = { ...userInfo, nickname };
         app.saveUserInfo(next);
-        this.setData({ userInfo: next });
+        this.setData({ userInfo: next, avatarLetter: nickname.slice(0, 1) });
         wx.showToast({ title: '已保存', icon: 'none' });
       }
     });
@@ -122,7 +139,12 @@ Page({
     }
 
     if (item.id === 'history') {
-      wx.navigateTo({ url: '/pagesA/search/search?type=history' });
+      wx.navigateTo({ url: '/pkg-read/search/search?type=history' });
+      return;
+    }
+
+    if (item.id === 'cloud') {
+      wx.navigateTo({ url: '/pkg-insight/account/account' });
       return;
     }
 
@@ -142,7 +164,7 @@ Page({
     }
 
     if (item.id === 'about') {
-      wx.navigateTo({ url: '/pagesA/about/about' });
+      wx.navigateTo({ url: '/pkg-read/about/about' });
       return;
     }
   },
@@ -154,8 +176,21 @@ Page({
    *    所以播放放在入口页而不是 download 页的 onLoad；download 页只负责展示链接，
    *    它自己那个按钮是给扫码 / 分享直接进页面的兜底路径。
    */
-  openDownload() {
-    const goto = () => wx.navigateTo({ url: '/pagesA/download/download' });
+  async openDownload() {
+    if (this._openingDownload) return;
+    this._openingDownload = true;
+    const goto = () => { this._openingDownload = false; wx.navigateTo({ url: '/pkg-read/download/download' }); };
+    if (cloud.status().loggedIn) {
+      wx.showLoading({ title: '正在确认会员…', mask: true });
+      try {
+        const vip = await cloud.checkVip();
+        wx.hideLoading();
+        if (vip) return goto();
+      } catch (e) {
+        wx.hideLoading(); this._openingDownload = false;
+        wx.showToast({ title: e.message || '会员状态暂无法确认，请重试', icon: 'none' }); return;
+      }
+    }
 
     // 本次启动已经看过视频，直接进页面，不重复打扰
     if (app.globalData.downloadUnlocked) {
@@ -171,6 +206,7 @@ Page({
       onClose: (ended) => {
         wx.hideLoading();
         if (!ended) {
+          this._openingDownload = false;
           wx.showToast({ title: '需看完视频才能解锁', icon: 'none' });
           return;
         }
@@ -190,31 +226,7 @@ Page({
   },
 
   // 与「分享到朋友圈」同款：高亮右上角胶囊，两步引导
-  showDesktopGuide() {
-    const { windowWidth } = wx.getSystemInfoSync();
-
-    // 兜底：个别环境取不到胶囊位置
-    const rect = (wx.getMenuButtonBoundingClientRect && wx.getMenuButtonBoundingClientRect()) || {
-      top: 48,
-      height: 32,
-      left: windowWidth - 96
-    };
-
-    const centerX = rect.left + rect.height / 2;
-    const ringSize = rect.height + 12;
-
-    this.setData({
-      showGuide: true,
-      guideStep2: DESKTOP_GUIDE.step2,
-      guideTileText: DESKTOP_GUIDE.tileText,
-      guideTagline: DESKTOP_GUIDE.tagline,
-      ringSize,
-      ringTop: rect.top + rect.height / 2 - ringSize / 2,
-      ringLeft: centerX - ringSize / 2,
-      arrowTop: rect.top + rect.height + 42,
-      arrowRight: windowWidth - centerX - 2
-    });
-  },
+  showDesktopGuide() { this.setData({ showGuide: true }); },
 
   onCloseGuide() {
     this.setData({ showGuide: false });

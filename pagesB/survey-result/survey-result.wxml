@@ -1,9 +1,9 @@
 <view class="page result-page">
-  <custom-nav title="你的个性化建议" back="{{true}}" bg-color="var(--color-bg, #f6f7f6)" text-color="var(--color-text, #22262b)" shadow="{{false}}" />
+  <custom-nav title="你的个性化建议" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}" />
 
   <view class="result-content">
     <!-- 匹配中 -->
-    <view wx:if="{{generating}}" class="generating">
+    <view wx:if="{{generating || checkingVip}}" class="generating">
       <view class="gen-ring"></view>
       <text class="gen-title">正在为你匹配</text>
       <text class="gen-desc">从 {{totalSteps}} 条建议里筛出与你相关的几条，横跨生活的多个方面</text>

@@ -1,0 +1,57 @@
+@import "../../styles/variables-v2.wxss";
+page { background: var(--lb-bg); color: var(--lb-ink); --vip-card: #153F37; --vip-gold: #EDDCB6; --vip-card-muted: #C6D8CE; }
+.vip-page { padding: 16rpx 32rpx calc(44rpx + env(safe-area-inset-bottom)); background: var(--lb-bg); }
+.vip-hero { position: relative; overflow: hidden; padding: 32rpx; border-radius: 32rpx; background: var(--vip-card); color: #FFFDF5; box-shadow: 0 14rpx 32rpx rgba(21,63,55,.10); }
+.hero-top { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12rpx; }
+.hero-brand { display: flex; align-items: center; font-size: 24rpx; font-weight: 600; letter-spacing: 1rpx; color: var(--vip-gold); }
+.crown { width: 28rpx; height: 28rpx; margin-right: 10rpx; opacity: .9; }
+.hero-tag { font-size: 20rpx; color: var(--vip-card-muted); border: 1rpx solid rgba(237,220,182,.24); border-radius: 40rpx; padding: 8rpx 14rpx; white-space: nowrap; }
+.hero-copy { position: relative; z-index: 2; margin-top: 32rpx; max-width: 76%; }
+.hero-title { font-size: 42rpx; line-height: 1.45; font-weight: 650; letter-spacing: 1rpx; white-space: pre-line; }
+.hero-desc { display: block; margin-top: 14rpx; font-size: 23rpx; line-height: 1.7; color: var(--vip-card-muted); }
+.hero-bottom { position: relative; z-index: 2; margin-top: 26rpx; display: flex; align-items: flex-end; justify-content: space-between; gap: 12rpx; }
+.price { display: flex; align-items: baseline; color: var(--vip-gold); }
+.currency { font-size: 30rpx; margin-right: 6rpx; font-weight: 500; }
+.amount { font-size: 86rpx; font-weight: 600; line-height: 1; letter-spacing: -4rpx; font-variant-numeric: tabular-nums; }
+.period { font-size: 23rpx; margin-left: 14rpx; color: var(--vip-card-muted); }
+.price-note { font-size: 21rpx; line-height: 1.6; padding-bottom: 5rpx; color: var(--vip-card-muted); }
+.member-state { display: flex; align-items: center; min-height: 74rpx; font-size: 26rpx; color: var(--vip-gold); font-weight: 600; }
+.member-dot { width: 12rpx; height: 12rpx; margin-right: 12rpx; border-radius: 50%; background: var(--vip-gold); }
+.hero-art { position: absolute; right: 24rpx; top: 115rpx; width: 165rpx; height: 170rpx; pointer-events: none; }
+.art-orbit { position: absolute; top: -22rpx; left: -12rpx; width: 190rpx; height: 190rpx; border: 1rpx solid rgba(237,220,182,.12); border-radius: 50%; }
+.art-sheet { position: absolute; width: 108rpx; height: 136rpx; border-radius: 15rpx; }
+.sheet-back { top: 6rpx; left: 40rpx; background: #3C6657; border: 1rpx solid #628373; transform: rotate(15deg); }
+.sheet-front { top: 15rpx; left: 15rpx; background: #E8DEBD; transform: rotate(-10deg); box-shadow: 0 12rpx 20rpx rgba(0,0,0,.12); padding: 65rpx 18rpx 0; box-sizing: border-box; }
+.art-bookmark { position: absolute; top: 0; right: 22rpx; width: 22rpx; height: 36rpx; background: #72917C; border-radius: 0 0 5rpx 5rpx; }
+.art-line { height: 5rpx; border-radius: 5rpx; margin-bottom: 11rpx; background: #A5AD90; }.art-line.short { width: 62%; }
+.art-cloud { position: absolute; right: 0; bottom: 5rpx; width: 76rpx; height: 66rpx; border-radius: 22rpx; background: #9AB9A4; border: 2rpx solid #C5D3B6; box-shadow: 0 8rpx 12rpx rgba(0,0,0,.1); transform: rotate(6deg); }
+.cloud-body { position: absolute; left: 16rpx; top: 25rpx; width: 43rpx; height: 21rpx; border-radius: 16rpx; background: #F6F0D9; }.cloud-body::before { content: ''; position: absolute; width: 25rpx; height: 25rpx; border-radius: 50%; background: #F6F0D9; left: 11rpx; top: -13rpx; }
+.cloud-stem { position: absolute; left: 37rpx; top: 30rpx; height: 18rpx; border-left: 3rpx solid #527863; }.cloud-arrow { position: absolute; left: 33rpx; top: 29rpx; width: 8rpx; height: 8rpx; border-left: 3rpx solid #527863; border-top: 3rpx solid #527863; transform: rotate(45deg); }
+.benefits { margin-top: 36rpx; }
+.section-heading { display: flex; align-items: center; justify-content: space-between; gap: 12rpx; }
+.section-title { font-size: 29rpx; line-height: 1.5; font-weight: 600; }.section-caption { font-size: 21rpx; color: var(--lb-ink2); }
+.benefit { display: flex; align-items: center; gap: 20rpx; padding: 22rpx 0; }.benefit + .benefit { border-top: 1rpx solid var(--lb-line); }
+.benefit-icon { width: 72rpx; height: 72rpx; border-radius: 22rpx; display: flex; justify-content: center; align-items: center; flex: none; background: var(--lb-brand-bg); }
+.benefit-icon image { width: 36rpx; height: 36rpx; }.icon-dark { display: none; }
+.benefit-copy { flex: 1; min-width: 0; }.benefit-title { display: block; font-size: 27rpx; font-weight: 600; line-height: 1.6; }.detail { display: block; margin-top: 4rpx; color: var(--lb-ink2); font-size: 22rpx; line-height: 1.7; }
+.benefit-index { font-size: 22rpx; font-family: var(--lb-fm); color: var(--lb-ink2); opacity: .7; }
+.purchase { margin-top: 16rpx; }
+button::after { border: none; }
+.primary,.secondary { width: 100%; box-sizing: border-box; margin: 0; min-height: 96rpx; height: auto; display: flex; align-items: center; justify-content: center; padding: 22rpx 20rpx; font-size: 29rpx; font-weight: 600; line-height: 1.5; border-radius: 24rpx; }
+.primary { background: var(--lb-brand); color: var(--lb-on-brand); box-shadow: 0 6rpx 16rpx rgba(21,63,55,.08); }
+.primary[disabled] { background: var(--lb-surface2); color: var(--lb-ink2); box-shadow: none; }
+.button-pressed { opacity: .82; }
+.agreement { display: flex; justify-content: flex-start; align-items: center; min-height: 88rpx; color: var(--lb-ink2); font-size: 23rpx; line-height: 1.7; }.agree-checkbox { flex: none; transform: scale(.72); transform-origin: left center; margin-right: -8rpx; }.agreement-copy { flex: 1; min-width: 0; }
+.link { color: var(--lb-brand-ink); }
+.notice { font-size: 23rpx; color: var(--lb-brand-ink); line-height: 1.7; margin-top: 16rpx; }.purchase-notice { margin-top: 18rpx; margin-bottom: 16rpx; padding: 18rpx 22rpx; border-radius: 16rpx; background: var(--lb-brand-bg); }
+.purchase-notes { margin-top: 24rpx; padding: 0 2rpx; }
+.free-note { display: block; color: var(--lb-ink2); font-size: 23rpx; line-height: 1.8; }
+.footer-note { display: block; margin-top: 4rpx; color: var(--lb-ink2); font-size: 22rpx; line-height: 1.8; }
+.terms-link { display: inline-flex; align-items: center; justify-content: flex-start; min-height: 88rpx; color: var(--lb-brand-ink); font-size: 22rpx; line-height: 1.6; }
+.terms-arrow { margin-left: 10rpx; font-size: 28rpx; }
+
+@media (prefers-color-scheme: dark) { page { --vip-card: #193D33; --vip-gold: #E5D4AA; --vip-card-muted: #C2D1C4; }.vip-hero { border: 1rpx solid #385647; box-shadow: none; }.icon-light { display: none; }.icon-dark { display: block; } }
+@media (max-width: 350px) { .vip-page { padding-left: 24rpx; padding-right: 24rpx; }.hero-tag { padding-left: 10rpx; padding-right: 10rpx; font-size: 19rpx; }.hero-brand { font-size: 22rpx; }.hero-art { right: 12rpx; transform: scale(.88); transform-origin: right center; }.hero-desc { max-width: 360rpx; }.section-caption { display: none; } }
+/* Override WeChat's native default button width, including disabled state. */
+.vip-page .primary,.vip-page .secondary { width: 100%; margin-left: 0; margin-right: 0; }
+.vip-page .primary[disabled] { background: var(--lb-surface2); color: var(--lb-ink2); opacity: 1; }

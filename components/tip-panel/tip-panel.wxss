@@ -131,7 +131,7 @@
   padding: 12rpx 40rpx;
   border-radius: 32rpx;
   border: 2rpx solid var(--color-primary);
-  color: var(--color-primary);
+  color: var(--color-primary-ink);
   font-size: 26rpx;
 }
 

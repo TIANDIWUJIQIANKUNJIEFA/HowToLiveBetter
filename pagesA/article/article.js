@@ -199,11 +199,6 @@ Page({
     burstY: 0,
     starPop: false,
     showGuide: false,
-    ringTop: 0,
-    ringLeft: 0,
-    ringSize: 0,
-    arrowTop: 0,
-    arrowRight: 0,
     term: null,
     termShow: false,
     relatedArticles: [],
@@ -453,20 +448,7 @@ Page({
     setTimeout(() => this.setData({ starPop: false }), 320);
   },
 
-  onShowTimelineGuide() {
-    const rect = wx.getMenuButtonBoundingClientRect();
-    const { windowWidth } = wx.getSystemInfoSync();
-    const centerX = rect.left + rect.height / 2;
-    const ringSize = rect.height + 12;
-    this.setData({
-      showGuide: true,
-      ringSize,
-      ringTop: rect.top + rect.height / 2 - ringSize / 2,
-      ringLeft: centerX - ringSize / 2,
-      arrowTop: rect.top + rect.height + 42,
-      arrowRight: windowWidth - centerX - 2
-    });
-  },
+  onShowTimelineGuide() { this.setData({ showGuide: true }); },
 
   onCloseGuide() {
     this.setData({ showGuide: false });

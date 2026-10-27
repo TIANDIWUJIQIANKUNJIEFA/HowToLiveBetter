@@ -1,0 +1,228 @@
+<!-- 富文本 runs：普通文本 / **加粗** / 条号上标（点击跳转） / 术语（点击弹解释） -->
+<template name="rich-runs">
+  <block wx:for="{{runs}}" wx:for-item="run" wx:key="index">
+    <text wx:if="{{run.ref}}" class="cite-sup" catchtap="onCiteTap"
+          data-step="{{run.ref.step}}" data-to="{{run.ref.to}}">{{run.t}}</text>
+    <text wx:elif="{{run.term}}" class="term {{run.b ? boldCls : ''}}" catchtap="onTermTap"
+          data-k="{{run.t}}">{{run.t}}</text>
+    <text wx:else class="{{run.b ? boldCls : ''}}">{{run.t}}</text>
+  </block>
+</template>
+
+<view class="page rd-page {{themeCls}}">
+  <custom-nav title="{{navTitle}}" back="{{true}}" bg-color="{{navBg}}"
+              text-color="{{navText}}" shadow="{{false}}">
+    <view slot="right" class="nav-right">
+      <view class="aa-btn" bindtap="onShowTypeset" hover-class="aa-btn-hover">Aa</view>
+    </view>
+  </custom-nav>
+
+  <view wx:if="{{loadError}}" class="lb-empty">
+    <view>{{loadError}}</view>
+    <view class="lb-btn" bindtap="onRetry">重试</view>
+    <view class="lb-btn" bindtap="onOpenLibrary">返回书库</view>
+  </view>
+  <view wx:if="{{chapter}}" class="reader {{fontCls}} {{lineCls}}" bindtap="onContentTap">
+    <!-- 章头 -->
+    <view class="rd-header">
+      <view class="rd-topics" wx:if="{{topicTags.length}}">
+        <text class="rd-topic" wx:for="{{topicTags}}" wx:key="*this">{{item}}</text>
+      </view>
+      <text class="rd-title">{{chapter.title}}</text>
+      <view class="rd-meta lb-mono">
+        <text>{{steps.length}} 条建议 · 约 {{readMinutes}} 分钟</text>
+        <text wx:if="{{updatedLabel}}"> · 更新于 {{updatedLabel}}</text>
+      </view>
+    </view>
+
+    <!-- 导语 -->
+    <view wx:if="{{summaryRuns.length}}" class="rd-summary">
+      <template is="rich-runs" data="{{runs: summaryRuns, boldCls: ''}}" />
+    </view>
+
+    <view wx:if="{{contentRuns.length > 0}}" class="rd-body">
+      <view class="rd-para" wx:for="{{contentRuns}}" wx:key="index">
+        <template is="rich-runs" data="{{runs: item, boldCls: 'para-bold'}}" />
+      </view>
+    </view>
+
+    <!-- 条目 -->
+    <view class="rd-steps">
+      <view wx:for="{{steps}}" wx:key="uid" id="step-{{item.index}}"
+            class="step {{item.flash ? 'flash' : ''}}">
+        <view class="s-no lb-mono">NO.{{item.noLabel}}</view>
+        <view class="s-title">{{item.title}}</view>
+
+        <view wx:if="{{item.plain && item.meta.kind !== 'editorial'}}" class="step-plain">
+          <template is="rich-runs" data="{{runs: item.plainRuns, boldCls: ''}}" />
+        </view>
+
+        <view class="mchips">
+          <text wx:if="{{item.grade}}" class="mchip">证据 {{item.grade}} 级</text>
+          <text wx:if="{{item.ratioText}}" class="mchip o">性价比 {{item.ratioText}}</text>
+          <text wx:if="{{item.lensText}}" class="mchip dim">{{item.lensText}}</text>
+          <text wx:for="{{item.costTags}}" wx:for-item="tag" wx:key="*this" class="mchip dim">{{tag}}</text>
+          <text wx:if="{{item.dispute}}" class="mchip dim">争议</text>
+          <text wx:if="{{item.todo}}" class="mchip dim">含待核实</text>
+        </view>
+
+        <view wx:if="{{item.meta.kind === 'editorial'}}" class="scene-notice">处境建议 · 年龄供参考，按实际角色判断</view>
+        <view wx:if="{{item.sceneLabels.length}}" class="mchips"><text class="mchip dim" wx:for="{{item.sceneLabels}}" wx:key="*this">{{item}}</text></view>
+        <view wx:for="{{item.sectionRows}}" wx:for-item="section" wx:key="label" class="scene-section">
+          <view class="scene-label">{{section.label}}</view>
+          <view class="scene-body {{fontCls}} {{lineCls}}"><template is="rich-runs" data="{{runs: section.runs, boldCls: 'row-bold'}}" /></view>
+        </view>
+
+        <view class="folds">
+          <view wx:if="{{item.costText}}" class="fold {{item.costOpen ? '' : 'closed'}}" catchtap="onToggleFold" data-idx="{{index}}" data-field="costOpen">
+            <text>成本</text><text class="fv">▾</text>
+          </view>
+          <view wx:if="{{item.costText && item.costOpen}}" class="fold-body">
+            <template is="rich-runs" data="{{runs: item.costRuns, boldCls: 'row-bold'}}" />
+          </view>
+
+          <view wx:if="{{item.gainText}}" class="fold {{item.gainOpen ? '' : 'closed'}}" catchtap="onToggleFold" data-idx="{{index}}" data-field="gainOpen">
+            <text>收益</text><text class="fv">▾</text>
+          </view>
+          <view wx:if="{{item.gainText && item.gainOpen}}" class="fold-body">
+            <template is="rich-runs" data="{{runs: item.gainRuns, boldCls: 'row-bold'}}" />
+          </view>
+
+          <view wx:if="{{item.note}}" class="fold {{item.noteOpen ? '' : 'closed'}}" catchtap="onToggleFold" data-idx="{{index}}" data-field="noteOpen">
+            <text>备注</text><text class="fv">▾</text>
+          </view>
+          <view wx:if="{{item.note && item.noteOpen}}" class="fold-body row-note">
+            <template is="rich-runs" data="{{runs: item.noteRuns, boldCls: 'row-bold'}}" />
+          </view>
+
+          <view wx:if="{{item.source}}" class="fold {{item.refsOpen ? '' : 'closed'}}" catchtap="onToggleFold" data-idx="{{index}}" data-field="refsOpen">
+            <text>来源<text class="fold-cnt"> · {{item.refCount}} {{book.capabilities.evidence ? '条文献' : '项参考资料'}}</text></text><text class="fv">▾</text>
+          </view>
+          <view wx:if="{{item.source && item.refsOpen}}" class="src-body">
+            <view wx:for="{{item.refList}}" wx:for-item="ref" wx:for-index="ri" wx:key="ri" class="src-line">
+              <text class="src-idx lb-mono">[{{ri + 1}}]</text>
+              <view class="src-txt">
+                <block wx:for="{{ref.runs}}" wx:for-item="run" wx:key="index">
+                  <text wx:if="{{run.url}}" class="src-url" catchtap="onCopyRefUrl" data-url="{{run.t}}">{{run.t}}</text>
+                  <text wx:else>{{run.t}}</text>
+                </block>
+              </view>
+            </view>
+          </view>
+
+        </view>
+
+        <!-- 条目操作（条目末尾右对齐，图标+文字等宽）：收藏本条 / 分享本条 -->
+        <view class="s-acts">
+          <view class="s-act" hover-class="s-act-hover" catchtap="onStepFavorite"
+                data-idx="{{index}}" aria-label="{{item.isFav ? '取消收藏这条建议' : '收藏这条建议'}}">
+            <image class="s-act-ico {{item.pop ? 'pop' : ''}} {{item.isFav ? 'on' : ''}}"
+                   src="{{item.isFav ? '/assets/icons-v2/star-orange.png' : '/assets/icons-v2/star.png'}}" mode="aspectFit" />
+            <text>{{item.isFav ? '已收藏' : '收藏'}}</text>
+          </view>
+          <button class="s-act s-share-btn" open-type="share" data-step="{{item.index}}"
+                  hover-class="s-act-hover" aria-label="分享这条建议">
+            <image class="theme-icon-light s-act-ico" src="/assets/icons-v2/share-nodes.png" mode="aspectFit" />
+<image class="theme-icon-dark s-act-ico" src="/assets/icons-v2/dark/share-nodes.png" mode="aspectFit" />
+            <text>分享</text>
+          </button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 相关阅读（同主题跨书） -->
+    <view wx:if="{{relatedChapters.length}}" class="related">
+      <view class="rd-sec-title">继续读</view>
+      <view class="rel" wx:for="{{relatedChapters}}" wx:key="uid"
+            data-book="{{item.bookId}}" data-chapter="{{item.chapterId}}" bindtap="onRelatedTap">
+        <view class="rel-dot" style="background:{{item.accent}}"></view>
+        <view class="rel-main">
+          <view class="rel-title">{{item.title}}</view>
+          <view class="rel-meta">{{item.bookTitle}}</view>
+        </view>
+        <text class="rel-star {{item.isFavorite ? 'on' : ''}}"
+              catchtap="onRelatedFavorite" data-id="{{item.uid}}">★</text>
+      </view>
+    </view>
+
+    <view class="like-burst" wx:if="{{burstShow}}" style="left:{{burstX}}px; top:{{burstY}}px;">
+      <text class="like-heart">♥</text>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view wx:if="{{chapter}}" class="rd-footer safe-bottom">
+    <view class="rb" bindtap="onFavorite" hover-class="rb-hover">
+      <image class="rb-ico {{isFavorite ? 'hot' : ''}}" src="{{isFavorite ? '/assets/icons-v2/star-orange.png' : '/assets/icons-v2/star.png'}}" mode="aspectFit" />
+      <text class="rb-t {{isFavorite ? 'hot' : ''}}">{{isFavorite ? '已收藏' : '收藏'}}</text>
+    </view>
+    <view class="rb" bindtap="onLike" hover-class="rb-hover">
+      <image class="theme-icon-light rb-ico" src="/assets/icons-v2/heart.png" mode="aspectFit" />
+<image class="theme-icon-dark rb-ico" src="/assets/icons-v2/dark/heart.png" mode="aspectFit" />
+      <text class="rb-t">点赞</text>
+    </view>
+    <button class="rb share-btn" open-type="share" hover-class="rb-hover">
+      <image class="theme-icon-light rb-ico" src="/assets/icons-v2/share-ink.png" mode="aspectFit" />
+<image class="theme-icon-dark rb-ico" src="/assets/icons-v2/dark/share-ink.png" mode="aspectFit" />
+      <text class="rb-t">转发好友</text>
+    </button>
+    <view class="rb" bindtap="onShowTimelineGuide" hover-class="rb-hover">
+      <image class="theme-icon-light rb-ico" src="/assets/icons-v2/moments.png" mode="aspectFit" />
+<image class="theme-icon-dark rb-ico" src="/assets/icons-v2/dark/moments.png" mode="aspectFit" />
+      <text class="rb-t">朋友圈</text>
+    </view>
+  </view>
+
+  <!-- 排版调节面板 -->
+  <view wx:if="{{showTypeset}}" class="ts-mask" catchtap="onShowTypeset"></view>
+  <view wx:if="{{showTypeset}}" class="ts-sheet">
+    <view class="ts-row">
+      <text class="ts-label">字号</text>
+      <view class="ts-opts">
+        <text class="ts-opt {{reader.font === 'sm' ? 'on' : ''}}" data-group="font" data-value="sm" catchtap="onSetReader">小</text>
+        <text class="ts-opt {{reader.font === 'md' ? 'on' : ''}}" data-group="font" data-value="md" catchtap="onSetReader">标准</text>
+        <text class="ts-opt {{reader.font === 'lg' ? 'on' : ''}}" data-group="font" data-value="lg" catchtap="onSetReader">大</text>
+      </view>
+    </view>
+    <view class="ts-row">
+      <text class="ts-label">行距</text>
+      <view class="ts-opts">
+        <text class="ts-opt {{reader.line === 'sm' ? 'on' : ''}}" data-group="line" data-value="sm" catchtap="onSetReader">紧凑</text>
+        <text class="ts-opt {{reader.line === 'md' ? 'on' : ''}}" data-group="line" data-value="md" catchtap="onSetReader">标准</text>
+        <text class="ts-opt {{reader.line === 'lg' ? 'on' : ''}}" data-group="line" data-value="lg" catchtap="onSetReader">宽松</text>
+      </view>
+    </view>
+    <view class="ts-row">
+      <text class="ts-label">底色</text>
+      <view class="ts-opts">
+        <text class="ts-opt {{reader.theme === 'paper' ? 'on' : ''}}" data-group="theme" data-value="paper" catchtap="onSetReader">纸白</text>
+        <text class="ts-opt {{reader.theme === 'sepia' ? 'on' : ''}}" data-group="theme" data-value="sepia" catchtap="onSetReader">米黄</text>
+        <text class="ts-opt {{reader.theme === 'night' ? 'on' : ''}}" data-group="theme" data-value="night" catchtap="onSetReader">夜间</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 上标跳转后悬浮按钮 -->
+  <view wx:if="{{citeBack}}" class="cite-back" catchtap="onCiteBackTap">
+    <text>↑ {{citeBackLabel}}</text>
+  </view>
+
+  <!-- 朋友圈引导蒙层（沿 v1） -->
+  <menu-guide id="menuGuide" visible="{{showGuide}}" kind="timeline" tone="{{reader.theme}}" bind:close="onCloseGuide" />
+
+  <!-- 名词解释弹窗 -->
+  <view wx:if="{{termShow}}" class="term-mask" bindtap="onCloseTerm" catchtouchmove="onNoop">
+    <view class="term-sheet" catchtap="onNoop">
+      <view class="term-grip"></view>
+      <view class="term-head">
+        <text class="term-k">{{term.k}}</text>
+        <text class="term-x" catchtap="onCloseTerm">✕</text>
+      </view>
+      <scroll-view scroll-y class="term-body"><text class="term-d">{{term.d}}</text></scroll-view>
+      <view class="term-foot">
+        <text class="term-from">本书术语表 · 读懂数字</text>
+        <view class="term-btn" catchtap="onCloseTerm">知道了</view>
+      </view>
+    </view>
+  </view>
+</view>

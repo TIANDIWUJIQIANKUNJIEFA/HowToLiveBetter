@@ -41,20 +41,24 @@
 }
 
 .input-placeholder {
-  color: var(--color-text-tertiary);
+  /* 输入框底色是 #eef0f0，tertiary 只有 4.36:1，这里用 secondary（5.46） */
+  color: var(--color-text-secondary);
 }
 
 .clear-icon {
-  width: 32rpx;
-  height: 32rpx;
-  padding: 8rpx;
+  /* 44pt 命中区：88rpx；内边距 28 让图标保持 32rpx */
+  width: 88rpx;
+  height: 88rpx;
+  padding: 28rpx;
   margin-right: -8rpx;
 }
 
 .search-cancel {
   margin-left: 24rpx;
+  padding: 24rpx 16rpx;
+  margin-right: -16rpx;
   font-size: 28rpx;
-  color: var(--color-primary);
+  color: var(--color-primary-ink);
 }
 
 .result-tabs {
@@ -73,7 +77,7 @@
 }
 
 .tab-item.active {
-  color: var(--color-primary);
+  color: var(--color-primary-ink);
   font-weight: 600;
 }
 

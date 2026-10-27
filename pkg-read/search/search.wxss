@@ -1,0 +1,46 @@
+@import "../../styles/variables-v2.wxss";
+
+.page { padding: 8rpx 24rpx 48rpx; background: var(--lb-bg); min-height: 100vh; box-sizing: border-box; }
+.mode { font-size: 24rpx; color: var(--lb-ink2); }
+
+.bar {
+  display: flex; align-items: center; gap: 14rpx;
+  background: var(--lb-surface); border: 2rpx solid var(--lb-brand);
+  border-radius: var(--lb-r-btn);
+  padding: 18rpx 24rpx; margin-top: 12rpx;
+}
+.bar-ico { width: 32rpx; height: 32rpx; flex: none; }
+.bar-input { flex: 1; font-size: 28rpx; color: var(--lb-ink); }
+.bar-clear { color: var(--lb-ink3); padding: 0 8rpx; }
+
+.sec { font-size: 26rpx; font-weight: 700; color: var(--lb-ink); margin: 32rpx 6rpx 14rpx; }
+
+.hots { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.hot {
+  padding: 12rpx 26rpx; border-radius: var(--lb-r-chip);
+  background: var(--lb-surface); border: 1rpx solid var(--lb-line);
+  font-size: 25rpx; color: var(--lb-ink2);
+}
+
+.row { display: flex; align-items: center; padding: 24rpx; margin-bottom: 14rpx; }
+.dot { width: 12rpx; height: 12rpx; border-radius: 50%; margin-right: 18rpx; flex: none; }
+.row-main { flex: 1; min-width: 0; }
+.row-title { font-size: 28rpx; color: var(--lb-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row-meta { font-size: 22rpx; color: var(--lb-ink3); margin-top: 6rpx; }
+.chev { width: 30rpx; height: 30rpx; opacity: .5; flex: none; align-self: center; }
+
+/* 最近浏览（设计稿 12 起始态） */
+.sec-row { display: flex; align-items: baseline; }
+.sec-more { margin-left: auto; font-size: 22rpx; color: var(--lb-ink2); }
+.mv {
+  display: flex; align-items: center; gap: 20rpx;
+  padding: 20rpx 4rpx;
+  border-bottom: 1rpx solid var(--lb-line);
+}
+.mv-t { flex: 1; min-width: 0; font-size: 26rpx; color: var(--lb-ink);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mv-m { flex: none; font-size: 22rpx; color: var(--lb-ink3); }
+
+.row-title, .mv-t { white-space:normal; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-height:1.5; }
+.bar-clear, .mode, .sec-more { min-width:88rpx; min-height:88rpx; display:flex; align-items:center; justify-content:center; }
+.hot { min-height:88rpx; box-sizing:border-box; display:flex; align-items:center; }

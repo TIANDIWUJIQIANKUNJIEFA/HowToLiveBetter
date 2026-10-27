@@ -1,0 +1,67 @@
+[
+  {
+    "id": "F01",
+    "case": "root-page back fallback",
+    "route": "/pages/home/home",
+    "isTab": false
+  },
+  {
+    "id": "F02a",
+    "case": "out-of-order search responses",
+    "query": "new",
+    "result": "OLD"
+  },
+  {
+    "id": "F02b",
+    "case": "clear while search pending",
+    "query": "",
+    "searched": true,
+    "result": "CLEARED_QUERY"
+  },
+  {
+    "id": "F03",
+    "case": "index fails then next refresh",
+    "indexCalls": 1,
+    "storedBookRev": "new",
+    "chapter": "old-chapter"
+  },
+  {
+    "id": "F04",
+    "case": "share chosen daily quote",
+    "sharedTitle": "「quote B…」丨每日一读",
+    "sharedPath": "/pkg-read/daily/daily",
+    "receiverQuote": "quote A"
+  },
+  {
+    "id": "F05",
+    "case": "offline doing feedback exclusion",
+    "excludedUid": "hltb:b03:4",
+    "reappears": true,
+    "storedExcluded": true
+  },
+  {
+    "id": "F06",
+    "case": "baseline and recommendation index coverage",
+    "baseline": 767,
+    "index": 676,
+    "unindexedPositions": 91,
+    "changedTitles": 63,
+    "examples": [
+      {
+        "ch": "b01",
+        "index": 44,
+        "title": "心慌、心跳乱就去做心电图，查出房颤请医生评估吃抗凝药防中风，别拿阿司匹林代替"
+      },
+      {
+        "ch": "b01",
+        "index": 45,
+        "title": "成年人查一次丙肝抗体，阳性就再查核酸，确诊了吃 8 到 12 周口服药，绝大多数能治好"
+      },
+      {
+        "ch": "b01",
+        "index": 46,
+        "title": "下化粪池、窨井、污水池、菜窖地窖、发酵罐等有限空间前，先通风、检测合格、落实防护和监护，条件不够不进入。有人倒下别跟着下去，打 119 和 120"
+      }
+    ]
+  }
+]

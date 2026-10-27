@@ -62,7 +62,8 @@
 .index-subtitle {
   display: block;
   font-size: 28rpx;
-  color: #6d7268;
+  /* 米色底上 5.6:1；原 #6d7268 仅 4.10:1 */
+  color: #5b616a;
   letter-spacing: 3rpx;
 }
 

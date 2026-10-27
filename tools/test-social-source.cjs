@@ -1,0 +1,18 @@
+const assert=require('node:assert/strict');
+const storage={};
+global.wx={getStorageSync:k=>storage[k]||'',setStorageSync:(k,v)=>storage[k]=v,removeStorageSync:k=>delete storage[k]};
+const store=require('../utils/store.js').v2;
+store.set('books',[{id:'social',origin:'bundled-original',stats:{chapters:8,steps:40}},{id:'htga',title:'retired'}]);
+store.set('chapters:social',[{chapterId:'s01',title:'Retired chapter'}]);
+store.set('steps:social:s01',[{title:'Retired entry'}]);
+const library=require('../utils/library.js');
+const book=library.getBook('social');
+assert.equal(book.author,'changxueyi');assert.equal(book.license,'CC BY 4.0');
+assert.equal(book.stats.chapters,31);assert.equal(book.stats.steps,640);
+assert(!book.origin && !library.getBook('htga'));
+assert.equal(library.getChapters('social').length,31);
+assert(library.getChapters('social').every(c=>/^rq\d{2}$/.test(c.chapterId)));
+assert(!library.getChapter('social','s01'));
+assert.equal(require('../pkg-read/utils/content.js').getSteps('social','s01').length,0);
+assert.equal(library.getTotalStepCount(),1407);
+console.log('✓ New social source: 31 chapters / 640 entries, attribution, old catalog/cache/progress isolation');

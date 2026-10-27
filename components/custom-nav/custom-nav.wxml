@@ -9,7 +9,7 @@
         <view class="home-icon" style="border-color: {{textColor}}; color: {{textColor}};">⌂</view>
       </view>
     </view>
-    <view class="nav-title {{align === 'left' ? 'left' : ''}}" style="color: {{textColor}};">{{title}}</view>
+    <view class="nav-title {{align === 'left' ? 'left' : ''}} {{big ? 'big' : ''}}" style="color: {{textColor}};">{{title}}</view>
     <view class="nav-right" bindtap="onRightTap">
       <slot name="right"></slot>
     </view>

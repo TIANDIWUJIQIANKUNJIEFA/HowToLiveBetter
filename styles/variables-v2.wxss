@@ -1,0 +1,131 @@
+/**
+ * v2 设计令牌 · C 清醒现代（design-v2/人生指南库-v2-完整设计稿.html）
+ *
+ * 命名空间 --lb-*：与 v1 的 --color-* 共存（v2 页面用 lb，v1 页面不动）。
+ * 基准 392px 设计稿 → rpx 按 ×1.913 换算取整；深色模式走 CSS 变量。
+ */
+page {
+  /* 中性 */
+  --lb-bg: #F6F5F0;            /* 页面底 暖瓷白 */
+  --lb-surface: #FFFDF9;       /* 卡片纸面 */
+  --lb-surface2: #EFEEE7;      /* 次级底 / 占位 */
+  --lb-hero-bg: #E5ECE6;       /* hero 浅底 */
+  --lb-ink: #242E2B;           /* 正文 */
+  --lb-ink2: #69736D;          /* 次级 */
+  --lb-ink3: #727B75;          /* 三级/说明 */
+  --lb-line: #E5E7E0;          /* 分隔线 */
+
+  /* 品牌：松石绿 */
+  --lb-brand: #226B60;
+  --lb-brand-ink: #226B60;     /* 浅底上的品牌文字 */
+  --lb-brand-bg: #E5EEE7;      /* 品牌浅底（选中/徽章） */
+  --lb-on-brand: #FFFFFF;
+
+  /* 功能色 */
+  --lb-orange: #956947;        /* htga 身份 · 陶土 */
+  --lb-orange-bg: #F6EBDD;
+  --lb-warn: #946B29;
+  --lb-warn-bg: #F8F0DF;
+  --lb-red: #B94B49;
+  --lb-red-bg: #F7E9E8;
+
+  /* 书籍身份色 */
+  --lb-bk1: #226B60;           /* 高性价比人生指南 */
+  --lb-bk2: #C99975;           /* 人情世故指南 */
+  --lb-bk3: #3A5BA0;           /* 人生进阶指南（预留） */
+
+  /* 字体：等宽数据 */
+  --lb-fm: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* 圆角 */
+  --lb-r-card: 24rpx;
+  --lb-r-btn: 20rpx;
+  --lb-r-chip: 16rpx;
+}
+
+/* 深色模式（darkmode: true + theme.json 触发变量覆盖） */
+@media (prefers-color-scheme: dark) {
+  page {
+    --lb-bg: #17201C;
+    --lb-surface: #202B25;
+    --lb-surface2: #29372F;
+    --lb-hero-bg: #2C3D32;
+    --lb-ink: #EEF1E9;
+    --lb-ink2: #B0BEB2;
+    --lb-ink3: #A2B2A5;
+    --lb-line: #3A4B3F;
+    --lb-brand: #8BC7B3;
+    --lb-brand-ink: #A3D8C4;
+    --lb-brand-bg: #2E4438;
+    --lb-on-brand: #152C23;
+    --lb-orange: #D9B18C;
+    --lb-orange-bg: #3D3328;
+    --lb-warn: #DDC18A;
+    --lb-warn-bg: #3D3628;
+    --lb-red: #E09B98;
+    --lb-red-bg: #432D2C;
+    --lb-bk1: #8BC7B3;
+    --lb-bk2: #D9B18C;
+    --lb-bk3: #8FAEE0;
+  }
+}
+
+/* ===== v2 通用元件（页面间复用的小件） ===== */
+
+/* 卡片 */
+.lb-card {
+  background: var(--lb-surface);
+  border-radius: var(--lb-r-card);
+  border: 1rpx solid var(--lb-line);
+}
+
+/* 主按钮 / 次按钮 */
+.lb-btn {
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: var(--lb-r-btn);
+  font-size: 30rpx;
+  font-weight: 600;
+  text-align: center;
+}
+.lb-btn-primary { background: var(--lb-brand); color: var(--lb-on-brand); }
+.lb-btn-ghost { background: var(--lb-surface); color: var(--lb-brand-ink); border: 2rpx solid var(--lb-brand); }
+
+/* chip：属性标签（成本/时间/毅力）与理由 */
+.lb-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  border-radius: var(--lb-r-chip);
+  font-size: 22rpx;
+  background: var(--lb-surface2);
+  color: var(--lb-ink2);
+  margin-right: 12rpx;
+}
+.lb-chip-brand { background: var(--lb-brand-bg); color: var(--lb-brand-ink); }
+
+/* 等宽数据字 */
+.lb-mono { font-family: var(--lb-fm); }
+
+/* 章节序号 / 统计数字 */
+.lb-num { font-family: var(--lb-fm); font-weight: 700; }
+
+/* 骨架屏 */
+.lb-skeleton {
+  background: linear-gradient(90deg, var(--lb-surface2) 25%, var(--lb-hero-bg) 45%, var(--lb-surface2) 65%);
+  background-size: 400% 100%;
+  animation: lb-shimmer 1.3s infinite;
+  border-radius: var(--lb-r-chip);
+}
+@keyframes lb-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* 空态 */
+.lb-empty {
+  padding: 96rpx 48rpx;
+  text-align: center;
+  color: var(--lb-ink3);
+  font-size: 26rpx;
+}

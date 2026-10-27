@@ -1,0 +1,29 @@
+<custom-nav title="关于" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}" />
+
+<view class="page about-page">
+  <!-- 品牌区（设计稿 21：居中插画 + 名称 + 等宽版本号） -->
+  <view class="hero">
+    <image class="illo" src="/pkg-read/assets/about-illo.png" mode="aspectFit" />
+    <text class="name">人生指南库</text>
+    <text class="ver lb-mono">v{{version}} · 微信原生小程序</text>
+  </view>
+
+  <!-- 来源与授权（署名在此履行，设计稿 21：三张来源卡） -->
+  <view
+    wx:for="{{sources}}"
+    wx:key="title"
+    class="src lb-card"
+    hover-class="row-hover"
+    data-index="{{index}}"
+    bindtap="onCopySource"
+  >
+    <view class="dot" style="background: {{item.accent}};"></view>
+    <view class="src-main">
+      <text class="st">{{item.title}}</text>
+      <text class="ss">{{item.sub}}</text>
+    </view>
+    <text class="act">复制链接</text>
+  </view>
+
+  <view class="note">指南正文按 CC BY 4.0 署名转载，不构成医疗、法律或投资建议。在线推荐会发送所选方向、时间预算、障碍及匿名标识，反馈会发送条目标识与反馈类型；断网时使用本地推荐。昵称、头像保存在本机，不随推荐请求发送。收藏、浏览记录与阅读进度默认仅保存在本机；永久 VIP 在主动开启云同步后，会将这些记录上传至绑定的微信账户，可在「我的 → 账户与同步」中关闭同步或清空云端记录。</view>
+</view>

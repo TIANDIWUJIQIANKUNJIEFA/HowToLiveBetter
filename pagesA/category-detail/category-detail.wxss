@@ -65,7 +65,7 @@
 }
 
 .sub-tab.active {
-  color: var(--color-primary);
+  color: var(--color-primary-ink);
   font-weight: 600;
 }
 

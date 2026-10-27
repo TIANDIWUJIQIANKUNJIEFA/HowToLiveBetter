@@ -16,7 +16,7 @@
 .loading-text {
   margin-left: 12rpx;
   font-size: 24rpx;
-  color: var(--color-text-secondary, #8a8f98);
+  color: var(--color-text-secondary, #5b616a);
 }
 
 .loading-small .spinner {

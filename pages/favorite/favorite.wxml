@@ -1,73 +1,61 @@
-<view class="page favorite-page">
-  <custom-nav title="收藏" align="left" bg-color="var(--color-bg, #f6f7f6)" text-color="var(--color-text, #22262b)" shadow="{{false}}" />
+<custom-nav title="收藏" align="left" big="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" shadow="{{false}}"></custom-nav>
 
-  <view class="favorite-content">
-    <!-- Tab -->
-    <view class="favorite-tabs">
-      <view
-        wx:for="{{tabs}}"
-        wx:key="key"
-        class="tab-item {{activeTab === item.key ? 'active' : ''}}"
-        bindtap="onTabChange"
-        data-key="{{item.key}}"
-      >
-        <text>{{item.label}}</text>
-        <view class="tab-underline"></view>
+<view class="lt-tabs">
+  <view class="lt {{tab === item.key ? 'on' : ''}}" wx:for="{{tabs}}" wx:key="key"
+        data-tab="{{item.key}}" bindtap="onTab">{{item.label}} {{item.count}}</view>
+</view>
+
+<view class="page">
+  <!-- 建议 -->
+  <block wx:if="{{tab === 'step'}}">
+    <view class="minor lb-card" wx:for="{{steps}}" wx:key="uid"
+          data-book="{{item.bookId}}" data-chapter="{{item.chapterId}}"
+          data-index="{{item.index}}" bindtap="onStepTap" hover-class="row-hover">
+      <view class="mdot" style="background:{{item.accent}}"></view>
+      <view class="mmain">
+        <view class="mt">{{item.title}}</view>
+        <view class="mp" wx:if="{{item.plain}}">{{item.plain}}</view>
+        <view class="mm">{{item.bookTitle}} · {{item.chapterTitle}} · NO.{{item.noLabel}}<text wx:if="{{item.favDays}}"> · 已收藏 {{item.favDays}}</text></view>
       </view>
+      <text class="star" catchtap="onUnfav" data-uid="{{item.uid}}">★</text>
     </view>
+    <view wx:if="{{!steps.length}}" class="lb-empty">
+      还没有收藏的建议
+      <view class="go" bindtap="goReco">去推荐页挑几条 ›</view>
+    </view>
+  </block>
 
-    <!-- 文章列表 -->
-    <view wx:if="{{activeTab === 'article'}}" class="tab-content">
-      <view wx:if="{{articles.length > 0}}" class="article-rows">
-        <view wx:for="{{articles}}" wx:key="id" class="article-row">
-          <article-card
-            article="{{item}}"
-            show-category="{{true}}"
-            category-below="{{true}}"
-            show-summary="{{false}}"
-            bind:favorite="onCardFavorite"
-          />
-        </view>
+  <!-- 章节 -->
+  <block wx:if="{{tab === 'chapter'}}">
+    <view class="minor lb-card" wx:for="{{chapters}}" wx:key="uid"
+          data-book="{{item.bookId}}" data-chapter="{{item.chapterId}}" bindtap="onChapterTap" hover-class="row-hover">
+      <view class="mdot" style="background:{{item.accent}}"></view>
+      <view class="mmain">
+        <view class="mt">{{item.title}}</view>
+        <view class="mm lb-mono">{{item.bookTitle}}<text wx:if="{{item.brief}}"> · {{item.brief}}</text></view>
       </view>
-
-      <empty-state
-        wx:if="{{articles.length === 0 && !loading}}"
-        icon="/assets/icons/star.png"
-        text="还没有收藏文章"
-        button-text="去发现"
-        bind:action="goExplore"
-      />
+      <image class="theme-icon-light chev" src="/assets/icons-v2/chev.png" mode="aspectFit" />
+<image class="theme-icon-dark chev" src="/assets/icons-v2/dark/chev.png" mode="aspectFit" />
     </view>
+    <view wx:if="{{!chapters.length}}" class="lb-empty">
+      还没有收藏的章节
+      <view class="go" bindtap="goLibrary">去书库逛逛 ›</view>
+    </view>
+  </block>
 
-    <!-- 分类列表 -->
-    <view wx:if="{{activeTab === 'category'}}" class="tab-content">
-      <view wx:if="{{categories.length > 0}}" class="category-list">
-        <view
-          wx:for="{{categories}}"
-          wx:key="id"
-          class="category-row"
-          hover-class="hover-press"
-          bindtap="onCategoryTap"
-          data-id="{{item.id}}"
-        >
-          <view class="category-icon" style="background: {{item.bgColor}};">
-            <image class="category-glyph" src="/assets/icons/glyph-{{item.id}}.png" mode="aspectFit" />
-          </view>
-          <view class="row-info">
-            <text class="row-name">{{item.name}}</text>
-            <text class="row-count">{{item.articleCount}} 篇收藏</text>
-          </view>
-          <image class="row-arrow" src="/assets/icons/chevron.png" mode="aspectFit" />
-        </view>
+  <!-- 主题 -->
+  <block wx:if="{{tab === 'topic'}}">
+    <view class="minor lb-card" wx:for="{{topics}}" wx:key="id"
+          data-id="{{item.id}}" bindtap="onTopicTap" hover-class="row-hover">
+      <view class="mmain">
+        <view class="mt">{{item.name}}</view>
+        <view class="mm lb-mono">{{item.count}} 章</view>
       </view>
-
-      <empty-state
-        wx:if="{{categories.length === 0 && !loading}}"
-        icon="/assets/icons/category.png"
-        text="还没有收藏分类"
-        button-text="去发现"
-        bind:action="goExplore"
-      />
+      <image class="theme-icon-light chev" src="/assets/icons-v2/chev.png" mode="aspectFit" />
+<image class="theme-icon-dark chev" src="/assets/icons-v2/dark/chev.png" mode="aspectFit" />
     </view>
-  </view>
+    <view wx:if="{{!topics.length}}" class="lb-empty">
+      还没有收藏的主题，在主题聚合页点 ★ 收藏
+    </view>
+  </block>
 </view>

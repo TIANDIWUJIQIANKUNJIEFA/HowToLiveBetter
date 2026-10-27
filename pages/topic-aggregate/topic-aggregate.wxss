@@ -1,0 +1,86 @@
+@import "../../styles/variables-v2.wxss";
+
+.page { padding: 8rpx 36rpx 56rpx; background: var(--lb-bg); min-height: 100vh; box-sizing: border-box; }
+
+/* ---------- 主题头卡 ---------- */
+.topic-h {
+  display: flex;
+  align-items: center;
+  gap: 28rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+.topic-h .ti {
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 24rpx;
+  background: var(--lb-brand-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.ti-img { width: 46rpx; height: 46rpx; }
+.topic-h .tw { flex: 1; min-width: 0; }
+.topic-h .tt { font-size: 36rpx; font-weight: 650; color: var(--lb-ink); }
+.topic-h .tn { font-size: 22rpx; color: var(--lb-ink2); margin-top: 6rpx; }
+
+/* 主题收藏 */
+.tfav {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  border: 1rpx solid var(--lb-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34rpx;
+  color: var(--lb-ink3);
+  flex: none;
+}
+.tfav.on { color: var(--lb-orange); border-color: var(--lb-orange); background: var(--lb-orange-bg); }
+.tfav-hover { opacity: .7; }
+
+/* ---------- 按书筛选 ---------- */
+.filters { white-space: nowrap; margin-bottom: 24rpx; }
+.filters .chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 14rpx 24rpx;
+  margin-right: 16rpx;
+  border: 1rpx solid var(--lb-line);
+  border-radius: var(--lb-r-chip);
+  background: var(--lb-surface);
+  font-size: 24rpx;
+  color: var(--lb-ink);
+}
+.filters .chip.on {
+  background: var(--lb-brand);
+  border-color: var(--lb-brand);
+  color: var(--lb-on-brand);
+  font-weight: 700;
+}
+
+/* ---------- 章节小卡 ---------- */
+.minor {
+  display: flex;
+  align-items: flex-start;
+  gap: 20rpx;
+  padding: 28rpx;
+  margin-bottom: 18rpx;
+}
+.row-hover { opacity: .8; }
+.mdot { width: 8rpx; height: 44rpx; border-radius: 6rpx; flex: none; margin-top: 10rpx; }
+.mmain { flex: 1; min-width: 0; }
+.mt { font-size: 28rpx; font-weight: 650; color: var(--lb-ink); line-height: 1.55; }
+.mm { font-size: 22rpx; color: var(--lb-ink3); margin-top: 10rpx; }
+.chev { width: 30rpx; height: 30rpx; opacity: .5; flex: none; align-self: center; }
+
+.disclaim {
+  font-size: 22rpx;
+  color: var(--lb-ink3);
+  text-align: center;
+  margin-top: 28rpx;
+  line-height: 1.8;
+}
+.disclaim-hover { opacity: .6; }

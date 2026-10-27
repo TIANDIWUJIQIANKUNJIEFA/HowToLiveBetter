@@ -1,0 +1,47 @@
+{
+  "rows": [
+    {
+      "name": "reco",
+      "path": "pages/reco/reco",
+      "bookCount": 1
+    },
+    {
+      "name": "library",
+      "error": "Unexpected route pages/reco/reco"
+    },
+    {
+      "name": "mine",
+      "path": "pages/mine/mine"
+    },
+    {
+      "name": "search",
+      "path": "pkg-read/search/search"
+    },
+    {
+      "name": "book",
+      "path": "pages/book-detail/book-detail"
+    },
+    {
+      "name": "reader",
+      "path": "pkg-read/chapter-read/chapter-read",
+      "contentParagraphs": 7
+    },
+    {
+      "name": "invalid",
+      "path": "pkg-read/chapter-read/chapter-read",
+      "loadError": "链接缺少章节信息，请从书库重新选择。",
+      "contentParagraphs": 0
+    },
+    {
+      "name": "daily",
+      "path": "pkg-read/daily/daily"
+    },
+    {
+      "name": "result",
+      "path": "pkg-insight/result/result",
+      "bookCount": 1,
+      "empty": true
+    }
+  ],
+  "errors": []
+}

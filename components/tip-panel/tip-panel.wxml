@@ -13,7 +13,7 @@
 
   <block wx:if="{{done}}">
     <view class="tip-done">
-      <image class="tip-done-icon" src="/assets/icons/heart.png" mode="aspectFit" />
+      <image class="tip-done-icon" src="/assets/icons-v2/heart.png" mode="aspectFit" />
       <text class="tip-done-title">谢谢你的支持</text>
       <text class="tip-done-desc" wx:if="{{tipCount > 1}}">这是你第 {{tipCount}} 次赞助，我们会继续把内容做好</text>
       <text class="tip-done-desc" wx:else>我们会继续把内容做好</text>

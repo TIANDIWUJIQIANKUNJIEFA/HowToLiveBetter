@@ -2,7 +2,7 @@
  * 生成主包条目级索引 data/match-index.js
  *
  * 为什么要有这份索引：匹配引擎（utils/match.js）在主包，而条目正文
- * pagesA/data/steps.js 在分包——小程序只允许分包引用主包，反过来不行，
+ * pkg-read/data/steps-hltb.js 在分包——小程序只允许分包引用主包，反过来不行，
  * 所以主包读不到正文。这里把「匹配用得到的字段」抽成一份精简索引放进主包，
  * 结果页才能精确到条目级（标题 + 摘要片段 + 成本/收益/证据档位）。
  *
@@ -14,7 +14,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const stepsPath = path.join(root, 'pagesA/data/steps.js');
+const stepsPath = path.join(root, 'pkg-read/data/steps-hltb.js');
 const outPath = path.join(root, 'data/match-index.js');
 
 /* 摘要截断长度：结果页只显示一行，36 字够排版；调小可省体积（每减 8 字约省 16 KB） */
@@ -33,22 +33,22 @@ const steps = mod.exports;
 
 const rows = [];
 for (const articleId of Object.keys(steps)) {
-  for (const it of steps[articleId]) {
-    const m = it.meta || {};
+  for (const [i, it] of steps[articleId].entries()) {
+    const m = it.cost || {};
     rows.push([
       articleId,
-      it.index,
+      it.index || i + 1,
       String(it.title || ''),
       clip(it.plain || it.title || ''),
       String(m.money ?? ''),
       String(m.time ?? ''),
       String(m.will ?? ''),
-      String(m.gain ?? ''),
-      String(m.ratio ?? ''),
+      String(it.gainTag ?? ''),
+      String(it.ratio ?? ''),
       String(it.grade || ''),
       /* 正文长度（plain+gain+note）：主包读不到正文，靠它估阅读时长。
          只存字数不存内容，676 条合计约 +3 KB。 */
-      [it.plain, it.gain, it.note, it.cost].reduce(
+      [it.plain, it.gainText, it.noteText, it.costText].reduce(
         (n, s) => n + String(s || '').replace(/\s+/g, '').length, 0
       )
     ]);
@@ -63,7 +63,7 @@ const body = rows
 const out = `/**
  * 条目级精简索引（自动生成，勿手改）
  *
- * 来源：pagesA/data/steps.js（正文在分包，主包读不到，故抽这份索引）
+ * 来源：pkg-read/data/steps-hltb.js（正文在分包，主包读不到，故抽这份索引）
  * 生成：node tools/build-match-index.mjs
  * 字段：[文章id, 条号, 标题, 摘要片段, 花钱, 花时间, 意志力, 收益, 性价比, 证据等级, 正文字数]
  * 条目数：${rows.length}

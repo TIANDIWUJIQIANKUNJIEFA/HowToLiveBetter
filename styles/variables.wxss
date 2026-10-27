@@ -3,6 +3,8 @@ page {
   --color-primary: #4ba264;
   --color-primary-light: #e9f4ec;
   --color-primary-dark: #3d8b52;
+  /* 浅绿底上的品牌绿文字：primary 直接压底只有 2.8:1，需更深一档 */
+  --color-primary-ink: #2a6b39;
 
   /* 辅助色 */
   --color-blue: #2b8ce0;
@@ -15,8 +17,9 @@ page {
 
   /* 中性色 */
   --color-text: #22262b;
-  --color-text-secondary: #8a8f98;
-  --color-text-tertiary: #b6bac0;
+  /* 次级/三级文本按 WCAG AA 反推：页面底 #f6f7f6 上分别 5.81 / 4.64 */
+  --color-text-secondary: #5b616a;
+  --color-text-tertiary: #6a707a;
   --color-bg: #f6f7f6;
   --color-bg-dark: #e9ecef;
   --color-white: #ffffff;
@@ -30,7 +33,7 @@ page {
 
   /* 徽章：证据等级 / 成本档用的成对底色 + 文字色 */
   --badge-green-bg: #edf5ee;
-  --badge-green-text: #4a7a58;
+  --badge-green-text: #46744f;
   --badge-blue-bg: #e9ecfb;
   --badge-blue-text: #3451b2;
   --badge-yellow-bg: #faf3e3;
@@ -70,6 +73,7 @@ page {
     --color-primary: #5cb476;
     --color-primary-light: rgba(92, 180, 118, 0.18);
     --color-primary-dark: #7cc795;
+    --color-primary-ink: #8fd3a3;
 
     /* 辅助色同步提亮 */
     --color-blue: #56a9ef;
@@ -82,7 +86,7 @@ page {
 
     --color-text: #e8eaed;
     --color-text-secondary: #9aa1a9;
-    --color-text-tertiary: #6b7280;
+    --color-text-tertiary: #8b93a0;
     --color-bg: #15171a;
     --color-bg-dark: #0f1113;
     --color-white: #ffffff;
@@ -101,6 +105,6 @@ page {
     --badge-yellow-bg: rgba(240, 185, 95, 0.18);
     --badge-yellow-text: #f0b95f;
     --badge-red-bg: rgba(227, 91, 98, 0.18);
-    --badge-red-text: #e35b62;
+    --badge-red-text: #f08a8f;
   }
 }

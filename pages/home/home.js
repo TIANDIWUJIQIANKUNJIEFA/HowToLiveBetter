@@ -148,7 +148,7 @@ Page({
 
   /** 「探索分类 › 全部」：跳分类 tab */
   onAllCategories() {
-    wx.switchTab({ url: '/pages/classify/classify' });
+    wx.navigateTo({ url: '/pages/classify/classify' });
   },
 
   onArticleTap(e) {

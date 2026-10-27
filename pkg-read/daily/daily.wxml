@@ -1,0 +1,18 @@
+<custom-nav title="每日一读" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}"></custom-nav>
+
+<view class="page">
+  <view class="date lb-mono">{{dateText}} · {{weekday}} · {{year}}</view>
+
+  <view wx:if="{{quote}}" class="quote">
+    <image class="qillo" src="/pkg-read/assets/about-illo.png" mode="aspectFit" />
+    <view class="qtext">「{{quote.text}}」</view>
+    <view class="qauthor">—— {{quote.author}}</view>
+  </view>
+
+  <view class="acts">
+    <view class="btn ghost" bindtap="onNext" hover-class="btn-hover">换一句</view>
+    <button class="btn solid share-btn" open-type="share" hover-class="btn-hover">分享这段话</button>
+  </view>
+
+  <view class="note">语录来自书中的高频金句 · 每日更新</view>
+</view>

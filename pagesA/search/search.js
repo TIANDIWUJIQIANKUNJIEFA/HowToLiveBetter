@@ -87,7 +87,7 @@ Page({
 
   onCancel() {
     wx.navigateBack({
-      fail: () => wx.switchTab({ url: '/pages/home/home' })
+      fail: () => wx.navigateTo({ url: '/pages/home/home', fail: () => {} })
     });
   },
 

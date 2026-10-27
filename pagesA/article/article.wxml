@@ -189,32 +189,7 @@
   </view>
 
   <!-- 分享到朋友圈引导蒙层 -->
-  <view wx:if="{{showGuide}}" class="guide-mask" catchtap="onCloseGuide"></view>
-  <view wx:if="{{showGuide}}" class="guide-layer" catchtap="onCloseGuide">
-    <view class="guide-ring" style="top:{{ringTop}}px; left:{{ringLeft}}px; width:{{ringSize}}px; height:{{ringSize}}px;"></view>
-    <image
-      class="guide-arrow"
-      src="/assets/icons/arrow-curve-white.png"
-      mode="aspectFit"
-      style="top:{{arrowTop}}px; right:{{arrowRight}}px;"
-    />
-    <view class="guide-steps">
-      <view class="guide-step">
-        <view class="guide-num">1</view>
-        <text class="guide-step-text">点击右上角「···」</text>
-      </view>
-      <view class="guide-step">
-        <view class="guide-num">2</view>
-        <text class="guide-step-text">选择「分享到朋友圈」</text>
-      </view>
-    </view>
-    <view class="guide-tile">
-      <image class="guide-tile-icon" src="/assets/icons/moments-green.png" mode="aspectFit" />
-      <text class="guide-tile-text">分享到朋友圈</text>
-    </view>
-    <text class="guide-tagline">让朋友也能发现这份精彩</text>
-    <view class="guide-know">我知道了</view>
-  </view>
+  <menu-guide id="menuGuide" visible="{{showGuide}}" kind="timeline" bind:close="onCloseGuide" />
 
   <!-- 名词解释：点正文关键词弹出的底部小窗 -->
   <view wx:if="{{termShow}}" class="term-mask" bindtap="onCloseTerm" catchtouchmove="onNoop">

@@ -1,0 +1,66 @@
+<custom-nav title="书籍详情" back="{{true}}" bg-color="var(--lb-bg, #F6F5F0)" text-color="var(--lb-ink, #242E2B)" shadow="{{false}}"></custom-nav>
+
+<view class="page" wx:if="{{book}}">
+  <!-- 书封大卡 -->
+  <view class="big-bk lb-card">
+    <image class="cover" src="{{bookPresentation.flatCover}}" mode="aspectFill" />
+    <view class="bb">
+      <view class="bt">{{book.title}}</view>
+      <view class="bd">
+        <text class="bdl">{{book.author}}</text>
+        <text class="bdl">{{bookPresentation.descLine2}}</text>
+      </view>
+      <view class="bm2">
+        <text class="cbadge" style="border-color:{{heroAccent}};color:{{heroAccent}};">{{book.stats.chapters}} 章 · {{book.stats.steps}} 条</text>
+        <text class="cbadge" style="border-color:{{heroAccent}};color:{{heroAccent}};">更新 {{updatedLabel}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{readingId}}" class="lb-card continue-reading" bindtap="onContinue" hover-class="chrow-hover">继续阅读 · {{readingTitle}} ›</view>
+
+  <!-- 统计三卡（设计稿 08/09：建议条数 / A级证据占比或章节数 / 平均条阅读） -->
+  <view class="bmeta">
+    <view class="m lb-card"><view class="v lb-mono">{{book.stats.steps}}</view><view class="k">建议条数</view></view>
+    <view class="m lb-card"><view class="v lb-mono">{{stat2}}</view><view class="k">{{stat2Label}}</view></view>
+    <view class="m lb-card"><view class="v lb-mono o">{{book.capabilities.evidence ? avgMin + ' min' : topicCount}}</view><view class="k">{{book.capabilities.evidence ? '平均条阅读' : '覆盖主题'}}</view></view>
+  </view>
+
+  <!-- topic 筛选 -->
+  <scroll-view scroll-x class="chips" enhanced show-scrollbar="{{false}}">
+    <view class="chip {{filter === item.id ? 'on' : ''}}" wx:for="{{topics}}" wx:key="id"
+          data-id="{{item.id}}" bindtap="onFilter">
+      {{item.name}}<text class="lb-mono cnt">{{item.count}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 章节列表 -->
+  <view class="chapters lb-card">
+    <view class="chrow" wx:for="{{shownChapters}}" wx:key="chapterId"
+          data-chapter="{{item.chapterId}}" bindtap="onChapterTap" hover-class="chrow-hover">
+      <text class="no lb-mono">{{item.ord}}</text>
+      <text class="ct">{{item.title}}</text>
+      <text wx:if="{{item.chapterId === readingId}}" class="up">在读</text>
+      <text class="cn lb-mono">{{item.stepCount}} 条</text>
+    </view>
+    <view wx:if="{{hasMore}}" class="chrow all" bindtap="onToggleAll" hover-class="chrow-hover">
+      <text class="all-t">全部 {{filteredCount}} 章 ›</text>
+    </view>
+    <view wx:elif="{{filteredCount > 8}}" class="chrow all" bindtap="onToggleAll" hover-class="chrow-hover">
+      <text class="all-t">收起 ›</text>
+    </view>
+  </view>
+
+  <view class="book-source lb-card">
+    <view wx:if="{{book.id !== 'social'}}">{{book.author}}</view>
+    <view>{{book.license}}</view>
+    <view wx:if="{{book.id !== 'social'}}" class="source-link" bindtap="onCopySource">复制原作链接 ›</view>
+  </view>
+
+  <!-- 下载入口（有 downloads 能力才显示） -->
+  <view wx:if="{{book.capabilities.downloads}}" class="dl" bindtap="onDownloadTap" hover-class="gbtn-hover">
+    下载整本书（PDF / EPUB）
+  </view>
+</view>
+
+<view wx:if="{{loadError}}" class="lb-empty">{{loadError}}<view class="lb-btn" bindtap="onOpenLibrary">返回书库</view></view>

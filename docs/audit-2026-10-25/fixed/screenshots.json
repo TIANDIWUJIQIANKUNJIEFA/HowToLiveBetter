@@ -1,0 +1,46 @@
+[
+  {
+    "name": "book",
+    "path": "docs/audit-2026-10-25/fixed/book.png"
+  },
+  {
+    "name": "mine",
+    "path": "docs/audit-2026-10-25/fixed/mine.png"
+  },
+  {
+    "name": "daily",
+    "path": "docs/audit-2026-10-25/fixed/daily.png"
+  },
+  {
+    "name": "library",
+    "path": "docs/audit-2026-10-25/fixed/library.png"
+  },
+  {
+    "name": "result",
+    "path": "docs/audit-2026-10-25/fixed/result.png"
+  },
+  {
+    "name": "reader",
+    "path": "docs/audit-2026-10-25/fixed/reader.png"
+  },
+  {
+    "name": "reader-night",
+    "path": "docs/audit-2026-10-25/fixed/reader-night.png"
+  },
+  {
+    "name": "search",
+    "path": "docs/audit-2026-10-25/fixed/search.png"
+  },
+  {
+    "name": "reader-sepia",
+    "path": "docs/audit-2026-10-25/fixed/reader-sepia.png"
+  },
+  {
+    "name": "reco",
+    "path": "docs/audit-2026-10-25/fixed/reco.png"
+  },
+  {
+    "name": "invalid",
+    "path": "docs/audit-2026-10-25/fixed/invalid.png"
+  }
+]
